@@ -84,7 +84,7 @@ public class Abertura extends javax.swing.JFrame {
 
         File.setText("Arquivo");
 
-        Carregabd.setText("Carrega BD");
+        Carregabd.setText("Listar amostras");
         Carregabd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CarregabdActionPerformed(evt);
