@@ -37,7 +37,6 @@ public class Help extends javax.swing.JPanel {
         jTextArea1.setBackground(new java.awt.Color(240, 240, 240));
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("Texto Teste!");
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
