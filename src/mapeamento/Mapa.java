@@ -29,14 +29,16 @@ public class Mapa extends javax.swing.JPanel {
     /**
      * Creates new form Mapa
      */
-    public Mapa() {
+    public Mapa(String lavoura_Selecionada) {
         initComponents();
+        System.out.println(lavoura_Selecionada);
         String sql = "SELECT * \n"
                 + "FROM tomate t, imagem_processada i\n"
                 + "WHERE t.rua = i.Tomate_rua\n"
                 + "AND t.linha = i.Tomate_linha\n"
                 + "AND t.numtom = i.Tomate_numtom\n"
                 + "AND t.data = i.Tomate_data "
+                + "AND t.idLavoura = '"+ lavoura_Selecionada+"' "
                 + "ORDER BY LPAD( t.rua, 4,  '0' ) asc, t.linha asc, lpad( t.numtom, 4,  '0' ) asc";
         Connection con = new Conn().getConnection();
         try {
@@ -63,7 +65,6 @@ public class Mapa extends javax.swing.JPanel {
 
                     matrizpainel[x][y] = new MeuJPanel();
                     matrizpainel[x][y].setBackground(new Color(192, 192, 192));//Silver
-
                     matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
                    
@@ -162,7 +163,7 @@ public class Mapa extends javax.swing.JPanel {
             }
                  con.close();
         } catch (SQLException e) {
-            System.out.println("Erro no SQL2:" + e.getMessage());
+            System.out.println("Erro no SQL2 no mapa:" + e.getMessage());
         }
 
       

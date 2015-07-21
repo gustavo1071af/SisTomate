@@ -15,8 +15,13 @@ public class CarregaBD extends javax.swing.JPanel {
     /**
      * Creates new form CarregaBD
      */
-    public CarregaBD() {
-        initComponents();
+    String Lavoura;
+    
+    public CarregaBD(String lavoura_Selecionada) {
+        
+       
+        this.Lavoura = lavoura_Selecionada;
+         initComponents();
     }
 
     /**
@@ -29,21 +34,15 @@ public class CarregaBD extends javax.swing.JPanel {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("projeto?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
-        tomateQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Tomate t");
+        MapeamentoPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("MapeamentoPU").createEntityManager();
+        tomateQuery = java.beans.Beans.isDesignTime() ? null : MapeamentoPUEntityManager.createQuery("SELECT t FROM Tomate t WHERE t.tomatePK.idLavoura = :idLavoura").setParameter("idLavoura", this.Lavoura);
         tomateList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tomateQuery.getResultList();
-        tomateQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Tomate t");
-        tomateList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tomateQuery1.getResultList();
-        tomateQuery2 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Tomate t");
-        tomateList2 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tomateQuery2.getResultList();
-        tomateQuery3 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Tomate t");
-        tomateList3 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tomateQuery3.getResultList();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         mapear = new javax.swing.JButton();
         Atualizar = new javax.swing.JButton();
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tomateList3, jTable1);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tomateList, jTable1);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tomatePK}"));
         columnBinding.setColumnName("Tomate PK");
         columnBinding.setColumnClass(mapeamento.TomatePK.class);
@@ -58,7 +57,6 @@ public class CarregaBD extends javax.swing.JPanel {
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-
         jScrollPane1.setViewportView(jTable1);
 
         mapear.setText("Mapear");
@@ -115,18 +113,12 @@ public class CarregaBD extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Atualizar;
-    private javax.persistence.EntityManager entityManager;
+    private javax.persistence.EntityManager MapeamentoPUEntityManager;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton mapear;
     private java.util.List<mapeamento.Tomate> tomateList;
-    private java.util.List<mapeamento.Tomate> tomateList1;
-    private java.util.List<mapeamento.Tomate> tomateList2;
-    private java.util.List<mapeamento.Tomate> tomateList3;
     private javax.persistence.Query tomateQuery;
-    private javax.persistence.Query tomateQuery1;
-    private javax.persistence.Query tomateQuery2;
-    private javax.persistence.Query tomateQuery3;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

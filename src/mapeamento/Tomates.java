@@ -11,6 +11,7 @@ package mapeamento;
  * @author Gus
  */
 public class Tomates {
+    String idLavoura;
     String nomeArquivo;
     int vermelhos;
     int verdes;
@@ -23,6 +24,13 @@ public class Tomates {
     String longi;
     String data;
 
+    public String getIdLavoura() {
+        return idLavoura;
+    }
+
+    public void setIdLavoura(String idLavoura) {
+        this.idLavoura = idLavoura;
+    }
     public String getNomeArquivo() {
         return nomeArquivo;
     }

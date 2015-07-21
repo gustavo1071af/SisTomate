@@ -33,15 +33,19 @@ public class TomatePK implements Serializable {
     @Column(name = "data")
     @Temporal(TemporalType.DATE)
     private Date data;
+    @Basic(optional = false)
+    @Column(name = "idLavoura")
+    private String idLavoura;
 
     public TomatePK() {
     }
 
-    public TomatePK(String numtom, String rua, String linha, Date data) {
+    public TomatePK(String numtom, String rua, String linha, Date data, String idLavoura) {
         this.numtom = numtom;
         this.rua = rua;
         this.linha = linha;
         this.data = data;
+        this.idLavoura = idLavoura;
     }
 
     public String getNumtom() {
@@ -76,6 +80,14 @@ public class TomatePK implements Serializable {
         this.data = data;
     }
 
+    public String getIdLavoura() {
+        return idLavoura;
+    }
+
+    public void setIdLavoura(String idLavoura) {
+        this.idLavoura = idLavoura;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -83,6 +95,7 @@ public class TomatePK implements Serializable {
         hash += (rua != null ? rua.hashCode() : 0);
         hash += (linha != null ? linha.hashCode() : 0);
         hash += (data != null ? data.hashCode() : 0);
+        hash += (idLavoura != null ? idLavoura.hashCode() : 0);
         return hash;
     }
 
@@ -105,12 +118,15 @@ public class TomatePK implements Serializable {
         if ((this.data == null && other.data != null) || (this.data != null && !this.data.equals(other.data))) {
             return false;
         }
+        if ((this.idLavoura == null && other.idLavoura != null) || (this.idLavoura != null && !this.idLavoura.equals(other.idLavoura))) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "mapeamento.TomatePK[ numtom=" + numtom + ", rua=" + rua + ", linha=" + linha + ", data=" + data + " ]";
+        return "mapeamento.TomatePK[ numtom=" + numtom + ", rua=" + rua + ", linha=" + linha + ", data=" + data + ", idLavoura=" + idLavoura + " ]";
     }
     
 }

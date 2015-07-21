@@ -21,8 +21,10 @@ public class Processamento extends javax.swing.JPanel {
    private Arquivo arq = new Arquivo(); 
    private String[] listaImgs;
    private final String newline = System.lineSeparator();
+    private String Lavoura;
    
-    public Processamento() {
+    public Processamento(String lavoura_Selecionada) {
+        this.Lavoura = lavoura_Selecionada;
         initComponents();
         iniciarProcessamento();
     }
@@ -32,7 +34,7 @@ public class Processamento extends javax.swing.JPanel {
            @Override public void run() {
                
                pdi= new PDI(arq);
-               listaImgs = pdi.verificaNecessidade(area_Processamento1);
+               listaImgs = pdi.verificaNecessidade(area_Processamento1, Lavoura);
                
              
                if(listaImgs != null){
@@ -98,6 +100,7 @@ public class Processamento extends javax.swing.JPanel {
 
         label_Barra.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Processamento de Imagens em Lote");
 
@@ -120,7 +123,7 @@ public class Processamento extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

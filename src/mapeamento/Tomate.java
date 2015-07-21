@@ -18,15 +18,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Gus
  */
 @Entity
-@Table(name = "tomate")
-@XmlRootElement
+@Table(name = "tomate", catalog = "projeto", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Tomate.findAll", query = "SELECT t FROM Tomate t"),
     @NamedQuery(name = "Tomate.findByNomearquivo", query = "SELECT t FROM Tomate t WHERE t.nomearquivo = :nomearquivo"),
@@ -35,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tomate.findByLinha", query = "SELECT t FROM Tomate t WHERE t.tomatePK.linha = :linha"),
     @NamedQuery(name = "Tomate.findByLat", query = "SELECT t FROM Tomate t WHERE t.lat = :lat"),
     @NamedQuery(name = "Tomate.findByLongi", query = "SELECT t FROM Tomate t WHERE t.longi = :longi"),
-    @NamedQuery(name = "Tomate.findByData", query = "SELECT t FROM Tomate t WHERE t.tomatePK.data = :data")})
+    @NamedQuery(name = "Tomate.findByData", query = "SELECT t FROM Tomate t WHERE t.tomatePK.data = :data"),
+    @NamedQuery(name = "Tomate.findByIdLavoura", query = "SELECT t FROM Tomate t WHERE t.tomatePK.idLavoura = :idLavoura")})
 public class Tomate implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -62,8 +61,8 @@ public class Tomate implements Serializable {
         this.nomearquivo = nomearquivo;
     }
 
-    public Tomate(String numtom, String rua, String linha, Date data) {
-        this.tomatePK = new TomatePK(numtom, rua, linha, data);
+    public Tomate(String numtom, String rua, String linha, Date data, String idLavoura) {
+        this.tomatePK = new TomatePK(numtom, rua, linha, data, idLavoura);
     }
 
     public TomatePK getTomatePK() {

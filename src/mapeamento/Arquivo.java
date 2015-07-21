@@ -189,7 +189,7 @@ public class Arquivo extends javax.swing.JFrame {
         
    }
 
-   public void adicionaRegistros(Registro reg) {
+  /* public void adicionaRegistros(Registro reg) {
        try {
            output.format("%s;%d;%d;%d;%d%n", 
                    reg.getNome(),reg.getVermelhos(),reg.getVerdes(),
@@ -198,7 +198,7 @@ public class Arquivo extends javax.swing.JFrame {
        catch (FormatterClosedException formatter) {
            System.err.println("Erro de escrita em arquivo");
        }
-   }
+   }*/
    
    public void fechaArqOut() {
        if (output != null)

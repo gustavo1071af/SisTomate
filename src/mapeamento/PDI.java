@@ -29,6 +29,7 @@ public class PDI extends Imagem {
     private Arquivo arq;
     private Tomates reg;
     private final String newline = System.lineSeparator();
+    private String Lavoura;
     
     
     PDI () {
@@ -151,7 +152,7 @@ public class PDI extends Imagem {
         ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
         ap1.append("Path selecionado para salvar as imagens processdas: "+arq.getPath() + "\\CHAVES"+newline);
         ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
-        String sql= "SELECT * FROM tomate t where not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data)";
+        String sql= "SELECT * FROM tomate t where idLavoura = '"+this.Lavoura+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idLavoura = ip.idLavoura)";
         ///fazer conexao com o banco 
         Connection con = new Conn().getConnection();
         try {
@@ -169,6 +170,7 @@ public class PDI extends Imagem {
                  label_Barra.setText("Processando e Armazenando: "+ Math.round(porc)+"%");
                  
                 //preencher registro
+                reg.setIdLavoura(rs.getString("idLavoura"));
                 reg.setData(rs.getString("data"));
                 reg.setRua(Integer.parseInt(rs.getString("rua")));
                 reg.setLinha(rs.getString("linha"));
@@ -231,9 +233,10 @@ public class PDI extends Imagem {
         return false;
     }
     
-    public String[] verificaNecessidade(JTextArea ap1) {
+    public String[] verificaNecessidade(JTextArea ap1, String Lavoura) {
         String [] listaAuxiliar = null; 
-         String sql= "SELECT nomearquivo FROM tomate t where not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data)";
+        this.Lavoura=Lavoura;
+         String sql= "SELECT nomearquivo FROM tomate t where t.idLavoura = '"+Lavoura+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idLavoura = ip.idLavoura)";
         ///fazer conexao com o banco 
         Connection con = new Conn().getConnection();
         try {
@@ -382,7 +385,7 @@ public class PDI extends Imagem {
         System.out.println("Adicionando o registro: "+reg.getNomeArquivo()+", "+reg.getVermelhos()+", "+reg.getVerdes()+", "+reg.getPretos()+", "+reg.getEstado()+", "+reg.getNumTom()+", "+reg.getRua()+", "+reg.getLinha()+", "+reg.getData());
         ap2.append(">> Adicionando o registro no banco de dados da imagem: "+reg.getNomeArquivo()+" chaveada com o Estado: "+reg.getEstado()+"."+newline);
         ap2.setCaretPosition(ap2.getDocument().getLength());//cursoor ir para o final
-        String comando2 = "INSERT INTO imagem_processada (nomearquivo, vermelhos, verdes, pretos, estado, Tomate_numtom, Tomate_rua, Tomate_linha, Tomate_data) VALUES ("
+        String comando2 = "INSERT INTO imagem_processada (nomearquivo, vermelhos, verdes, pretos, estado, Tomate_numtom, Tomate_rua, Tomate_linha, Tomate_data, idLavoura) VALUES ("
                 +"'COR_"+ reg.getNomeArquivo() + "', "
                 + reg.getVermelhos() + ", "
                 + reg.getVerdes() + ", "
@@ -391,7 +394,8 @@ public class PDI extends Imagem {
                 + reg.getNumTom() + ", "
                 + reg.getRua() + ", "
                 +"'"+ reg.getLinha() + "', "
-                +"'"+ reg.getData() + "');";
+                +"'"+ reg.getData() + "', "
+                +"'"+ reg.getIdLavoura() + "');";
 
         
         
