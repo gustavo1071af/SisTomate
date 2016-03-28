@@ -25,7 +25,7 @@ public class TomateDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
        // System.out.println(tom.getLinha());
-        
+              
         labelNomearquivo.setText(labelNomearquivo.getText() +" "+tom.getNomeArquivo());
         labelVermelhos.setText(labelVermelhos.getText() +" "+ tom.getVermelhos());
         labelVerdes.setText(labelVerdes.getText() +" "+ tom.getVerdes());

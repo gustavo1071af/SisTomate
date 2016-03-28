@@ -1,3 +1,15 @@
 #dataDeInício: 27/03/2016
 
 SISTOM-1: Usar os novos campos adicionadas na v1_to_v2 para gerar o mapa do talhao.
+- A nova forma de calcular a dimensão da matriz(talhao) é:
+y= qtd de ruas do talhão * 2(ca rua possui linhas a e b)
+x= qtd de tomateiros por linha no talhão
+
+- Para encaixar o tomateiro do bd na celula da matriz referente, foi feito a seguinte l[ogica:
+O x é igual ao NumTom do tomaterio
+-- Se a linha do tomateiro for "a". o y será rua + (rua - 1)
+-- Caso contrário o y será rua * 2
+
+- Foi adicinado um label com um "*" nas células que possuem tomateiros cadastrados na base.
+
+- *Falta fazer*: As outras células da matriz que não possuem tomateiros da base devem se apresentar como um tomateiro com estado 1.

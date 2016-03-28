@@ -11,11 +11,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.BorderFactory;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
+
 
 /**
  *
@@ -23,150 +23,96 @@ import javax.swing.JPanel;
  */
 public class Mapa extends javax.swing.JPanel {
 
-    int tam;
-    MeuJPanel matrizpainel[][];
+    private int tam;
+    private MeuJPanel matrizpainel[][];
+    private String lavoura;
+    private int x;
+    private int y;
 
     /**
      * Creates new form Mapa
+     * @param lavoura_Selecionada
      */
     public Mapa(String lavoura_Selecionada) {
         initComponents();
         System.out.println(lavoura_Selecionada);
+        this.lavoura = lavoura_Selecionada;
+        List<Tomates> tomatesDoTalhao = getTomatesbyLavoura(lavoura);
+        String sql = "SELECT * \n"
+                + "FROM lavoura l "
+                + "WHERE l.area_Cultivada = '"+ lavoura_Selecionada+"' ";
+        Connection con = new Conn().getConnection();
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            //SISTOM-1
+            
+            int qtd_Ruas = Integer.parseInt(rs.getString("qtd_Ruas")); 
+            Long qtd_TomatesPorLinha = Long.parseLong(rs.getString("qtd_TomatesPorLinhas"));
+            //considerando que cada rua tem 2 linhas.
+            this.y =  qtd_Ruas * 2;
+            this.x = Integer.parseInt(qtd_TomatesPorLinha.toString());
+
+            //aplica o resultado para fazer o grid
+           
+            matrizpainel = new MeuJPanel[x][y];
+
+            GridLayout grid = new GridLayout(x, y);
+            setLayout(grid);
+            for (int x = 0; x < this.x; x++) {
+                for (int y = 0; y < this.y; y++) {
+
+                    matrizpainel[x][y] = new MeuJPanel();
+                    matrizpainel[x][y].setBackground(new Color(192, 192, 192));//Silver
+                    matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                    populaPainelComTomate(matrizpainel[x][y], tomatesDoTalhao, x, y);
+ 
+                    add(matrizpainel[x][y]);
+                }
+            }
+                 con.close();
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar lavoura:" + e.getMessage());
+        }
+
+      
+    }
+    
+     //SISTOM-1
+    public List<Tomates> getTomatesbyLavoura(String lavoura){
         String sql = "SELECT * \n"
                 + "FROM tomate t, imagem_processada i\n"
                 + "WHERE t.rua = i.Tomate_rua\n"
                 + "AND t.linha = i.Tomate_linha\n"
                 + "AND t.numtom = i.Tomate_numtom\n"
                 + "AND t.data = i.Tomate_data "
-                + "AND t.idLavoura = '"+ lavoura_Selecionada+"' "
+                + "AND t.idLavoura = '"+ lavoura+"' "
                 + "ORDER BY LPAD( t.rua, 4,  '0' ) asc, t.linha asc, lpad( t.numtom, 4,  '0' ) asc";
         Connection con = new Conn().getConnection();
+        List<Tomates> tomates = new ArrayList<>();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            // chamar tamanho do vetor
-            //transformar vetor em uma matriz aproximada do resultado de Math.round(Math.sqrt(tamanho do vetor))
-            //Chamar vetor de tomates
-            rs.last();
-            //arredondando para cima
-            int tam = (int) Math.round(((double) Math.sqrt(rs.getRow())) + 0.5d);
-            //System.out.println((int)Math.round(((double)Math.sqrt(rs.getRow()))+0.5d));
-            rs.beforeFirst();
-
-            
-            //aplica o resultado para fazer o grid
-           
-            matrizpainel = new MeuJPanel[tam][tam];
-
-            GridLayout grid = new GridLayout(tam, tam);
-            setLayout(grid);
-            for (int x = 0; x < tam; x++) {
-                for (int y = 0; y < tam; y++) {
-
-                    matrizpainel[x][y] = new MeuJPanel();
-                    matrizpainel[x][y].setBackground(new Color(192, 192, 192));//Silver
-                    matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-                   
-                    if (rs.next()) {
-                         //começando a criar a classe tomates para enviar ao dialog
-                        Tomates tom = new Tomates();
-                        tom.setNomeArquivo(rs.getString("nomearquivo"));
-                        tom.setNumTom(Integer.parseInt(rs.getString("numtom")));
-                        tom.setRua(Integer.parseInt(rs.getString("rua")));
-                        tom.setLinha(rs.getString("linha"));
-                        tom.setData(rs.getString("data"));
-                        tom.setLongi(rs.getString("longi"));
-                        tom.setLat(rs.getString("lat"));
-                        tom.setVermelhos(Integer.parseInt(rs.getString("vermelhos")));
-                        tom.setVerdes(Integer.parseInt(rs.getString("verdes")));
-                        tom.setEstado(Integer.parseInt(rs.getString("estado")));
-                        //colocar aqui os eventos.
-                        final MeuJPanel painelAux = matrizpainel[x][y];
-                        painelAux.setTom(tom);
-                        matrizpainel[x][y].addMouseListener(new java.awt.event.MouseAdapter() {
-                            @Override
-                            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                    
-                                    final JFrame parent = new JFrame();
-                                    TomateDialog t1 = new TomateDialog(parent, true, painelAux.getTom());
-                                    t1.setSize(800, 600);
-                                    //System.out.println(painelAux.getTom().getNomeArquivo());
-                                    t1.setTitle("Rua="+painelAux.getTom().getRua()+" Linha="+painelAux.getTom().getLinha()
-                                            + " Numtom="+painelAux.getTom().getNumTom()+" Data="+painelAux.getTom().getData());
-                                    t1.setVisible(true);
-                                    t1.setLocationRelativeTo(null);
-                                
-
-                            }
-
-                            @Override
-                            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                                //evento passar mouse aqui
-
-                                painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-
-                                //matrizpainel[x][y].setBackground(Color.red);
-                            }
-
-                            @Override
-                            public void mouseExited(java.awt.event.MouseEvent evt) {
-                                //evento sair do target aqui
-                                painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-                            }
-
-                        });
-                        //final evento
-
-                        //escolher cor de acordo com o estado
-                       /*  String sql2 = "select i.estado from tomate t, imagem_processada i where \n"
-                         + "t.rua=i.Tomate_rua and t.linha=i.Tomate_linha and t.numtom=i.Tomate_numtom and t.data=i.Tomate_data and \n"
-                         + "t.linha='" + rs.getString("linha") + "' and t.rua=" + rs.getString("Rua") + " and t.numtom=" + rs.getString("numtom") + " and t.data=" + rs.getString("data") + ";";
-                         Statement stmt2 = con.createStatement();
-                         ResultSet rs2 = stmt2.executeQuery(sql2);
-                         rs2.next();*/
-                        int estado = Integer.parseInt(rs.getString("estado"));
-                        switch (estado) {
-                            case 1: {
-                                matrizpainel[x][y].setBackground(new Color(0, 128, 0));
-                                break;
-                            }//Green
-                            case 2: {
-                                matrizpainel[x][y].setBackground(new Color(144, 238, 144));
-                                break;
-                            }//LightGreen
-                            case 3: {
-                                matrizpainel[x][y].setBackground(new Color(255, 255, 0));
-                                break;
-                            }//Yellow
-                            case 4: {
-                                matrizpainel[x][y].setBackground(new Color(255, 165, 0));
-                                break;
-                            }//Orange
-                            case 5: {
-                                matrizpainel[x][y].setBackground(new Color(255, 140, 0));
-                                break;
-                            }//DarkOrange
-                            case 6: {
-                                matrizpainel[x][y].setBackground(new Color(255, 69, 0));
-                                break;
-                            }//OrangeRed
-                            default: {
-                                matrizpainel[x][y].setBackground(new Color(0, 128, 0));
-                                break;
-                            }//Green
-                        }
-                    }
-
-                    add(matrizpainel[x][y]);
-                }
+            while (rs.next()) {                
+                Tomates tom = new Tomates();
+                tom.setNomeArquivo(rs.getString("nomearquivo"));
+                tom.setNumTom(Integer.parseInt(rs.getString("numtom")));
+                tom.setRua(Integer.parseInt(rs.getString("rua")));
+                tom.setLinha(rs.getString("linha"));
+                tom.setData(rs.getString("data"));
+                tom.setLongi(rs.getString("longi"));
+                tom.setLat(rs.getString("lat"));
+                tom.setVermelhos(Integer.parseInt(rs.getString("vermelhos")));
+                tom.setVerdes(Integer.parseInt(rs.getString("verdes")));
+                tom.setEstado(Integer.parseInt(rs.getString("estado")));
+               tomates.add(tom);
             }
-                 con.close();
-        } catch (SQLException e) {
-            System.out.println("Erro no SQL2 no mapa:" + e.getMessage());
+            
+        }catch(SQLException e){
+             System.out.println("Erro ao buscar tomates do talhao:" + e.getMessage());
         }
-
-      
+        return tomates;
     }
 
     public boolean isInt(String v) {
@@ -198,6 +144,91 @@ public class Mapa extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    //SISTOM-1
+    private void populaPainelComTomate(MeuJPanel meuJPanel, List<Tomates> tomatesDoTalhao, int x1, int y1) {
+        final MeuJPanel painelAux = meuJPanel;
+        for (Tomates tomate : tomatesDoTalhao) {
+            int rua = tomate.getRua();
+            String linha = tomate.getLinha();
+            int numTom = tomate.getNumTom();
+            int coluna = "a".equalsIgnoreCase(linha) ? (rua + (rua - 1)) : rua * 2;
+            // a adição do 1 no y1 e x1 é porque o for q cria os componentes começa com zero, e se mudar da erro pois vai falta 1 grid
+            if (coluna == y1+1 && numTom == x1+1) {
+                JLabel label = new JLabel();
+                label.setText("*");
+                painelAux.add(label);
+                painelAux.setTom(tomate);
+                painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+                meuJPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+                        final JFrame parent = new JFrame();
+                        TomateDialog t1 = new TomateDialog(parent, true, painelAux.getTom());
+                        t1.setSize(800, 600);
+                        //System.out.println(painelAux.getTom().getNomeArquivo());
+                        t1.setTitle("Rua=" + painelAux.getTom().getRua() + " Linha=" + painelAux.getTom().getLinha()
+                                + " Numtom=" + painelAux.getTom().getNumTom() + " Data=" + painelAux.getTom().getData());
+                        t1.setVisible(true);
+                        t1.setLocationRelativeTo(null);
+
+                    }
+
+                    @Override
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        //evento passar mouse aqui
+
+                        painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+
+                        //matrizpainel[x][y].setBackground(Color.red);
+                    }
+
+                    @Override
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        //evento sair do target aqui
+                        painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                    }
+
+                });
+                //final evento
+
+                //escolher cor de acordo com o estado
+                int estado = tomate.getEstado();
+                switch (estado) {
+                    case 1: {
+                        meuJPanel.setBackground(new Color(0, 128, 0));
+                        break;
+                    }//Green
+                    case 2: {
+                        meuJPanel.setBackground(new Color(144, 238, 144));
+                        break;
+                    }//LightGreen
+                    case 3: {
+                        meuJPanel.setBackground(new Color(255, 255, 0));
+                        break;
+                    }//Yellow
+                    case 4: {
+                        meuJPanel.setBackground(new Color(255, 165, 0));
+                        break;
+                    }//Orange
+                    case 5: {
+                        meuJPanel.setBackground(new Color(255, 140, 0));
+                        break;
+                    }//DarkOrange
+                    case 6: {
+                        meuJPanel.setBackground(new Color(255, 69, 0));
+                        break;
+                    }//OrangeRed
+                    default: {
+                        meuJPanel.setBackground(new Color(0, 128, 0));
+                        break;
+                    }//Green
+                }//switch
+                continue;
+            }//if
+        }//for     
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

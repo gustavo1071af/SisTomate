@@ -14,18 +14,19 @@ obs. Estes scripts não definem qual é o db a ser usado(e devem continuar assim
 - Alterando o modelo:
 Processo de alteração do banco de dados do sistema.
 1)Caso for mudar o modelo do sistema, deve-se criar uma arquivo .sql em docs > database guardando apenas o script das alterações.
-2)Mande um email para os outros integrantes do projeto com o assunto "AVISO - ALTERAÇÃO DA BASE: TO V<?>"; Ex: AVISO - ALTERAÇÃO DA BASE: PARA V2
-3)Siga o padrão e a numeração das versões. ex: se o último arquivo é v1_to_v2, a nova alteração será v2_to_v3.
+2)Verifique seu email para ver se alguém está prestes a fazer modificação no modelo, e ver qual será a versão
+3)Mande um email para os outros integrantes do projeto com o assunto "AVISO - ALTERAÇÃO DA BASE: TO V<?>"; Ex: AVISO - ALTERAÇÃO DA BASE: PARA V2
+4)Siga o padrão e a numeração das versões. ex: se o último arquivo é v1_to_v2, a nova alteração será v2_to_v3.
 obs. Não há controle de versão no banco de dados, então fique atento para não quebrar o sistema dos outros integrantes.
-4)Teste o script e verifique se está funcionando corretamente, isso é muito importante.
-5)Caso a sua alteraação tiver muito impacto no sistema, *faça um dump do bd do projeto e crie outro para evitar risco*.
+5)Teste o script e verifique se está funcionando corretamente, isso é muito importante.
+6)Caso a sua alteraação tiver muito impacto no sistema, *faça um dump do bd do projeto e crie outro para evitar risco*.
 
 - Alteração do Sistema.
 Caso for alterar o código do sistema, segue o processo. (Apenas para alterações avulsas, ou seja, sem uso de backlog)
 1)Vá no Log_de_Alteração na raiz do projeto e adicione na ultima linha : SISTOM-xxxx: (xxxx é um auto incremento, e deve seguir a ordem da ultima inserção).
 ex: se a ultima linha existir um "SISTOM-10" vc vai pular a linha e inserir o "SISTOM-11:"
 Obs.Esse log vai guardar o código da alteração e seu respectivo comentário.
-2)Após inserir a nova linha, commit e de push.(para os outros integrantes saberem que vc está fazendo uma alteração)
+2)Após inserir a nova linha, commit(com a mensagem do commit "SISTOM-xxxx INIT") e de push.(para os outros integrantes saberem que vc está fazendo uma alteração)
 3) Durante a alteração, e se achar importante, commente no códico que foi feito a alteração o código referente a ela. 
 ex: //SISTOM-11
     if (condition){
@@ -37,7 +38,7 @@ este comentário deve seguir no código da alteração no Log_de_Alterações. E
 6)*SEMPRE DE PULL NO PROJETO ANTES DE COMMITAR*, para caso alguem tenha commitado antes de você. 
 7)Faça os merges se necessário.
 obs. Cuidado com os merges para não remover códigos dos outros integrantes. 
-8)Commit e push.
+8)Faça o commit(com a mensagem do commit "SISTOM-xxxx") e push.
 
 
 *Caso tiver com duvidas na utilização do git no netbeans, estudar o link:
