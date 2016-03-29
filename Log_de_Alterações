@@ -12,4 +12,5 @@ O x é igual ao NumTom do tomaterio
 
 - Foi adicinado um label com um "*" nas células que possuem tomateiros cadastrados na base.
 
-- *Falta fazer*: As outras células da matriz que não possuem tomateiros da base devem se apresentar como um tomateiro com estado 1.
+- *Falta fazer*: As outras células da matriz que não possuem tomateiros da base devem se apresentar como um tomateiro com estado 1:*DONE*
+-- na classe Mapa.java foi trocado o a cor padrão das células de Silver para Green(que é a cor do tomateiro mais sadio). 

@@ -64,8 +64,9 @@ public class Mapa extends javax.swing.JPanel {
                 for (int y = 0; y < this.y; y++) {
 
                     matrizpainel[x][y] = new MeuJPanel();
-                    matrizpainel[x][y].setBackground(new Color(192, 192, 192));//Silver
-                    matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                    //SISTOM-1
+                    matrizpainel[x][y].setBackground(new Color(0, 128, 0));//Green
+                    matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));//preto
                     populaPainelComTomate(matrizpainel[x][y], tomatesDoTalhao, x, y);
  
                     add(matrizpainel[x][y]);
@@ -149,17 +150,15 @@ public class Mapa extends javax.swing.JPanel {
     private void populaPainelComTomate(MeuJPanel meuJPanel, List<Tomates> tomatesDoTalhao, int x1, int y1) {
         final MeuJPanel painelAux = meuJPanel;
         for (Tomates tomate : tomatesDoTalhao) {
-            int rua = tomate.getRua();
-            String linha = tomate.getLinha();
             int numTom = tomate.getNumTom();
-            int coluna = "a".equalsIgnoreCase(linha) ? (rua + (rua - 1)) : rua * 2;
+            int coluna = tomate.getColuna();
             // a adição do 1 no y1 e x1 é porque o for q cria os componentes começa com zero, e se mudar da erro pois vai falta 1 grid
             if (coluna == y1+1 && numTom == x1+1) {
                 JLabel label = new JLabel();
                 label.setText("*");
                 painelAux.add(label);
                 painelAux.setTom(tomate);
-                painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+                //painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
                 meuJPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -225,8 +224,9 @@ public class Mapa extends javax.swing.JPanel {
                         break;
                     }//Green
                 }//switch
-                continue;
+              
             }//if
+            
         }//for     
     }
 

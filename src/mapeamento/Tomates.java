@@ -119,4 +119,9 @@ public class Tomates {
         this.data = data;
     }
     
+    //SISTOM-1
+    public int getColuna (){
+        return "a".equalsIgnoreCase(linha) ? (rua + (rua - 1)) : rua * 2;
+    }
+    
 }

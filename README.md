@@ -35,11 +35,12 @@ ex: //SISTOM-11
 4)Uma boa prática, é comentar o que é importante na alteração, o porque que foi feito a alteração e qual foi o objetivo, etc...
 este comentário deve seguir no código da alteração no Log_de_Alterações. Ex: SYSTOM-11: "Foi adicionado uma função if para..."
 5)Teste sua alteração(Muito Importante!).
-6)*SEMPRE DE PULL NO PROJETO ANTES DE COMMITAR*, para caso alguem tenha commitado antes de você. 
-7)Faça os merges se necessário.
+6)*SEMPRE DE FECTH e PULL NO PROJETO ANTES DE COMMITAR*, para caso alguem tenha commitado antes de você. 
+7)Faça os merges se necessário(boa prática é fazer o merge manualmente depois de dar Fetch, o pull força merge, ou seja, nem sempre vai ser certo).
 obs. Cuidado com os merges para não remover códigos dos outros integrantes. 
 8)Faça o commit(com a mensagem do commit "SISTOM-xxxx") e push.
 
 
 *Caso tiver com duvidas na utilização do git no netbeans, estudar o link:
 https://netbeans.org/kb/docs/ide/git.html
+https://git-scm.com/book/pt-br/v1/Git-Essencial-Trabalhando-com-Remotos
