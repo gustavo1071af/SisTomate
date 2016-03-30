@@ -15,13 +15,37 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : MapeamentoPUEntityManager.createQuery(&quot;SELECT t FROM Tomate t WHERE t.tomatePK.idLavoura = :idLavoura&quot;).setParameter(&quot;idLavoura&quot;, this.Lavoura)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? null : MapeamentoPUEntityManager.createQuery(&quot;SELECT t FROM Tomate t WHERE t.tomatePK.idTalhao = :idTalhao&quot;).setParameter(&quot;idTalhao&quot;, this.talhao)"/>
       </AuxValues>
     </Component>
     <Component class="java.util.List" name="tomateList">
       <Properties>
         <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
           <ComponentRef name="tomateQuery"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tomateQuery.getResultList()"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;mapeamento.Tomate&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.persistence.EntityManager" name="entityManager1">
+      <Properties>
+        <Property name="persistenceUnit" type="java.lang.String" value="pu"/>
+      </Properties>
+    </Component>
+    <Component class="javax.persistence.Query" name="tomateQuery1">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT t FROM Tomate t"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="MapeamentoPUEntityManager"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="tomateList1">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="tomateQuery1"/>
         </Property>
       </Properties>
       <AuxValues>

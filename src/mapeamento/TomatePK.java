@@ -34,18 +34,18 @@ public class TomatePK implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date data;
     @Basic(optional = false)
-    @Column(name = "idLavoura")
-    private String idLavoura;
+    @Column(name = "idTalhao")
+    private String idTalhao;
 
     public TomatePK() {
     }
 
-    public TomatePK(String numtom, String rua, String linha, Date data, String idLavoura) {
+    public TomatePK(String numtom, String rua, String linha, Date data, String idTalhao) {
         this.numtom = numtom;
         this.rua = rua;
         this.linha = linha;
         this.data = data;
-        this.idLavoura = idLavoura;
+        this.idTalhao = idTalhao;
     }
 
     public String getNumtom() {
@@ -80,12 +80,12 @@ public class TomatePK implements Serializable {
         this.data = data;
     }
 
-    public String getIdLavoura() {
-        return idLavoura;
+    public String getIdTalhao() {
+        return idTalhao;
     }
 
-    public void setIdLavoura(String idLavoura) {
-        this.idLavoura = idLavoura;
+    public void setIdTalhao(String idTalhao) {
+        this.idTalhao = idTalhao;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class TomatePK implements Serializable {
         hash += (rua != null ? rua.hashCode() : 0);
         hash += (linha != null ? linha.hashCode() : 0);
         hash += (data != null ? data.hashCode() : 0);
-        hash += (idLavoura != null ? idLavoura.hashCode() : 0);
+        hash += (idTalhao != null ? idTalhao.hashCode() : 0);
         return hash;
     }
 
@@ -118,7 +118,7 @@ public class TomatePK implements Serializable {
         if ((this.data == null && other.data != null) || (this.data != null && !this.data.equals(other.data))) {
             return false;
         }
-        if ((this.idLavoura == null && other.idLavoura != null) || (this.idLavoura != null && !this.idLavoura.equals(other.idLavoura))) {
+        if ((this.idTalhao == null && other.idTalhao != null) || (this.idTalhao != null && !this.idTalhao.equals(other.idTalhao))) {
             return false;
         }
         return true;
@@ -126,7 +126,7 @@ public class TomatePK implements Serializable {
 
     @Override
     public String toString() {
-        return "mapeamento.TomatePK[ numtom=" + numtom + ", rua=" + rua + ", linha=" + linha + ", data=" + data + ", idLavoura=" + idLavoura + " ]";
+        return "mapeamento.TomatePK[ numtom=" + numtom + ", rua=" + rua + ", linha=" + linha + ", data=" + data + ", idTalhão=" + idTalhao + " ]";
     }
     
 }

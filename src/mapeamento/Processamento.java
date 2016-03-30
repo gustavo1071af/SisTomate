@@ -21,10 +21,10 @@ public class Processamento extends javax.swing.JPanel {
    private Arquivo arq = new Arquivo(); 
    private String[] listaImgs;
    private final String newline = System.lineSeparator();
-    private String Lavoura;
+    private String talhao;
    
-    public Processamento(String lavoura_Selecionada) {
-        this.Lavoura = lavoura_Selecionada;
+    public Processamento(String talhao_Selecionada) {
+        this.talhao = talhao_Selecionada;
         initComponents();
         iniciarProcessamento();
     }
@@ -34,7 +34,7 @@ public class Processamento extends javax.swing.JPanel {
            @Override public void run() {
                
                pdi= new PDI(arq);
-               listaImgs = pdi.verificaNecessidade(area_Processamento1, Lavoura);
+               listaImgs = pdi.verificaNecessidade(area_Processamento1, talhao);
                
              
                if(listaImgs != null){

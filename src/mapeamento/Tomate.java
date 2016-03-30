@@ -34,7 +34,7 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Tomate.findByLat", query = "SELECT t FROM Tomate t WHERE t.lat = :lat"),
     @NamedQuery(name = "Tomate.findByLongi", query = "SELECT t FROM Tomate t WHERE t.longi = :longi"),
     @NamedQuery(name = "Tomate.findByData", query = "SELECT t FROM Tomate t WHERE t.tomatePK.data = :data"),
-    @NamedQuery(name = "Tomate.findByIdLavoura", query = "SELECT t FROM Tomate t WHERE t.tomatePK.idLavoura = :idLavoura")})
+    @NamedQuery(name = "Tomate.findByIdLavoura", query = "SELECT t FROM Tomate t WHERE t.tomatePK.idTalhao = :idTalhao")})
 public class Tomate implements Serializable {
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);

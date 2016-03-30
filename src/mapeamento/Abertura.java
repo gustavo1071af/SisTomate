@@ -39,12 +39,12 @@ public class Abertura extends javax.swing.JFrame {
     
     public Abertura() {
         initComponents();
-       //Criando combobox de lavouras no menu
-        String [] lavouras = null;
+       //Criando combobox de talhoes no menu
+        String [] talhoes = null;
          combo = new javax.swing.JComboBox();
          
          String sql = "SELECT area_Cultivada "
-                + " FROM Lavoura"
+                + " FROM talhao"
                 + " ORDER BY 1 asc";
         Connection con = new Conn().getConnection();
         try {
@@ -56,13 +56,13 @@ public class Abertura extends javax.swing.JFrame {
             int tam = rs.getRow();
             
             rs.beforeFirst();
-            lavouras = new String[tam];
+            talhoes = new String[tam];
             int cont=0;
             while(rs.next()) {
-                lavouras[cont]= rs.getString("area_Cultivada");
+                talhoes[cont]= rs.getString("area_Cultivada");
                 cont++;
             }
-              combo.setModel(new javax.swing.DefaultComboBoxModel(lavouras));
+              combo.setModel(new javax.swing.DefaultComboBoxModel(talhoes));
             con.close();
         } catch (SQLException e) {
             System.out.println("Erro no SQL1:" + e.getMessage());
@@ -71,6 +71,7 @@ public class Abertura extends javax.swing.JFrame {
         alteraLabelPrincipal();       
       
         combo.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboActionPerformed(evt);
             }
@@ -86,7 +87,7 @@ public class Abertura extends javax.swing.JFrame {
             }
         });
         label1 = new javax.swing.JLabel();
-        label1.setText("                                            Selecione a Lavoura:");
+        label1.setText("                                            Selecione o Talhão:");
         jMenuBar1.add(label1);
         jMenuBar1.add(combo);
         
@@ -114,12 +115,12 @@ public class Abertura extends javax.swing.JFrame {
     //mudando labels da tela principal
                 System.out.println(combo.getSelectedItem().toString());
                 String sql2 = "SELECT *"
-                + " FROM lavoura"
+                + " FROM talhao"
                 + " WHERE area_Cultivada = '"+ combo.getSelectedItem().toString()+"';";
                 String sql3 = "SELECT count(*) as qtd_amostra"
                 + " FROM Tomate t"
-                + " WHERE t.idLavoura = '"+ combo.getSelectedItem().toString()+"';";
-                String sql4= "SELECT count(*) as qtd_imgsNprocessadas FROM tomate t where t.idLavoura = '"+combo.getSelectedItem().toString()+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idLavoura = ip.idLavoura)";
+                + " WHERE t.idTalhao = '"+ combo.getSelectedItem().toString()+"';";
+                String sql4= "SELECT count(*) as qtd_imgsNprocessadas FROM tomate t where t.idTalhao = '"+combo.getSelectedItem().toString()+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idTalhao = ip.idTalhao)";
                 Connection con = new Conn().getConnection();
                 try {
                     Statement stmt2 = con.createStatement();

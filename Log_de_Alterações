@@ -16,3 +16,8 @@ O x é igual ao NumTom do tomaterio
 -- na classe Mapa.java foi trocado o a cor padrão das células de Silver para Green(que é a cor do tomateiro mais sadio). 
 
 SISTOM-2<sucupira>: Alterar nome da entidade "lavoura" para "talhão" e criar bean referente.
+- Foi feita a alteração da base v3_to_v4, e foi feita a alteração de todas as consultas que tinha lavoura e trocado para talhao. Foi cansativo pois 
+as queries estão soltas nos sistema.
+- Foi criado o bean Talhao.java. Entretanto, não usei ainda...
+
+- *Falta Fazer*: Montar bean talhao nas consultas que busca talhoes.

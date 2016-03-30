@@ -5,6 +5,7 @@
  */
 package mapeamento;
 
+import mapeamento.beans.Tomates;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.sql.Connection;
@@ -23,9 +24,9 @@ import javax.swing.JLabel;
  */
 public class Mapa extends javax.swing.JPanel {
 
-    private int tam;
+
     private MeuJPanel matrizpainel[][];
-    private String lavoura;
+    private String talhao;
     private int x;
     private int y;
 
@@ -33,14 +34,14 @@ public class Mapa extends javax.swing.JPanel {
      * Creates new form Mapa
      * @param lavoura_Selecionada
      */
-    public Mapa(String lavoura_Selecionada) {
+    public Mapa(String talhao_Selecionada) {
         initComponents();
-        System.out.println(lavoura_Selecionada);
-        this.lavoura = lavoura_Selecionada;
-        List<Tomates> tomatesDoTalhao = getTomatesbyLavoura(lavoura);
+        System.out.println(talhao_Selecionada);
+        this.talhao = talhao_Selecionada;
+        List<Tomates> tomatesDoTalhao = getTomatesbyTalhao(talhao);
         String sql = "SELECT * \n"
-                + "FROM lavoura l "
-                + "WHERE l.area_Cultivada = '"+ lavoura_Selecionada+"' ";
+                + "FROM talhao l "
+                + "WHERE l.area_Cultivada = '"+ talhao+"' ";
         Connection con = new Conn().getConnection();
         try {
             Statement stmt = con.createStatement();
@@ -74,21 +75,21 @@ public class Mapa extends javax.swing.JPanel {
             }
                  con.close();
         } catch (SQLException e) {
-            System.out.println("Erro ao buscar lavoura:" + e.getMessage());
+            System.out.println("Erro ao buscar talhao:" + e.getMessage());
         }
 
       
     }
     
      //SISTOM-1
-    public List<Tomates> getTomatesbyLavoura(String lavoura){
+    public List<Tomates> getTomatesbyTalhao(String talhao){
         String sql = "SELECT * \n"
                 + "FROM tomate t, imagem_processada i\n"
                 + "WHERE t.rua = i.Tomate_rua\n"
                 + "AND t.linha = i.Tomate_linha\n"
                 + "AND t.numtom = i.Tomate_numtom\n"
                 + "AND t.data = i.Tomate_data "
-                + "AND t.idLavoura = '"+ lavoura+"' "
+                + "AND t.idTalhao = '"+ talhao+"' "
                 + "ORDER BY LPAD( t.rua, 4,  '0' ) asc, t.linha asc, lpad( t.numtom, 4,  '0' ) asc";
         Connection con = new Conn().getConnection();
         List<Tomates> tomates = new ArrayList<>();

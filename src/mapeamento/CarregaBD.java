@@ -15,12 +15,12 @@ public class CarregaBD extends javax.swing.JPanel {
     /**
      * Creates new form CarregaBD
      */
-    String Lavoura;
+    String talhao;
     
-    public CarregaBD(String lavoura_Selecionada) {
+    public CarregaBD(String talhao_Selecionada) {
         
        
-        this.Lavoura = lavoura_Selecionada;
+        this.talhao = talhao_Selecionada;
          initComponents();
     }
 
@@ -35,8 +35,11 @@ public class CarregaBD extends javax.swing.JPanel {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         MapeamentoPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("MapeamentoPU").createEntityManager();
-        tomateQuery = java.beans.Beans.isDesignTime() ? null : MapeamentoPUEntityManager.createQuery("SELECT t FROM Tomate t WHERE t.tomatePK.idLavoura = :idLavoura").setParameter("idLavoura", this.Lavoura);
+        tomateQuery = java.beans.Beans.isDesignTime() ? null : MapeamentoPUEntityManager.createQuery("SELECT t FROM Tomate t WHERE t.tomatePK.idTalhao = :idTalhao").setParameter("idTalhao", this.talhao);
         tomateList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tomateQuery.getResultList();
+        entityManager1 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("MapeamentoPU").createEntityManager();
+        tomateQuery1 = java.beans.Beans.isDesignTime() ? null : MapeamentoPUEntityManager.createQuery("SELECT t FROM Tomate t");
+        tomateList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : tomateQuery1.getResultList();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         mapear = new javax.swing.JButton();
@@ -114,11 +117,14 @@ public class CarregaBD extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Atualizar;
     private javax.persistence.EntityManager MapeamentoPUEntityManager;
+    private javax.persistence.EntityManager entityManager1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton mapear;
     private java.util.List<mapeamento.Tomate> tomateList;
+    private java.util.List<mapeamento.Tomate> tomateList1;
     private javax.persistence.Query tomateQuery;
+    private javax.persistence.Query tomateQuery1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

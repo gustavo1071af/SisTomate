@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-package mapeamento;
+package mapeamento.beans;
 
 /**
  *
  * @author Gus
  */
 public class Tomates {
-    String idLavoura;
+    String idTalhao;
     String nomeArquivo;
     int vermelhos;
     int verdes;
@@ -24,12 +24,12 @@ public class Tomates {
     String longi;
     String data;
 
-    public String getIdLavoura() {
-        return idLavoura;
+    public String getIdTalhao() {
+        return idTalhao;
     }
 
-    public void setIdLavoura(String idLavoura) {
-        this.idLavoura = idLavoura;
+    public void setIdTalhao(String idTalhao) {
+        this.idTalhao = idTalhao;
     }
     public String getNomeArquivo() {
         return nomeArquivo;

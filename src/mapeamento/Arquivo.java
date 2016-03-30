@@ -103,16 +103,17 @@ public class Arquivo extends javax.swing.JFrame {
         JFileChooser fc = new JFileChooser();
         String arq = new String();
 
-        // restringe a amostra a diretorios apenas
-       /* fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+       
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int op = fc.showOpenDialog(this);
         if (op == JFileChooser.APPROVE_OPTION) {
             caminho = fc.getSelectedFile().getAbsolutePath();
             arq = fc.getSelectedFile().getName();
-        }*/
-
-        //setPath(caminho);
-        setPath("C:\\Users\\Gus\\Documents\\NetBeansProjects\\Mapeamento\\src\\mapeamento\\fotos_tomates");
+        }
+        
+        setPath(caminho);
+         // restringe a amostra a diretorios apenas
+        //setPath("C:\\Users\\Gustavo\\Documents\\NetBeansProjects\\Mapeamento\\src\\mapeamento\\fotos_tomates");
         return arq;
     }
     
