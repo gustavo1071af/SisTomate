@@ -1,6 +1,6 @@
 #dataDeInício: 27/03/2016
 
-SISTOM-1: Usar os novos campos adicionadas na v1_to_v2 para gerar o mapa do talhao.
+SISTOM-1<sucupira>: Usar os novos campos adicionadas na v1_to_v2 para gerar o mapa do talhao.
 - A nova forma de calcular a dimensão da matriz(talhao) é:
 y= qtd de ruas do talhão * 2(ca rua possui linhas a e b)
 x= qtd de tomateiros por linha no talhão
@@ -14,3 +14,5 @@ O x é igual ao NumTom do tomaterio
 
 - *Falta fazer*: As outras células da matriz que não possuem tomateiros da base devem se apresentar como um tomateiro com estado 1:*DONE*
 -- na classe Mapa.java foi trocado o a cor padrão das células de Silver para Green(que é a cor do tomateiro mais sadio). 
+
+SISTOM-2<sucupira>: Alterar nome da entidade "lavoura" para "talhão" e criar bean referente.
