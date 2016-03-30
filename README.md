@@ -1,8 +1,8 @@
-# Systomato
+# Sistomate
 This paper presents an approach focused on improving the quality of the tomato crops. Thus, to achieve such goal, we designed and implemented a computational environment to support decision-making related to the tomato production. Our focus is to automate the detection of tomatoes late blight, with the aid of pre-processing images.
 # Respeite os diretos autorais!
 
-- Gua de instalação:
+- Guia de instalação:
 1)Primeiramente, execute o script sql "Banco_projeto_v1.sql" que está na raiz do projeto para criar o bd e inserir os registros de teste.
 2)Execute os outros scripts de alterações que estão em docs > database, em ordem crescente as versões.(Recomendado usar o mysql workbench)
 obs. Estes scripts não definem qual é o db a ser usado(e devem continuar assim), então fique bem atento a qual db você irá executar.
