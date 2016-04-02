@@ -21,3 +21,6 @@ as queries estão soltas nos sistema.
 - Foi criado o bean Talhao.java. Entretanto, não usei ainda...
 
 - *Falta Fazer*: Montar bean talhao nas consultas que busca talhoes.
+
+SISTOM-3<sucupira>: Refactor >> Montar estrutura DAO para padronizar código.
+- Colocar todas as consultas do sistema na DAO relacionada ao bean retornado.
