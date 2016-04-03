@@ -5,6 +5,7 @@
  */
 package mapeamento;
 
+import mapeamento.DAO.Conn;
 import mapeamento.beans.Tomates;
 import java.awt.Color;
 import java.awt.GridLayout;

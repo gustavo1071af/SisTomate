@@ -1,4 +1,4 @@
-package mapeamento;
+package mapeamento.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

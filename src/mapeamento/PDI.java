@@ -10,10 +10,7 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
@@ -21,6 +18,9 @@ import javax.media.jai.TiledImage;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
+import mapeamento.DAO.ImagemProcessadaDAO;
+import mapeamento.DAO.TomatesDAO;
+import mapeamento.beans.ImagemProcessada;
 
 /**
  *
@@ -153,16 +153,15 @@ public class PDI extends Imagem {
         ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
         ap1.append("Path selecionado para salvar as imagens processdas: "+arq.getPath() + "\\CHAVES"+newline);
         ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
-        String sql= "SELECT * FROM tomate t where idTalhao = '"+this.talhao+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idTalhao = ip.idTalhao)";
-        ///fazer conexao com o banco 
-        Connection con = new Conn().getConnection();
-        try {
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
-        int cont = 0;
-        //processando cada registro encontrado na query
+
        
-            while (rs.next()) {
+        
+        int cont = 0;
+        List<Tomates> tomatesSemImagemProcessadaPorTalhao = TomatesDAO.getTomatesSemImagemProcessadaPorTalhao(this.talhao);
+       
+           for (Tomates tomate : tomatesSemImagemProcessadaPorTalhao) {
+             
+         
                 cont++;
                 
                 //alterando a barra e o label da barra
@@ -171,12 +170,8 @@ public class PDI extends Imagem {
                  label_Barra.setText("Processando e Armazenando: "+ Math.round(porc)+"%");
                  
                 //preencher registro
-                reg.setIdTalhao(rs.getString("idTalhao"));
-                reg.setData(rs.getString("data"));
-                reg.setRua(Integer.parseInt(rs.getString("rua")));
-                reg.setLinha(rs.getString("linha"));
-                reg.setNumTom(Integer.parseInt(rs.getString("numtom")));
-                String nomeimagem = rs.getString("nomearquivo");//nome do arquivo de cada tomate achado na query acima adicionada a extensão
+               reg = tomate;
+                String nomeimagem = reg.getNomeArquivo();//nome do arquivo de cada tomate achado na query acima adicionada a extensão
                 if (verificarExistencia(imagens, nomeimagem)) {//verificar se o nome do arquivo existe na pasta.
 
                     teste = nomeimagem.lastIndexOf(".");
@@ -190,13 +185,13 @@ public class PDI extends Imagem {
 
                     System.out.println(nomeimagem);
                     
-                    processaImagemChaveada(nomeimagem, tol1, tol2, nR, nG, nB, ap1);
+                    ImagemProcessada imagemProcessadaParaSalvar = processaImagemChaveada(nomeimagem, tol1, tol2, nR, nG, nB, ap1);
                     
                     //alterando a barra e o label da barra
                     barra.setValue(barra.getValue()+1);
                     double porc2 = (barra.getValue()/Double.parseDouble(Integer.toString(imagens.length*2))*100);
                     label_Barra.setText("Processando e Armazenando: "+ Math.round(porc2)+"%");
-                    adicionaRegistros(reg, ap2);
+                    adicionaRegistros(reg, imagemProcessadaParaSalvar, ap2);
                     
                     
                     //System.out.println();
@@ -212,13 +207,10 @@ public class PDI extends Imagem {
 
                 }
 
-            }//fechar o while
+            }//for
 
-        //closenaconexao
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("Erro no SQL:" + e.getMessage());
-        }
+    
+           
     }
      
      
@@ -235,50 +227,25 @@ public class PDI extends Imagem {
     }
     
     public String[] verificaNecessidade(JTextArea ap1, String talhao) {
-        String [] listaAuxiliar = null; 
-        this.talhao=talhao;
-         String sql= "SELECT nomearquivo FROM tomate t where t.idTalhao = '"+talhao+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idTalhao = ip.idTalhao)";
+        String[] listaAuxiliar = null;
+        this.talhao = talhao;
         ///fazer conexao com o banco 
-        Connection con = new Conn().getConnection();
-        try {
-            Statement stmt3 = con.createStatement();
-            ResultSet rs3 = stmt3.executeQuery(sql);
-            //processando cada registro encontrado na query
-            rs3.last();//colocar ponteiro para ultimo registro do resulset
-            int numlinha = rs3.getRow();
-            rs3.beforeFirst();
-            if(numlinha>0){//verificar se existe registros
-                listaAuxiliar=new String[numlinha];
-                ap1.append("Iniciando o processo..."+newline);
-                ap1.append("Foram encontrados "+numlinha+" registros que ainda não tiveram as imagens processadas processados."+newline);
-               
-                
-               //fazer a lista de imagens que serão processadas
-                
-                int cont=0;
-                
-                while(rs3.next()){
-                    listaAuxiliar[cont] = rs3.getString("nomearquivo");
-                    System.out.println(cont+": "+listaAuxiliar[cont]);
-                    cont++;
-                }
-                
-                con.close();
-                return listaAuxiliar;
-            }
-        } catch(SQLException e) {
-            System.out.println("Erro na verificação de necessidade:" + e.getMessage());
-            //depois mudar cor das mensagens de erro com highlights
-             ap1.append("Falha no banco de dados ao verificar a necessidade do processamento de imagens..."+newline);
-             ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
+        //processando cada registro encontrado na query
+        List<String> nomeArquivoDeTomatesSemImagemProcessadaPorTalhao = TomatesDAO.getNomeArquivoDeTomatesSemImagemProcessadaPorTalhao(talhao, ap1);
+        int numlinha = nomeArquivoDeTomatesSemImagemProcessadaPorTalhao.size();
+        if (numlinha > 0) {//verificar se existe registros
+
+            ap1.append("Iniciando o processo..." + newline);
+            ap1.append("Foram encontrados " + numlinha + " registros que ainda não tiveram as imagens processadas processados." + newline);
+            listaAuxiliar = (String[]) nomeArquivoDeTomatesSemImagemProcessadaPorTalhao.toArray();
         }
-        
+
         return listaAuxiliar;
-        
+
     }
     
 //pronto
-    public void processaImagemChaveada (String imagem, 
+    public ImagemProcessada processaImagemChaveada (String imagem, 
             double tol1, double tol2, double nR, double nG, double nB, JTextArea ap1) {
         int teste;
         String path = arq.getPath();
@@ -291,7 +258,7 @@ public class PDI extends Imagem {
         // TROCAR ISSO DEPOIS PARA VERIFICAR A EXTENSÃO E SÓ ACEITAR AS DE IMAGENS (JPG, ETC).
         // POSSO FAZER UMA ESCOLHA DO TIPO DE IMAGEM EM ALGUM LUGAR DO PROGRAMA, USANDO CHECKBOXES
         if ((teste < 0) || (imagem == "Thumb.db")) {
-            return;  // pula o subdiretório para onde irão as imagens
+            return null;  // pula o subdiretório para onde irão as imagens
         }
         ap1.append("Processando a imagem: " +imagem+"..."+newline);
         ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
@@ -367,49 +334,31 @@ public class PDI extends Imagem {
         
         ap1.append("Salva a imagem processada em:" +path + "\\CHAVES\\COR_" + imagem+newline);
         ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
-
-        reg.setVermelhos(totR);
-        reg.setVerdes(totG);
-        reg.setPretos(totP);
-        reg.setNomeArquivo(imagem);
+        //SISTOM-3
+        ImagemProcessada imagemProcessada = new ImagemProcessada();
+        imagemProcessada.setVermelhos(totR);
+        imagemProcessada.setVerdes(totG);
+        imagemProcessada.setPretos(totP);
+        imagemProcessada.setNomeArquivo("COR_"+imagem);
         setGradKey((double) totR / totG * 100);
-        reg.setEstado(getGradKey());
+        imagemProcessada.setEstado(getGradKey());
+        imagemProcessada.setTomate(reg);
         ap1.append("Finalizando o processamento e gerando o resultado."+newline+"***********"+newline);
         ap1.setCaretPosition(ap1.getDocument().getLength());//cursoor ir para o final
         System.out.println(totR + " " + totG + " " + totP + " "
                 + (double) totR / totG * 100 + " " + getGradKey() + "%");
+        
+        return imagemProcessada; 
  
     }
 
-    //em desenvolvimento
-    private void adicionaRegistros(Tomates reg, JTextArea ap2) {
-        System.out.println("Adicionando o registro: "+reg.getNomeArquivo()+", "+reg.getVermelhos()+", "+reg.getVerdes()+", "+reg.getPretos()+", "+reg.getEstado()+", "+reg.getNumTom()+", "+reg.getRua()+", "+reg.getLinha()+", "+reg.getData());
-        ap2.append(">> Adicionando o registro no banco de dados da imagem: "+reg.getNomeArquivo()+" chaveada com o Estado: "+reg.getEstado()+"."+newline);
+    private void adicionaRegistros(Tomates reg, ImagemProcessada imagemProcessadaParaSalvar, JTextArea ap2) {
+        
+        System.out.println("Adicionando o registro: "+reg.getNomeArquivo()+", "+imagemProcessadaParaSalvar.getVermelhos()+", "+imagemProcessadaParaSalvar.getVerdes()+", "+imagemProcessadaParaSalvar.getPretos()+", "+imagemProcessadaParaSalvar.getEstado()+", "+reg.getNumTom()+", "+reg.getRua()+", "+reg.getLinha()+", "+reg.getData());
+        ap2.append(">> Adicionando o registro no banco de dados da imagem: "+reg.getNomeArquivo()+" chaveada com o Estado: "+imagemProcessadaParaSalvar.getEstado()+"."+newline);
+        Boolean saveImagemProcessada = ImagemProcessadaDAO.saveImagemProcessada(imagemProcessadaParaSalvar);
         ap2.setCaretPosition(ap2.getDocument().getLength());//cursoor ir para o final
-        String comando2 = "INSERT INTO imagem_processada (nomearquivo, vermelhos, verdes, pretos, estado, Tomate_numtom, Tomate_rua, Tomate_linha, Tomate_data, idTalhao) VALUES ("
-                +"'COR_"+ reg.getNomeArquivo() + "', "
-                + reg.getVermelhos() + ", "
-                + reg.getVerdes() + ", "
-                + reg.getPretos() + ", "
-                + reg.getEstado() + ", "
-                + reg.getNumTom() + ", "
-                + reg.getRua() + ", "
-                +"'"+ reg.getLinha() + "', "
-                +"'"+ reg.getData() + "', "
-                +"'"+ reg.getIdTalhao()+ "');";
-
-        
-        
-        Connection con = new Conn().getConnection();
-        try {
-            Statement stmt2 = con.createStatement();
-            stmt2.execute(comando2);
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("Erro no addregistro:" + e.getMessage());
-        }
-        
-   
+       
     }
     
 }

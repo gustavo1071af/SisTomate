@@ -6,30 +6,39 @@
 
 package mapeamento.beans;
 
+import java.util.Date;
+import java.util.Objects;
+
 /**
  *
  * @author Gus
  */
 public class Tomates {
-    String idTalhao;
+
+    Talhao talhao;
     String nomeArquivo;
-    int vermelhos;
-    int verdes;
-    int pretos;
-    int estado;
     int numTom;
     int rua;
     String linha;
     String lat;
-    String longi;
-    String data;
 
-    public String getIdTalhao() {
-        return idTalhao;
+    public ImagemProcessada getImagemProcessada() {
+        return imagemProcessada;
     }
 
-    public void setIdTalhao(String idTalhao) {
-        this.idTalhao = idTalhao;
+    public void setImagemProcessada(ImagemProcessada imagemProcessada) {
+        this.imagemProcessada = imagemProcessada;
+    }
+    String longi;
+    Date data;
+    ImagemProcessada imagemProcessada;
+
+    public Talhao getTalhao() {
+        return talhao;
+    }
+
+    public void setTalhao(Talhao talhao) {
+        this.talhao = talhao;
     }
     public String getNomeArquivo() {
         return nomeArquivo;
@@ -37,38 +46,6 @@ public class Tomates {
 
     public void setNomeArquivo(String nomeArquivo) {
         this.nomeArquivo = nomeArquivo;
-    }
-
-    public int getVermelhos() {
-        return vermelhos;
-    }
-
-    public void setVermelhos(int vermelhos) {
-        this.vermelhos = vermelhos;
-    }
-
-    public int getVerdes() {
-        return verdes;
-    }
-
-    public void setVerdes(int verdes) {
-        this.verdes = verdes;
-    }
-    
-    public int getPretos() {
-        return pretos;
-    }
-
-    public void setPretos(int pretos) {
-        this.pretos = pretos;
-    }
-
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
     }
 
     public int getNumTom() {
@@ -111,17 +88,48 @@ public class Tomates {
         this.longi = longi;
     }
 
-    public String getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Date data) {
         this.data = data;
     }
     
     //SISTOM-1
     public int getColuna (){
         return "a".equalsIgnoreCase(linha) ? (rua + (rua - 1)) : rua * 2;
+    }
+    
+     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Tomates other = (Tomates) obj;
+        if (this.numTom != other.numTom) {
+            return false;
+        }
+        if (this.rua != other.rua) {
+            return false;
+        }
+        if (!Objects.equals(this.linha, other.linha)) {
+            return false;
+        }
+        
+        if (!Objects.equals(this.data, other.data)) {
+            return false;
+        }
+        if (!Objects.equals(this.talhao, other.talhao)) {
+            return false;
+        }
+        return true;
     }
     
 }

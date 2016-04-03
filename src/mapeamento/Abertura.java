@@ -8,18 +8,18 @@ Authors:
 package mapeamento;
 
 import java.awt.Image;
-import static java.awt.SystemColor.menu;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import mapeamento.DAO.ImagemProcessadaDAO;
+import mapeamento.DAO.TalhaoDAO;
+import mapeamento.DAO.TomatesDAO;
+import mapeamento.beans.Talhao;
 
 /**
  *
@@ -36,37 +36,22 @@ public class Abertura extends javax.swing.JFrame {
    */
     private final JComboBox combo;
     private final JLabel label1;
+    static String formatoDataBr = "dd/MM/yyyy";
     
     public Abertura() {
         initComponents();
-       //Criando combobox de talhoes no menu
-        String [] talhoes = null;
-         combo = new javax.swing.JComboBox();
-         
-         String sql = "SELECT area_Cultivada "
-                + " FROM talhao"
-                + " ORDER BY 1 asc";
-        Connection con = new Conn().getConnection();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            System.out.println(rs.toString());
-             rs.last();
-            //arredondando para cima
-            int tam = rs.getRow();
-            
-            rs.beforeFirst();
-            talhoes = new String[tam];
-            int cont=0;
-            while(rs.next()) {
-                talhoes[cont]= rs.getString("area_Cultivada");
-                cont++;
-            }
-              combo.setModel(new javax.swing.DefaultComboBoxModel(talhoes));
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("Erro no SQL1:" + e.getMessage());
+        //Criando combobox de talhoes no menu
+        List talhoesIds = new ArrayList<>();
+        combo = new javax.swing.JComboBox();
+
+        List<Talhao> talhoes = TalhaoDAO.getAll();
+
+        for (Talhao talhao : talhoes) {
+            talhoesIds.add(talhao.getAreaCultivada());
         }
+        combo.setModel(new javax.swing.DefaultComboBoxModel(talhoesIds.toArray()));
+
+
         
         alteraLabelPrincipal();       
       
@@ -114,35 +99,31 @@ public class Abertura extends javax.swing.JFrame {
     public void alteraLabelPrincipal(){
     //mudando labels da tela principal
                 System.out.println(combo.getSelectedItem().toString());
-                String sql2 = "SELECT *"
-                + " FROM talhao"
-                + " WHERE area_Cultivada = '"+ combo.getSelectedItem().toString()+"';";
-                String sql3 = "SELECT count(*) as qtd_amostra"
-                + " FROM Tomate t"
-                + " WHERE t.idTalhao = '"+ combo.getSelectedItem().toString()+"';";
-                String sql4= "SELECT count(*) as qtd_imgsNprocessadas FROM tomate t where t.idTalhao = '"+combo.getSelectedItem().toString()+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idTalhao = ip.idTalhao)";
-                Connection con = new Conn().getConnection();
-                try {
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery(sql2);
-                    Statement stmt3 = con.createStatement();
-                    ResultSet rs3 = stmt3.executeQuery(sql3);
-                    Statement stmt4 = con.createStatement();
-                    ResultSet rs4 = stmt4.executeQuery(sql4);
-                    if (rs2.next()){
-                        label_Area.setText(rs2.getString("area_Cultivada"));
-                        label_Colheita.setText(rs2.getString("data_Colheita"));
-                        
-                        label_Plantio.setText(rs2.getString("data_Plantio"));
-                        if(rs3.next())
-                            label_qtd_Amostras.setText(rs3.getString("qtd_amostra"));
-                        if(rs4.next())
-                            label_qtd_n_Processadas.setText(rs4.getString("qtd_imgsNprocessadas"));
-                    }
-                     con.close();
-                    } catch (SQLException e) {
-                    System.out.println("Erro no SQL2:" + e.getMessage());
-                }
+                String area_Cultivada = combo.getSelectedItem().toString();
+        /* String sql2 = "SELECT *"
+        + " FROM talhao"
+        + " WHERE area_Cultivada = '"+ combo.getSelectedItem().toString()+"';";
+        String sql3 = "SELECT count(*) as qtd_amostra"
+        + " FROM Tomate t"
+        + " WHERE t.idTalhao = '"+ combo.getSelectedItem().toString()+"';";
+        String sql4= "SELECT count(*) as qtd_imgsNprocessadas FROM tomate t where t.idTalhao = '"+combo.getSelectedItem().toString()+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idTalhao = ip.idTalhao)";
+         */
+        Talhao talhao = TalhaoDAO.get(area_Cultivada);
+        int qtdDeTomatesPorTalhao = TomatesDAO.getQtdDeTomatesPorTalhao(area_Cultivada);
+        int qtdDeImagensProcessadasPorTalhao = ImagemProcessadaDAO.getQtdDeImagensProcessadasPorTalhao(area_Cultivada);
+        SimpleDateFormat formatoBr = new SimpleDateFormat(formatoDataBr);
+        label_Area.setText(talhao.getAreaCultivada());
+        label_Colheita.setText(formatoBr.format(talhao.getDataColheira()));
+
+   
+        label_Plantio.setText(formatoBr.format(talhao.getDataPlantio()));
+
+        label_qtd_Amostras.setText(String.valueOf(qtdDeTomatesPorTalhao));
+
+        label_qtd_n_Processadas.setText(String.valueOf(qtdDeImagensProcessadasPorTalhao));
+
+
+                    
     }
     /**
      * This method is called from within the constructor to initialize the form.

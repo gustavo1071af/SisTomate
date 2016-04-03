@@ -23,4 +23,13 @@ as queries estão soltas nos sistema.
 - *Falta Fazer*: Montar bean talhao nas consultas que busca talhoes.
 
 SISTOM-3<sucupira>: Refactor >> Montar estrutura DAO para padronizar código.
+- As Estruturas DAO Criada:
+--TomatesDAO -> Referente a todas as consultas com retorno de elementos de Tomates
+--TalhaoDAO -> Referente a todas as consultas com retorno de elementos de Talhao
+--ImagemProcessadaDao -> Referente a todas as consultas com retorno de elementos de ImagemProcessada
+Obs. Criamos o bean de ImagemProcessada que antes era alocado dentro do bean Tomates
+
 - Colocar todas as consultas do sistema na DAO relacionada ao bean retornado.
+-- Abertura OK - Testes OK
+-- PDI e Processamento OK - Testes TO DO 
+*Sistema não funciona corretamente por enquanto até eu terminar a SISTOM-3*
