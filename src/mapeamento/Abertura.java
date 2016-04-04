@@ -100,14 +100,7 @@ public class Abertura extends javax.swing.JFrame {
     //mudando labels da tela principal
                 System.out.println(combo.getSelectedItem().toString());
                 String area_Cultivada = combo.getSelectedItem().toString();
-        /* String sql2 = "SELECT *"
-        + " FROM talhao"
-        + " WHERE area_Cultivada = '"+ combo.getSelectedItem().toString()+"';";
-        String sql3 = "SELECT count(*) as qtd_amostra"
-        + " FROM Tomate t"
-        + " WHERE t.idTalhao = '"+ combo.getSelectedItem().toString()+"';";
-        String sql4= "SELECT count(*) as qtd_imgsNprocessadas FROM tomate t where t.idTalhao = '"+combo.getSelectedItem().toString()+"' and not exists(select * from imagem_processada ip where t.numtom = ip.Tomate_numtom  and t.rua = ip.Tomate_rua  and t.linha = ip.Tomate_linha  and t.data = ip.Tomate_data and t.idTalhao = ip.idTalhao)";
-         */
+        
         Talhao talhao = TalhaoDAO.get(area_Cultivada);
         int qtdDeTomatesPorTalhao = TomatesDAO.getQtdDeTomatesPorTalhao(area_Cultivada);
         int qtdDeImagensProcessadasPorTalhao = ImagemProcessadaDAO.getQtdDeImagensProcessadasPorTalhao(area_Cultivada);

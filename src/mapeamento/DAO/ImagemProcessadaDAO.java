@@ -62,13 +62,13 @@ public class ImagemProcessadaDAO {
         Tomates tomate = imagemProcessadaParaSalvar.getTomate();
         Talhao talhao = tomate.getTalhao();
         String sql = "INSERT INTO imagem_processada (nomearquivo, vermelhos, verdes, pretos, estado, Tomate_numtom, Tomate_rua, Tomate_linha, Tomate_data, idTalhao) VALUES ("
-                + imagemProcessadaParaSalvar.getNomeArquivo() + "', "
-                + imagemProcessadaParaSalvar.getVermelhos() + ", "
-                + imagemProcessadaParaSalvar.getVerdes() + ", "
-                + imagemProcessadaParaSalvar.getPretos() + ", "
-                + imagemProcessadaParaSalvar.getEstado() + ", "
-                + tomate.getNumTom() + ", "
-                + tomate.getRua() + ", "
+                + "'" + imagemProcessadaParaSalvar.getNomeArquivo() + "', "
+                + "'" + imagemProcessadaParaSalvar.getVermelhos() + "', "
+                + "'" + imagemProcessadaParaSalvar.getVerdes() + "', "
+                + "'" + imagemProcessadaParaSalvar.getPretos() + "', "
+                + "'" + imagemProcessadaParaSalvar.getEstado() + "', "
+                + "'" + tomate.getNumTom() + "', "
+                + "'" + tomate.getRua() + "', "
                 + "'" + tomate.getLinha() + "', "
                 + "'" + tomate.getData() + "', "
                 + "'" + talhao.getAreaCultivada() + "');";

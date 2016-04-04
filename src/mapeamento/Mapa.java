@@ -4,19 +4,18 @@
  * and open the template in the editor.
  */
 package mapeamento;
-
-import mapeamento.DAO.Conn;
+    
 import mapeamento.beans.Tomates;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import mapeamento.DAO.TalhaoDAO;
+import mapeamento.DAO.TomatesDAO;
+import mapeamento.beans.ImagemProcessada;
+import mapeamento.beans.Talhao;
 
 
 /**
@@ -30,92 +29,47 @@ public class Mapa extends javax.swing.JPanel {
     private String talhao;
     private int x;
     private int y;
+    static String formatoDataBr = "dd/MM/yyyy";
+
 
     /**
      * Creates new form Mapa
-     * @param lavoura_Selecionada
+     * @param talhao_Selecionada
      */
     public Mapa(String talhao_Selecionada) {
         initComponents();
         System.out.println(talhao_Selecionada);
         this.talhao = talhao_Selecionada;
-        List<Tomates> tomatesDoTalhao = getTomatesbyTalhao(talhao);
-        String sql = "SELECT * \n"
-                + "FROM talhao l "
-                + "WHERE l.area_Cultivada = '"+ talhao+"' ";
-        Connection con = new Conn().getConnection();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            rs.next();
-            //SISTOM-1
-            
-            int qtd_Ruas = Integer.parseInt(rs.getString("qtd_Ruas")); 
-            Long qtd_TomatesPorLinha = Long.parseLong(rs.getString("qtd_TomatesPorLinhas"));
-            //considerando que cada rua tem 2 linhas.
-            this.y =  qtd_Ruas * 2;
-            this.x = Integer.parseInt(qtd_TomatesPorLinha.toString());
+        List<Tomates> tomatesDoTalhao = TomatesDAO.getTomatesComImagensProcesadasPorTalhao(talhao);
 
-            //aplica o resultado para fazer o grid
-           
-            matrizpainel = new MeuJPanel[x][y];
+        //SISTOM-1
+        Talhao beanTalhao = TalhaoDAO.get(talhao);
 
-            GridLayout grid = new GridLayout(x, y);
-            setLayout(grid);
-            for (int x = 0; x < this.x; x++) {
-                for (int y = 0; y < this.y; y++) {
+        int qtd_Ruas = beanTalhao.getQtdRuas();
+        int qtd_TomatesPorLinha = beanTalhao.getQtd_TomatesPorLinhas();
 
-                    matrizpainel[x][y] = new MeuJPanel();
-                    //SISTOM-1
-                    matrizpainel[x][y].setBackground(new Color(0, 128, 0));//Green
-                    matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));//preto
-                    populaPainelComTomate(matrizpainel[x][y], tomatesDoTalhao, x, y);
- 
-                    add(matrizpainel[x][y]);
-                }
+        //considerando que cada rua tem 2 linhas.
+        this.y = qtd_Ruas * 2;
+        this.x = qtd_TomatesPorLinha;
+
+        //aplica o resultado para fazer o grid
+        matrizpainel = new MeuJPanel[x][y];
+
+        GridLayout grid = new GridLayout(x, y);
+        setLayout(grid);
+        for (int x = 0; x < this.x; x++) {
+            for (int y = 0; y < this.y; y++) {
+
+                matrizpainel[x][y] = new MeuJPanel();
+                //SISTOM-1
+                matrizpainel[x][y].setBackground(new Color(0, 128, 0));//Green
+                matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));//preto
+                populaPainelComTomate(matrizpainel[x][y], tomatesDoTalhao, x, y);
+
+                add(matrizpainel[x][y]);
             }
-                 con.close();
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar talhao:" + e.getMessage());
         }
 
-      
-    }
-    
-     //SISTOM-1
-    public List<Tomates> getTomatesbyTalhao(String talhao){
-        String sql = "SELECT * \n"
-                + "FROM tomate t, imagem_processada i\n"
-                + "WHERE t.rua = i.Tomate_rua\n"
-                + "AND t.linha = i.Tomate_linha\n"
-                + "AND t.numtom = i.Tomate_numtom\n"
-                + "AND t.data = i.Tomate_data "
-                + "AND t.idTalhao = '"+ talhao+"' "
-                + "ORDER BY LPAD( t.rua, 4,  '0' ) asc, t.linha asc, lpad( t.numtom, 4,  '0' ) asc";
-        Connection con = new Conn().getConnection();
-        List<Tomates> tomates = new ArrayList<>();
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {                
-                Tomates tom = new Tomates();
-                tom.setNomeArquivo(rs.getString("nomearquivo"));
-                tom.setNumTom(Integer.parseInt(rs.getString("numtom")));
-                tom.setRua(Integer.parseInt(rs.getString("rua")));
-                tom.setLinha(rs.getString("linha"));
-                tom.setData(rs.getString("data"));
-                tom.setLongi(rs.getString("longi"));
-                tom.setLat(rs.getString("lat"));
-                tom.setVermelhos(Integer.parseInt(rs.getString("vermelhos")));
-                tom.setVerdes(Integer.parseInt(rs.getString("verdes")));
-                tom.setEstado(Integer.parseInt(rs.getString("estado")));
-               tomates.add(tom);
-            }
-            
-        }catch(SQLException e){
-             System.out.println("Erro ao buscar tomates do talhao:" + e.getMessage());
-        }
-        return tomates;
     }
 
     public boolean isInt(String v) {
@@ -169,8 +123,10 @@ public class Mapa extends javax.swing.JPanel {
                         TomateDialog t1 = new TomateDialog(parent, true, painelAux.getTom());
                         t1.setSize(800, 600);
                         //System.out.println(painelAux.getTom().getNomeArquivo());
+                        
+                        final SimpleDateFormat formatoBr = new SimpleDateFormat(formatoDataBr);
                         t1.setTitle("Rua=" + painelAux.getTom().getRua() + " Linha=" + painelAux.getTom().getLinha()
-                                + " Numtom=" + painelAux.getTom().getNumTom() + " Data=" + painelAux.getTom().getData());
+                                + " Numtom=" + painelAux.getTom().getNumTom() + " Data=" + formatoBr.format(painelAux.getTom().getData()));
                         t1.setVisible(true);
                         t1.setLocationRelativeTo(null);
 
@@ -193,9 +149,9 @@ public class Mapa extends javax.swing.JPanel {
 
                 });
                 //final evento
-
                 //escolher cor de acordo com o estado
-                int estado = tomate.getEstado();
+                ImagemProcessada imagemProcessada = tomate.getImagemProcessada();
+                int estado = imagemProcessada.getEstado();
                 switch (estado) {
                     case 1: {
                         meuJPanel.setBackground(new Color(0, 128, 0));

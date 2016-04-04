@@ -9,9 +9,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Talhao;
 import mapeamento.beans.Tomates;
 
@@ -22,6 +28,7 @@ import mapeamento.beans.Tomates;
 public class TomatesDAO {
     
     private static String newline = System.lineSeparator();
+    static String formatoDataPadrao = "yyyy-MM-dd";
     
     /**
      *
@@ -50,6 +57,59 @@ public class TomatesDAO {
             } 
         return retornoValor;
      }
+    
+    //SISTOM-1
+
+    /**
+     *
+     * @param talhao
+     * @return
+     */
+    public static List<Tomates> getTomatesComImagensProcesadasPorTalhao(String talhao){
+        String sql = "SELECT * \n"
+                + "FROM tomate t, imagem_processada i\n"
+                + "WHERE t.rua = i.Tomate_rua\n"
+                + "AND t.linha = i.Tomate_linha\n"
+                + "AND t.numtom = i.Tomate_numtom\n"
+                + "AND t.data = i.Tomate_data "
+                + "AND t.idTalhao = '"+ talhao+"' "
+                //ordenação  por rua linha e numtom
+                + "ORDER BY LPAD( t.rua, 4,  '0' ) asc, t.linha asc, lpad( t.numtom, 4,  '0' ) asc";
+        Connection con = new Conn().getConnection();
+        List<Tomates> tomates = new ArrayList<>();
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {                
+                Tomates tom = new Tomates();
+                tom.setNomeArquivo(rs.getString("nomearquivo"));
+                tom.setNumTom(Integer.parseInt(rs.getString("numtom")));
+                tom.setRua(Integer.parseInt(rs.getString("rua")));
+                tom.setLinha(rs.getString("linha"));
+                Date data = new SimpleDateFormat(formatoDataPadrao).parse(rs.getString("data"));  
+                tom.setData(data);
+                tom.setLongi(rs.getString("longi"));
+                tom.setLat(rs.getString("lat"));
+                
+                ImagemProcessada imgProcessada = new ImagemProcessada();
+                imgProcessada.setVermelhos(rs.getInt("vermelhos"));
+                imgProcessada.setVerdes(rs.getInt("verdes"));
+                imgProcessada.setVerdes(rs.getInt("pretos"));
+                imgProcessada.setNomeArquivo(rs.getString("i.nomearquivo"));
+                imgProcessada.setEstado(rs.getInt("estado"));
+                
+                tom.setImagemProcessada(imgProcessada);
+
+               tomates.add(tom);
+            }
+            
+        }catch(SQLException e){
+            System.out.println("Erro na Função getTomatesPorTalhao() em TomatesDAO: " + e.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(TomatesDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tomates;
+    }
         
     /**
      *

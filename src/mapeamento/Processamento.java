@@ -38,7 +38,14 @@ public class Processamento extends javax.swing.JPanel {
                
              
                if(listaImgs != null){
+                   area_Processamento1.append("Escolha o Diretório onde está localizada as imagens...");
                    arq.escolheDir();
+                   if (arq.getPath() == null){
+                       area_Processamento1.append("Processamento Cancelado!"+newline);
+                       area_Processamento2.append("Processamento Cancelado!"+newline);
+                       //parar thread
+                       return;
+                   }
                    area_Processamento1.append("Path Escolhido: "+arq.getPath()+newline);
                    System.out.println("array: "+Arrays.toString(listaImgs));
                    

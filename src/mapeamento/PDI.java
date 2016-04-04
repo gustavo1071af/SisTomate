@@ -232,12 +232,12 @@ public class PDI extends Imagem {
         ///fazer conexao com o banco 
         //processando cada registro encontrado na query
         List<String> nomeArquivoDeTomatesSemImagemProcessadaPorTalhao = TomatesDAO.getNomeArquivoDeTomatesSemImagemProcessadaPorTalhao(talhao, ap1);
-        int numlinha = nomeArquivoDeTomatesSemImagemProcessadaPorTalhao.size();
-        if (numlinha > 0) {//verificar se existe registros
+        int numLinha = nomeArquivoDeTomatesSemImagemProcessadaPorTalhao.size();
+        if (numLinha > 0) {//verificar se existe registros
 
             ap1.append("Iniciando o processo..." + newline);
-            ap1.append("Foram encontrados " + numlinha + " registros que ainda não tiveram as imagens processadas processados." + newline);
-            listaAuxiliar = (String[]) nomeArquivoDeTomatesSemImagemProcessadaPorTalhao.toArray();
+            ap1.append("Foram encontrados " + numLinha + " registros que ainda não tiveram as imagens processadas processados." + newline);
+            listaAuxiliar = nomeArquivoDeTomatesSemImagemProcessadaPorTalhao.toArray(new String[numLinha]);
         }
 
         return listaAuxiliar;

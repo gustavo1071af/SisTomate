@@ -40,6 +40,8 @@ este comentário deve seguir no código da alteração no Log_de_Alterações. E
 obs. Cuidado com os merges para não remover códigos dos outros integrantes. 
 8)Faça o commit(com a mensagem do commit "SISTOM-xxxx") e push.
 
+*IMPORTANTE: NOVO PADRÃO -> Fazer consultas no banco de dados apenas nas classes DAO.*
+
 
 *Caso tiver com duvidas na utilização do git no netbeans, estudar o link:
 https://netbeans.org/kb/docs/ide/git.html

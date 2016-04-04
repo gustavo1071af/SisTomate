@@ -8,8 +8,10 @@ package mapeamento;
 
 import mapeamento.beans.Tomates;
 import java.awt.Image;
+import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import mapeamento.beans.ImagemProcessada;
 
 /**
  *
@@ -18,6 +20,7 @@ import javax.swing.JFrame;
 public class TomateDialog extends javax.swing.JDialog {
 
     Tomates tom;
+    static String formatoDataBr = "dd/MM/yyyy";
 
     /**
      * Creates new form TesteDialog
@@ -26,19 +29,23 @@ public class TomateDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
        // System.out.println(tom.getLinha());
-              
-        labelNomearquivo.setText(labelNomearquivo.getText() +" "+tom.getNomeArquivo());
-        labelVermelhos.setText(labelVermelhos.getText() +" "+ tom.getVermelhos());
-        labelVerdes.setText(labelVerdes.getText() +" "+ tom.getVerdes());
+        ImagemProcessada imagemProcessada = tom.getImagemProcessada();     
+        labelNomearquivo.setText(labelNomearquivo.getText() +" "+imagemProcessada.getNomeArquivo());
+        labelVermelhos.setText(labelVermelhos.getText() +" "+ imagemProcessada.getVermelhos());
+        labelVerdes.setText(labelVerdes.getText() +" "+ imagemProcessada.getVerdes());
         labelNumtom.setText(labelNumtom.getText() +" "+ tom.getNumTom());
         labelRua.setText(labelRua.getText() +" "+ tom.getRua());
         labelLinha.setText(labelLinha.getText() +" "+ tom.getLinha());
-        //labelLong.setText(labelLong.getText() +" "+ tom.getLongi());
-        //labelLat.setText(labelLat.getText() +" "+ tom.getLat());
-        labelData.setText(labelData.getText() +" "+ tom.getData());
+        String longi = tom.getLongi() != null ? tom.getLongi() : "---";
+        labelLong.setText(labelLong.getText() +" "+ longi);
+         String lat = tom.getLat() != null ?tom.getLat() : "---";
+        labelLat.setText(labelLat.getText() +" "+ lat);
+        SimpleDateFormat formatoBr = new SimpleDateFormat(formatoDataBr);
+        labelData.setText(labelData.getText() +" "+ formatoBr.format(tom.getData()));
         //imagem do estado
-        labelEstado.setText(labelEstado.getText() +" "+ tom.getEstado());
-        ImageIcon img1 = new ImageIcon(getClass().getResource("/mapeamento/ESTADOS/estado"+tom.getEstado()+".jpg"));
+       
+        labelEstado.setText(labelEstado.getText() +" "+ imagemProcessada.getEstado());
+        ImageIcon img1 = new ImageIcon(getClass().getResource("/mapeamento/ESTADOS/estado"+imagemProcessada.getEstado()+".jpg"));
          ImageIcon thumbnail1 = null;
         thumbnail1 = new ImageIcon(  
          img1.getImage().getScaledInstance(130, 140, Image.SCALE_DEFAULT)); 

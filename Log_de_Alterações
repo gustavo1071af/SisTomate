@@ -31,5 +31,7 @@ Obs. Criamos o bean de ImagemProcessada que antes era alocado dentro do bean Tom
 
 - Colocar todas as consultas do sistema na DAO relacionada ao bean retornado.
 -- Abertura OK - Testes OK
--- PDI e Processamento OK - Testes TO DO 
-*Sistema não funciona corretamente por enquanto até eu terminar a SISTOM-3*
+-- PDI e Processamento OK - Testes OK
+-- Mapa e TomateDialog OK - Testes OK
+IMPORTANTE:
+*A partir de agora só podemos fazer consultas ao banco nas classes DAO!*
