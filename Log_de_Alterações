@@ -35,3 +35,5 @@ Obs. Criamos o bean de ImagemProcessada que antes era alocado dentro do bean Tom
 -- Mapa e TomateDialog OK - Testes OK
 IMPORTANTE:
 *A partir de agora só podemos fazer consultas ao banco nas classes DAO!*
+
+SISTOM-4<sucupira>: Criar classe do automato e alterar tela de simulação
