@@ -36,4 +36,8 @@ Obs. Criamos o bean de ImagemProcessada que antes era alocado dentro do bean Tom
 IMPORTANTE:
 *A partir de agora só podemos fazer consultas ao banco nas classes DAO!*
 
-SISTOM-4<sucupira>: Criar classe do automato e alterar tela de simulação
+SISTOM-4<sucupira>: Criar classe do automato e alterar tela de simulação;
+Foi criado a classe do Autometo, entretanto está apenas no início da adaptação, pois teremos que definir o processo da simulação
+até chegar nela.
+Em Preencher_Variaveis.java foi removido os campos que não precisão mais, deixando apenas os campos "Humidade Rel. do Ar", 
+" índice pluviométrico:", além da quatidade de interações.
