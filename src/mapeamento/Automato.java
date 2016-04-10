@@ -5,8 +5,9 @@ import mapeamento.beans.Talhao;
 import mapeamento.beans.Tomates;
 
 /**
- *
+ *  SISTOM-4
  * @author Gustavo
+ * @creationDate 10/04/2016
  */
 public class Automato {
 

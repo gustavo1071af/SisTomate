@@ -15,9 +15,11 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
     /**
      * Creates new form Preencher_Variaveis
      */
-    String Lavoura;
-    public Preencher_Variaveis(String Lavoura) {
-        this.Lavoura = Lavoura;
+    String talhao;
+    Abertura frame;
+    Preencher_Variaveis(String talhao, Abertura frame) {
+        this.talhao = talhao;
+        this.frame = frame;
         initComponents();
     }
 
@@ -37,7 +39,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        iniciarSimulacao = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -67,7 +69,12 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Preencher Fatores Determinantes para a Simulação");
 
-        jButton1.setText("Iniciar Simulação");
+        iniciarSimulacao.setText("Iniciar Simulação");
+        iniciarSimulacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iniciarSimulacaoActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 2, 10)); // NOI18N
         jLabel7.setText("ºC");
@@ -120,7 +127,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(iniciarSimulacao)
                 .addGap(77, 77, 77))
         );
         layout.setVerticalGroup(
@@ -150,7 +157,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(iniciarSimulacao)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -167,9 +174,15 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void iniciarSimulacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSimulacaoActionPerformed
+        //SISTOM-4 
+        PainelDeSimulacao janela = new PainelDeSimulacao(frame,talhao);             
+        frame.mudaTela(janela);
+    }//GEN-LAST:event_iniciarSimulacaoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton iniciarSimulacao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

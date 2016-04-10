@@ -5,7 +5,6 @@
  */
 package mapeamento;
     
-import mapeamento.beans.Tomates;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
@@ -16,6 +15,7 @@ import mapeamento.DAO.TalhaoDAO;
 import mapeamento.DAO.TomatesDAO;
 import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Talhao;
+import mapeamento.beans.Tomates;
 
 
 /**

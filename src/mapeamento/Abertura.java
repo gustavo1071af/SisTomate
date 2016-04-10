@@ -96,6 +96,15 @@ public class Abertura extends javax.swing.JFrame {
         labelRodape.setText(text);
     }
     
+    public void mudaTela(Object janela){
+        if (janela instanceof PainelDeSimulacao){
+            PainelDeSimulacao proxJanela = (PainelDeSimulacao) janela;
+            this.setContentPane(proxJanela);
+            this.getContentPane().repaint();
+            this.validate();
+        }
+    }
+    
     public void alteraLabelPrincipal(){
     //mudando labels da tela principal
                 System.out.println(combo.getSelectedItem().toString());
@@ -384,7 +393,7 @@ Help janela = new Help();
 
     private void simularRequeimaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simularRequeimaActionPerformed
         // TODO add your handling code here:
-         Preencher_Variaveis janela = new Preencher_Variaveis(combo.getSelectedItem().toString());
+         Preencher_Variaveis janela = new Preencher_Variaveis(combo.getSelectedItem().toString(), this);
         this.setContentPane(janela);
         this.getContentPane().repaint();
         this.validate();
