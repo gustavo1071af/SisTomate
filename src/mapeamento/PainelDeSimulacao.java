@@ -18,13 +18,16 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     private String talhao;
     /**
      * Creates new form PainelDeSimulacao
+     * @param frame
+     * @param talhao
      */
     public PainelDeSimulacao(Abertura frame,String talhao) {
         this.talhao = talhao;
         initComponents();
         Mapa button = new Mapa(talhao);
-button.setPreferredSize(new Dimension(200, 100));
+        button.setMinimumSize(new Dimension(400, 300));   
         painelMapa.add(button, BorderLayout.CENTER);
+       
        
        
        
@@ -51,6 +54,8 @@ button.setPreferredSize(new Dimension(200, 100));
         buttonMudar = new javax.swing.JButton();
         textPaneParametros = new javax.swing.JTextPane();
         painelMapa = new javax.swing.JPanel();
+
+        setPreferredSize(new java.awt.Dimension(400, 300));
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -89,6 +94,7 @@ button.setPreferredSize(new Dimension(200, 100));
         jPanel1.add(textPaneParametros, gridBagConstraints);
         textPaneParametros.getAccessibleContext().setAccessibleParent(jPanel1);
 
+        painelMapa.setPreferredSize(new java.awt.Dimension(633, 364));
         painelMapa.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
