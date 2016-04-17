@@ -24,9 +24,9 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     public PainelDeSimulacao(Abertura frame,String talhao) {
         this.talhao = talhao;
         initComponents();
-        Mapa button = new Mapa(talhao);
-        button.setMinimumSize(new Dimension(400, 300));   
-        painelMapa.add(button, BorderLayout.CENTER);
+        MapaParaSimulacao mapaParaSimulacao = new MapaParaSimulacao(talhao);
+        mapaParaSimulacao.setMinimumSize(new Dimension(400, 300));   
+        painelMapa.add(mapaParaSimulacao, BorderLayout.CENTER);
        
        
        

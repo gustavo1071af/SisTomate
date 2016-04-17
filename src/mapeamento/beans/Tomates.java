@@ -15,12 +15,17 @@ import java.util.Objects;
  */
 public class Tomates {
 
-    Talhao talhao;
-    String nomeArquivo;
-    int numTom;
-    int rua;
-    String linha;
-    String lat;
+   
+
+    private Talhao talhao;
+    private String nomeArquivo;
+    private int numTom;
+    private int rua;
+    private String linha;
+    private String lat;
+    String longi;
+    Date data;
+    ImagemProcessada imagemProcessada;
 
     public ImagemProcessada getImagemProcessada() {
         return imagemProcessada;
@@ -29,9 +34,7 @@ public class Tomates {
     public void setImagemProcessada(ImagemProcessada imagemProcessada) {
         this.imagemProcessada = imagemProcessada;
     }
-    String longi;
-    Date data;
-    ImagemProcessada imagemProcessada;
+    
 
     public Talhao getTalhao() {
         return talhao;
@@ -98,8 +101,13 @@ public class Tomates {
     
     //SISTOM-1
     public int getColuna (){
+        //Se não entra na regra 
         return "a".equalsIgnoreCase(linha) ? (rua + (rua - 1)) : rua * 2;
     }
+    
+    
+    
+  
     
      @Override
     public boolean equals(Object obj) {
@@ -131,5 +139,7 @@ public class Tomates {
         }
         return true;
     }
+    
+   
     
 }

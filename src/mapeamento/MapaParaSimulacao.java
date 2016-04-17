@@ -22,13 +22,13 @@ import mapeamento.beans.Tomates;
  *
  * @author Gus
  */
-public class Mapa extends javax.swing.JPanel {
+public class MapaParaSimulacao extends javax.swing.JPanel {
 
 
-    private MeuJPanel matrizpainel[][];
-    private String talhao;
-    private int x;
-    private int y;
+    private final MeuJPanel matrizpainel[][];
+    private final String talhao;
+    private final int x;
+    private final int y;
     static String formatoDataBr = "dd/MM/yyyy";
 
 
@@ -36,7 +36,7 @@ public class Mapa extends javax.swing.JPanel {
      * Creates new form Mapa
      * @param talhao_Selecionada
      */
-    public Mapa(String talhao_Selecionada) {
+    public MapaParaSimulacao(String talhao_Selecionada) {
         initComponents();
         System.out.println(talhao_Selecionada);
         this.talhao = talhao_Selecionada;
@@ -104,18 +104,19 @@ public class Mapa extends javax.swing.JPanel {
 
     //SISTOM-1
     private void populaPainelComTomate(MeuJPanel meuJPanel, List<Tomates> tomatesDoTalhao, int x1, int y1) {
-        final MeuJPanel painelAux = meuJPanel;
+        
         for (Tomates tomate : tomatesDoTalhao) {
             int numTom = tomate.getNumTom();
             int coluna = tomate.getColuna();
             // a adição do 1 no y1 e x1 é porque o for q cria os componentes começa com zero, e se mudar da erro pois vai falta 1 grid
-            // Não pode colocar o for começando do 1, pois da erro na matriz
             if (coluna == y1+1 && numTom == x1+1) {
+                final MeuJPanel painelAux = meuJPanel;
                 JLabel label = new JLabel();
                 label.setText("*");
                 painelAux.add(label);
                 painelAux.setTom(tomate);
                 //painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+               
                 meuJPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -147,9 +148,10 @@ public class Mapa extends javax.swing.JPanel {
                         //evento sair do target aqui
                         painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
                     }
+                  
 
-                });
-                //final evento
+                });//final evento
+                
                 //escolher cor de acordo com o estado
                 ImagemProcessada imagemProcessada = tomate.getImagemProcessada();
                 int estado = imagemProcessada.getEstado();
@@ -182,11 +184,87 @@ public class Mapa extends javax.swing.JPanel {
                         meuJPanel.setBackground(new Color(0, 128, 0));
                         break;
                     }//Green
+                    
                 }//switch
-              
-            }//if
+              return;
+            }//if        
             
-        }//for     
+        }//for  
+        final MeuJPanel painelAuxfake = meuJPanel;
+        Tomates tomateFake = getTomateFake(x1 + 1, y1 + 1);
+        painelAuxfake.setTom(tomateFake);
+
+        painelAuxfake.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+                final JFrame parent = new JFrame();
+                TomateDialog t1 = new TomateDialog(parent, true, painelAuxfake.getTom());
+                t1.setSize(800, 600);
+                //System.out.println(painelAux.getTom().getNomeArquivo());
+
+                // final SimpleDateFormat formatoBr = new SimpleDateFormat(formatoDataBr);
+                t1.setTitle("Teste");
+                t1.setVisible(true);
+                t1.setLocationRelativeTo(null);
+
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                //evento passar mouse aqui
+
+                painelAuxfake.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+
+                //matrizpainel[x][y].setBackground(Color.red);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                //evento sair do target aqui
+                painelAuxfake.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+            }
+
+        });//final evento
+    }
+    
+       //SISTOM-4
+    
+      public static void calculaRuaELinhaPorColuna (int coluna,Tomates tomate){
+          int rua;
+           //de acordo com o inverso do calculo da coluna.
+          if (coluna % 2 == 0){ 
+            tomate.setLinha("b");
+             rua = coluna / 2;
+            tomate.setRua(rua);
+           }
+          else{
+              tomate.setLinha("a");
+             rua = ( coluna +1 ) / 2;
+            tomate.setRua(rua); 
+          }
+         
+    }
+    
+    /**
+     *
+     * @param numTom
+     * @param coluna
+     * @return
+     * SISTOM-4
+     */
+    public static Tomates getTomateFake(int numTom, int coluna) {
+        Tomates tomateFake = new Tomates();
+        tomateFake.setNumTom(numTom);
+        String nomeArquivoTomateFake = "EMPTY.JPG";
+        
+        tomateFake.setNomeArquivo(nomeArquivoTomateFake);
+        calculaRuaELinhaPorColuna(coluna, tomateFake);
+        ImagemProcessada imagemProcessadaFake = new ImagemProcessada();
+        //1 é o estado padrão para tomateiros que não estão resgistrados na base (considera-se que está saudável)
+        imagemProcessadaFake.setEstado(1);
+        tomateFake.setImagemProcessada(imagemProcessadaFake);
+        return tomateFake;
     }
 
 

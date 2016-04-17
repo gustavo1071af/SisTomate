@@ -6,12 +6,12 @@
 package mapeamento;
 
 
-import mapeamento.beans.Tomates;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import mapeamento.beans.ImagemProcessada;
+import mapeamento.beans.Tomates;
 
 /**
  *
@@ -24,24 +24,33 @@ public class TomateDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form TesteDialog
+     * @param parent
+     * @param modal
+     * @param tom
      */
     public TomateDialog(java.awt.Frame parent, boolean modal, Tomates tom) {
         super(parent, modal);
         initComponents();
        // System.out.println(tom.getLinha());
         ImagemProcessada imagemProcessada = tom.getImagemProcessada();     
-        labelNomearquivo.setText(labelNomearquivo.getText() +" "+imagemProcessada.getNomeArquivo());
-        labelVermelhos.setText(labelVermelhos.getText() +" "+ imagemProcessada.getVermelhos());
+        
+        String nomeArquivoDaImagem = imagemProcessada.getNomeArquivo() != null ? imagemProcessada.getNomeArquivo() : "---";
+        labelNomearquivo.setText(labelNomearquivo.getText() +" "+nomeArquivoDaImagem);
+        String vermelhos = imagemProcessada.getVermelhos() != 0 ? Integer.toString(imagemProcessada.getVermelhos()) : "---";
+        labelVermelhos.setText(labelVermelhos.getText() +" "+vermelhos);
+        String verdes = imagemProcessada.getVerdes() != 0 ? Integer.toString(imagemProcessada.getVerdes()) : "---";
         labelVerdes.setText(labelVerdes.getText() +" "+ imagemProcessada.getVerdes());
         labelNumtom.setText(labelNumtom.getText() +" "+ tom.getNumTom());
         labelRua.setText(labelRua.getText() +" "+ tom.getRua());
         labelLinha.setText(labelLinha.getText() +" "+ tom.getLinha());
         String longi = tom.getLongi() != null ? tom.getLongi() : "---";
         labelLong.setText(labelLong.getText() +" "+ longi);
-         String lat = tom.getLat() != null ?tom.getLat() : "---";
+         String lat = tom.getLat() != null ? tom.getLat() : "---";
         labelLat.setText(labelLat.getText() +" "+ lat);
         SimpleDateFormat formatoBr = new SimpleDateFormat(formatoDataBr);
-        labelData.setText(labelData.getText() +" "+ formatoBr.format(tom.getData()));
+        String data =tom.getData() != null ? formatoBr.format(tom.getData()) : "---";
+
+        labelData.setText(labelData.getText() +" "+data );
         //imagem do estado
        
         labelEstado.setText(labelEstado.getText() +" "+ imagemProcessada.getEstado());

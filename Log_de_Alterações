@@ -41,6 +41,8 @@ Foi criado a classe do Autometo, entretanto está apenas no início da adaptaç�
 até chegar nela.
 Em Preencher_Variaveis.java foi removido os campos que não precisão mais, deixando apenas os campos "Humidade Rel. do Ar", 
 " índice pluviométrico:", além da quatidade de interações.
-Foi feito a tela da simulação que recebe o mapa atual do talha, porém, pode ser que necessitamos de uma outra classe de mapa porque todos 
+Foi feito a tela da simulação que recebe o mapa atual do talhao, porém, pode ser que necessitamos de uma outra classe de mapa porque todos 
 os elementos do mapa precisam de um estado(mesmo os que não estão na base).
-- Falta fazer: Vincular a classe do altomato na tela da simulação.
+- Foi criado uma nova classe(MapaParaSimulacao.java) baseado no Mapa.java; A dieferença é que esta criará um grid, em que cada elemente receberá um bean de Tomates, 
+porque para simulação, calcularemos o próximo estado dos elementos de acordo com a situação dos seus vizinhos.
+- Falta fazer: Vincular a classe do automato na tela da simulação.

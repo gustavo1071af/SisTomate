@@ -72,9 +72,9 @@ public class TomatesDAO {
                 + "AND t.linha = i.Tomate_linha\n"
                 + "AND t.numtom = i.Tomate_numtom\n"
                 + "AND t.data = i.Tomate_data "
-                + "AND t.idTalhao = '"+ talhao+"' "
+                + "AND t.idTalhao = '"+ talhao+"' ";
                 //ordenação  por rua linha e numtom
-                + "ORDER BY LPAD( t.rua, 4,  '0' ) asc, t.linha asc, lpad( t.numtom, 4,  '0' ) asc";
+               // + "ORDER BY LPAD( t.rua, 4,  '0' ) asc, t.linha asc, lpad( t.numtom, 4,  '0' ) asc";
         Connection con = new Conn().getConnection();
         List<Tomates> tomates = new ArrayList<>();
         try {
@@ -90,13 +90,13 @@ public class TomatesDAO {
                 tom.setData(data);
                 tom.setLongi(rs.getString("longi"));
                 tom.setLat(rs.getString("lat"));
-                
+              
                 ImagemProcessada imgProcessada = new ImagemProcessada();
-                imgProcessada.setVermelhos(rs.getInt("vermelhos"));
-                imgProcessada.setVerdes(rs.getInt("verdes"));
-                imgProcessada.setVerdes(rs.getInt("pretos"));
+                imgProcessada.setVermelhos(rs.getInt("i.vermelhos"));
+                imgProcessada.setVerdes(rs.getInt("i.verdes"));
+                imgProcessada.setPretos(rs.getInt("i.pretos"));
                 imgProcessada.setNomeArquivo(rs.getString("i.nomearquivo"));
-                imgProcessada.setEstado(rs.getInt("estado"));
+                imgProcessada.setEstado(rs.getInt("i.estado"));
                 
                 tom.setImagemProcessada(imgProcessada);
 
