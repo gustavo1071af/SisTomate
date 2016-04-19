@@ -1,4 +1,4 @@
-package mapeamento;
+    package mapeamento;
 
 import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Talhao;
@@ -9,27 +9,27 @@ import mapeamento.beans.Tomates;
  * @author Gustavo
  * @creationDate 10/04/2016
  */
-public class Automato {
+public class Automato_old {
 
         private final Talhao talhao;
 	private final int X;
         private final int Y;
-        private MeuJPanel [][] matriz;
+        private Tomates [][] matriz;
 
     /**
      *
      * @param talhao
      */
-    public Automato(Talhao talhao) {
+    public Automato_old(Talhao talhao) {
         this.talhao = talhao;
         this.X = talhao.getQtd_TomatesPorLinhas();
         //considerando que cada rua tem 2 linhas.
         this.Y = talhao.getQtdRuas() * 2;
-        this.matriz = new MeuJPanel[X][Y];
+        this.matriz = new Tomates [X][Y];
     }
 
 	
-	public void inicializa(MeuJPanel matriz[][])//recebe valor inicial
+	public void inicializa(Tomates matriz[][])//recebe valor inicial
 	{
 		int i, j, max_X, max_Y;
                 
@@ -56,8 +56,7 @@ public class Automato {
 		
 		for(i=0; i <max_X; i++){
 			for(j=0; j < max_Y; j++){
-                            Tomates tom = matriz[i][j].getTom();
-                            ImagemProcessada imagemProcessada = tom.getImagemProcessada();
+                            ImagemProcessada imagemProcessada = matriz[i][j].getImagemProcessada();
                             int estado = imagemProcessada.getEstado();
                             System.out.print(estado);
 				
@@ -79,14 +78,14 @@ public class Automato {
             int min = 0;
             int max_X = this.X-1;
             int max_Y = this.Y-1;
-            int cantoEsquerdoSuperior = (i!=min && j!=min) ? matriz[i - 1][j - 1].getTom().getImagemProcessada().getEstado(): 0;
-            int meioSuperior = (i!=min) ? matriz[i - 1][j + 1].getTom().getImagemProcessada().getEstado() : 0;
-            int cantoDireitoSuperior = (i!=min && j!=max_Y) ? matriz[i - 1][j + 1].getTom().getImagemProcessada().getEstado() : 0;
-            int meioEsquerdo = (j!=min) ? matriz[i - 1][j + 1].getTom().getImagemProcessada().getEstado() : 0;
-            int meioDireito = (j!=max_Y) ? matriz[i - 1][j + 1].getTom().getImagemProcessada().getEstado() : 0;
-            int cantoEsquerdoInferior = (i!=max_X && j!=min) ? matriz[i - 1][j + 1].getTom().getImagemProcessada().getEstado() : 0;
-            int meioInferior = (i!=max_X) ? matriz[i - 1][j + 1].getTom().getImagemProcessada().getEstado(): 0 ;
-            int cantoDireitoInferior = (i!=max_X && j!=max_Y) ? matriz[i - 1][j + 1].getTom().getImagemProcessada().getEstado() : 0;
+            int cantoEsquerdoSuperior = (i!=min && j!=min) ? matriz[i - 1][j - 1].getImagemProcessada().getEstado(): 0;
+            int meioSuperior = (i!=min) ? matriz[i - 1][j].getImagemProcessada().getEstado() : 0;
+            int cantoDireitoSuperior = (i!=min && j!=max_Y) ? matriz[i - 1][j + 1].getImagemProcessada().getEstado() : 0;
+            int meioEsquerdo = (j!=min) ? matriz[i][j - 1].getImagemProcessada().getEstado() : 0;
+            int meioDireito = (j!=max_Y) ? matriz[i][j + 1].getImagemProcessada().getEstado() : 0;
+            int cantoEsquerdoInferior = (i!=max_X && j!=min) ? matriz[i + 1][j - 1].getImagemProcessada().getEstado() : 0;
+            int meioInferior = (i!=max_X) ? matriz[i + 1][j].getImagemProcessada().getEstado(): 0 ;
+            int cantoDireitoInferior = (i!=max_X && j!=max_Y) ? matriz[i + 1][j + 1].getImagemProcessada().getEstado() : 0;
             
             //vizinhaca é a soma dos estados
             int vizinhaca = cantoEsquerdoSuperior+meioSuperior+cantoDireitoSuperior+meioEsquerdo+meioDireito+cantoEsquerdoInferior+meioInferior+cantoDireitoInferior;
@@ -97,20 +96,19 @@ public class Automato {
      *
      * @return
      */
-    public MeuJPanel [][] iteracao(){
-		MeuJPanel [][] aux = new MeuJPanel[X][Y];
+    public Tomates [][] iteracao(){
+		Tomates [][] aux = new Tomates [X][Y];
 		int i, j, max_X, max_Y;
                 max_X = this.X-1;
                 max_Y = this.Y-1;
 		
 		for (i = 0; i < max_X; i++){
 			for (j = 0; j < max_Y; j++){
-                            Tomates tom = matriz[i][j].getTom();
-                            ImagemProcessada imagemProcessada = tom.getImagemProcessada();
+                            ImagemProcessada imagemProcessada = matriz[i][j].getImagemProcessada();
                             int estado = imagemProcessada.getEstado();
                                // COLOCAR REGRAS AQUI
                                aux[i][j] = matriz[i][j];
-                               ImagemProcessada imagemProcessadaForAux= tom.getImagemProcessada();
+                               ImagemProcessada imagemProcessadaForAux= aux[i][j].getImagemProcessada();
 				if( estado == 1){
 					if((vizinhos(i,j) < 2) || (vizinhos(i,j) > 3)){
                                            
