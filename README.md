@@ -43,6 +43,6 @@ obs. Cuidado com os merges para não remover códigos dos outros integrantes.
 *IMPORTANTE: NOVO PADRÃO -> Fazer consultas no banco de dados apenas nas classes DAO.*
 
 
-*Caso tiver com duvidas na utilização do git no netbeans, estudar o link:
+*Caso tiver com duvidas na utilização do git no netbeans, estudar os links:
 https://netbeans.org/kb/docs/ide/git.html
 https://git-scm.com/book/pt-br/v1/Git-Essencial-Trabalhando-com-Remotos
