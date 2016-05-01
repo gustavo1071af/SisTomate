@@ -50,3 +50,10 @@ porque para simulação, calcularemos o próximo estado dos elementos de acordo 
 e que logicamente possuem uma classe Tomates na sua composição. Contudo tem o estado que o automato necessita, não perdendo a estrutura do mapa.
 
 SISTOM-5<sucupira>: Mudar a organização dos estados, que atualmente está de 0-6, para 0-5. Pois na forma antiga o valor 0 nunca é usado;
+- Impacto: com essa alteração, os tomates que tiverem menor ou igual a 3% de infecção não terá influencia para infectar vizinhos(levando em consideração o estado), 
+pois ele estará com o estado 0.
+- Aguandando a opnião da G. Kupac para a alteração
+- Dúvida encontrada: A função setGradKey() na classe imagem não está coerente com a escala de estados nos artigos feitos, a função retorna o estado que a taxa é por aproximação.
+Está certo isso? > Em testes feitos os resuldos seguem:
+-- gk = 4 / resultado: estado 1 / de acordo com a metodologia dos artigos o resultado deveria ser: 2
+-- gk = 13 / resultado: estado 2 / de acordo com a metodologia dos artigos o resultado deveria ser: 3
