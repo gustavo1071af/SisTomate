@@ -48,6 +48,7 @@ porque para simulação, calcularemos o próximo estado dos elementos de acordo 
 - Falta fazer: Vincular a classe do automato na tela da simulação.*DONE*
 -- Alterei a matriz, o que antes era matriz de inteiro comum, para uma matriz de meu MeuJPanel, que é o Panel usado para os grids que representam um tomateiro 
 e que logicamente possuem uma classe Tomates na sua composição. Contudo tem o estado que o automato necessita, não perdendo a estrutura do mapa.
+- Fiz com que as variáveis sejam levada a classe da simulaçao, mostrando-os na tela ao lado dos botoes.
 
 SISTOM-5<sucupira>: Mudar a organização dos estados, que atualmente está de 0-6, para 0-5. Pois na forma antiga o valor 0 nunca é usado;
 - Impacto: com essa alteração, os tomates que tiverem menor ou igual a 3% de infecção não terá influencia para infectar vizinhos(levando em consideração o estado), 

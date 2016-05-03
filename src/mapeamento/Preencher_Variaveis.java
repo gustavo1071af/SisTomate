@@ -33,33 +33,33 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        textfield_Humid = new javax.swing.JTextField();
+        textField_Humid = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        textField_Temp = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        textField_Pluv = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         iniciarSimulacao = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textField_inter = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
 
         jLabel1.setText("Humidade Rel. do Ar: ");
 
-        textfield_Humid.addActionListener(new java.awt.event.ActionListener() {
+        textField_Humid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textfield_HumidActionPerformed(evt);
+                textField_HumidActionPerformed(evt);
             }
         });
 
         jLabel2.setText("Temperatura Média:");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        textField_Temp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                textField_TempActionPerformed(evt);
             }
         });
 
@@ -85,11 +85,11 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         jLabel10.setFont(new java.awt.Font("Tahoma", 2, 10)); // NOI18N
         jLabel10.setText("%");
 
-        jLabel11.setText("Duração:");
+        jLabel11.setText("Interações");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        textField_inter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                textField_interActionPerformed(evt);
             }
         });
 
@@ -112,16 +112,16 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                            .addComponent(jTextField3)
-                            .addComponent(textfield_Humid))
+                            .addComponent(textField_Temp, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
+                            .addComponent(textField_Pluv)
+                            .addComponent(textField_Humid))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textField_inter, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -139,22 +139,22 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(textfield_Humid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(textField_Humid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textField_Temp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textField_Pluv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textField_inter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(iniciarSimulacao)
@@ -162,21 +162,26 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void textField_TempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField_TempActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_textField_TempActionPerformed
 
-    private void textfield_HumidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfield_HumidActionPerformed
+    private void textField_HumidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField_HumidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textfield_HumidActionPerformed
+    }//GEN-LAST:event_textField_HumidActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void textField_interActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField_interActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_textField_interActionPerformed
 
     private void iniciarSimulacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSimulacaoActionPerformed
-        //SISTOM-4 
-        PainelDeSimulacao janela = new PainelDeSimulacao(frame,talhao);             
+        //criar validador do form
+        //SISTOM-4
+        int humid = Integer.parseInt(textField_Humid.getText());
+        int temp = Integer.parseInt(textField_Temp.getText());
+        int pluv = Integer.parseInt(textField_Pluv.getText());
+        int qtdInter = Integer.parseInt(textField_inter.getText());
+        PainelDeSimulacao janela = new PainelDeSimulacao(frame,talhao,humid, temp, pluv, qtdInter);             
         frame.mudaTela(janela);
     }//GEN-LAST:event_iniciarSimulacaoActionPerformed
 
@@ -192,9 +197,9 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField textfield_Humid;
+    private javax.swing.JTextField textField_Humid;
+    private javax.swing.JTextField textField_Pluv;
+    private javax.swing.JTextField textField_Temp;
+    private javax.swing.JTextField textField_inter;
     // End of variables declaration//GEN-END:variables
 }

@@ -15,15 +15,28 @@ import java.awt.Dimension;
  */
 public class PainelDeSimulacao extends javax.swing.JPanel {
 
-    private String talhao;
+    private final String talhao;
+    private final int humidadeMedia;
+    private final int temperaturaMedia;
+    private final int indicePluviometrico;
+    private final int quantidadeInteracao;
     /**
      * Creates new form PainelDeSimulacao
      * @param frame
      * @param talhao
+     * @param humid
+     * @param temp
+     * @param pluv
+     * @param qtdInter
      */
-    public PainelDeSimulacao(Abertura frame,String talhao) {
+    public PainelDeSimulacao(Abertura frame,String talhao, int humid, int temp, int pluv, int qtdInter) {
         this.talhao = talhao;
+        this.humidadeMedia = humid;
+        this.temperaturaMedia = temp;
+        this.indicePluviometrico = pluv;
+        this.quantidadeInteracao = qtdInter;              
         initComponents();
+        mostrarVariaveisIniciais();
         MapaParaSimulacao mapaParaSimulacao = new MapaParaSimulacao(talhao);
         mapaParaSimulacao.setMinimumSize(new Dimension(400, 300));   
         painelMapa.add(mapaParaSimulacao, BorderLayout.CENTER);
@@ -47,7 +60,9 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        textPaneIteracoes = new javax.swing.JTextPane();
+        textPanel_interacaoAtual = new javax.swing.JTextPane();
+        textPaneI_separador = new javax.swing.JTextPane();
+        textPaneI_interacaoMaxima = new javax.swing.JTextPane();
         buttonIniciar = new javax.swing.JButton();
         buttonAnterior = new javax.swing.JButton();
         buttonProximo = new javax.swing.JButton();
@@ -59,12 +74,17 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        textPaneIteracoes.setEditable(false);
-        textPaneIteracoes.setText("0 - 15");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
-        jPanel1.add(textPaneIteracoes, gridBagConstraints);
+        textPanel_interacaoAtual.setEditable(false);
+        textPanel_interacaoAtual.setText("-");
+        jPanel1.add(textPanel_interacaoAtual, new java.awt.GridBagConstraints());
+
+        textPaneI_separador.setEditable(false);
+        textPaneI_separador.setText("-");
+        jPanel1.add(textPaneI_separador, new java.awt.GridBagConstraints());
+
+        textPaneI_interacaoMaxima.setEditable(false);
+        textPaneI_interacaoMaxima.setText("-");
+        jPanel1.add(textPaneI_interacaoMaxima, new java.awt.GridBagConstraints());
 
         buttonIniciar.setText("Iniciar");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -87,7 +107,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         jPanel1.add(buttonMudar, gridBagConstraints);
 
         textPaneParametros.setEditable(false);
-        textPaneParametros.setText(" teste teste teste teste teste teste");
+        textPaneParametros.setText("...");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
@@ -101,15 +121,15 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+            .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -121,7 +141,25 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     private javax.swing.JButton buttonProximo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel painelMapa;
-    private javax.swing.JTextPane textPaneIteracoes;
+    private javax.swing.JTextPane textPaneI_interacaoMaxima;
+    private javax.swing.JTextPane textPaneI_separador;
     private javax.swing.JTextPane textPaneParametros;
+    private javax.swing.JTextPane textPanel_interacaoAtual;
     // End of variables declaration//GEN-END:variables
+
+    private void mostrarVariaveisIniciais() {
+        textPanel_interacaoAtual.setText("1");
+        textPaneI_interacaoMaxima.setText(Integer.toString(quantidadeInteracao));
+        
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Humid.: ");
+        stringBuilder.append(humidadeMedia);
+        stringBuilder.append(" Temp.: ");
+         stringBuilder.append(temperaturaMedia);
+         stringBuilder.append(" Pluv.: ");
+         stringBuilder.append(indicePluviometrico);
+        final String string = stringBuilder.toString();
+        
+        textPaneParametros.setText(string);
+    }
 }
