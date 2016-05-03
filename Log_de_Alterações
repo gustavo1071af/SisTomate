@@ -60,3 +60,6 @@ Está certo isso? > Em testes feitos os resuldos seguem:
 -- gk = 13 / resultado: estado 2 / de acordo com a metodologia dos artigos o resultado deveria ser: 3
 
 SISTOM-6<sucupira>: Fazer a animação(em java) dos paineis na tela da simulação.
+
+
+SISTOM-7<sucupira>: Fazer o validador no formulário da simulação(Preencher_Variaveis.java).
