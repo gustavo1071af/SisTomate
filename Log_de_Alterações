@@ -64,6 +64,11 @@ SISTOM-6<sucupira>: Fazer a animação(em java) dos paineis na tela da simulaç�
 
 SISTOM-7<sucupira>: Fazer o validador no formulário da simulação(Preencher_Variaveis.java).
 
-SISTOM-8<sucupira>: Fazer a modelagem dda entidade Localidade e de seus DadosMeteorologicos que serão usados para simulação.
+SISTOM-8<sucupira>: Fazer a modelagem da entidade Localidade e de seus DadosMeteorologicos que serão usados para simulação.
+- Foi criado as entidades no banco de dados(versão 5), inclusive com os dados meteorologicos ja populados.
+- foi criado os beans Localidade(onde guarda a informação do local onde foi coletados os dados) e DadosMeteorologiscos que está vinculado a uma Localidade.
+Obs: no base temos apenas um localidade(por enquato a de teste), entretanto, modelei para o sistema possa ter mais de um caso for preciso.
+- foi criado as classes DAO referente aos beans citados acima.
+-Tambem foi criado uma classe(PopulaDadosMeteoro) que lê o arquivo excel e salva automaticamente os Dados meteorologicos no banco de dados, caso for necessário futuramente.
 
  
