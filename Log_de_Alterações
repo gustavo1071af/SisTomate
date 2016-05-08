@@ -71,4 +71,4 @@ Obs: no base temos apenas um localidade(por enquato a de teste), entretanto, mod
 - foi criado as classes DAO referente aos beans citados acima.
 -Tambem foi criado uma classe(PopulaDadosMeteoro) que lê o arquivo excel e salva automaticamente os Dados meteorologicos no banco de dados, caso for necessário futuramente.
 
- 
+SISTOM-9<sucupira>: Colocar novos campos na tela de escolha de variaveis da simulação de acordo com o que foi decidido na reunião 04/05/2016 com a gizelle
