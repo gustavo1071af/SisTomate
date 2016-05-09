@@ -5,8 +5,12 @@
  */
 package mapeamento;
 
+import ENUNS.DirecoesDoVento;
+import ENUNS.SimOuNao;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *  SISTOM-4
@@ -16,37 +20,43 @@ import java.awt.Dimension;
 public class PainelDeSimulacao extends javax.swing.JPanel {
 
     private final String talhao;
-    private final int humidadeMedia;
+    private final int umidade;
     private final int temperaturaMedia;
-    private final int indicePluviometrico;
     private final int quantidadeInteracao;
+    //SISTOM-9
+    private final DirecoesDoVento direcao;
+    private final SimOuNao chuva;
+    private final Date data;
+    private final int mediaHistorica;
+    private static final SimpleDateFormat FORMATO_BR = new SimpleDateFormat("dd/MM/yyyy");
+
     /**
-     * Creates new form PainelDeSimulacao
+     *
      * @param frame
      * @param talhao
-     * @param humid
+     * @param umid
      * @param temp
-     * @param pluv
+     * @param direcao
+     * @param chuva
+     * @param data
+     * @param mediaHistorica
      * @param qtdInter
      */
-    public PainelDeSimulacao(Abertura frame,String talhao, int humid, int temp, int pluv, int qtdInter) {
+    public PainelDeSimulacao(Abertura frame, String talhao, int umid, int temp, DirecoesDoVento direcao, SimOuNao chuva, Date data, int mediaHistorica, int qtdInter)
+    {
         this.talhao = talhao;
-        this.humidadeMedia = humid;
+        this.umidade = umid;
         this.temperaturaMedia = temp;
-        this.indicePluviometrico = pluv;
-        this.quantidadeInteracao = qtdInter;              
+        this.quantidadeInteracao = qtdInter;    
+        this.direcao = direcao;
+        this.chuva = chuva;
+        this.data = data;
+        this.mediaHistorica = mediaHistorica;
         initComponents();
         mostrarVariaveisIniciais();
         MapaParaSimulacao mapaParaSimulacao = new MapaParaSimulacao(talhao);
         mapaParaSimulacao.setMinimumSize(new Dimension(400, 300));   
         painelMapa.add(mapaParaSimulacao, BorderLayout.CENTER);
-       
-       
-       
-       
-       // painelMapa.add(new JButton("teste"));
-     
-        
     }
 
     /**
@@ -121,8 +131,8 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
-            .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,12 +162,23 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         textPaneI_interacaoMaxima.setText(Integer.toString(quantidadeInteracao));
         
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Humid.: ");
-        stringBuilder.append(humidadeMedia);
+        stringBuilder.append("Umid.: ");
+        stringBuilder.append(umidade);
+        stringBuilder.append(",");
         stringBuilder.append(" Temp.: ");
          stringBuilder.append(temperaturaMedia);
-         stringBuilder.append(" Pluv.: ");
-         stringBuilder.append(indicePluviometrico);
+          stringBuilder.append(",");
+         stringBuilder.append(" Chuv.: ");
+         stringBuilder.append(chuva.getValor()? "Sim" : "Não");
+          stringBuilder.append(",");
+          stringBuilder.append(" Direç.: ");
+         stringBuilder.append(direcao.getValor());
+          stringBuilder.append(",");
+          stringBuilder.append(" Data.: ");
+         stringBuilder.append(FORMATO_BR.format(data));
+          stringBuilder.append(",");
+          stringBuilder.append(" Média Hist.: ");
+         stringBuilder.append(mediaHistorica);
         final String string = stringBuilder.toString();
         
         textPaneParametros.setText(string);

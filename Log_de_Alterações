@@ -71,4 +71,8 @@ Obs: no base temos apenas um localidade(por enquato a de teste), entretanto, mod
 - foi criado as classes DAO referente aos beans citados acima.
 -Tambem foi criado uma classe(PopulaDadosMeteoro) que lê o arquivo excel e salva automaticamente os Dados meteorologicos no banco de dados, caso for necessário futuramente.
 
-SISTOM-9<sucupira>: Colocar novos campos na tela de escolha de variaveis da simulação de acordo com o que foi decidido na reunião 04/05/2016 com a gizelle
+SISTOM-9<sucupira>: Colocar novos campos na tela de escolha de variaveis da simulação de acordo com o que foi decidido na reunião 04/05/2016 com a gizelle;
+- FOI adicionado os novos campos, inclusive, mudei o estrutura da tela colocando um Borderlayout no painel principal, o form coloquei dentro de um outro painel
+com um Grid Bag Layout(setei o painel para ficar no centro do painel principal) para facilitar no alinhamento dos campos e fiz um painel rodapé(setei para ficar no sul) que vai levar apenas o botão
+de "Iniciar Simulação" para ficar semelhante das outras telas.
+- Adaptei os parametros para o painel de simulação para apresentar as variáveis escolhidadas.
