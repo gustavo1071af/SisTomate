@@ -78,3 +78,11 @@ de "Iniciar Simulação" para ficar semelhante das outras telas.
 - Adaptei os parametros para o painel de simulação para apresentar as variáveis escolhidadas.
 
 SISTOM-10<sucupira>: Adaptar automato para cada celula infectar os seus vizinhos de acordo com a direção do vento, e não ter o ccomportamento de infectado.
+- Foi adicionado um atributo na classe de ImagemProcessada "estadoComVariacao". este atributo guardará a soma do estado com a variação na infecção.
+Foi preciso criá-lo pois, o estado é inteiro e a variação não, logo fica dificil fazer um somatorio do estado com as variações. Sendo assim, o estado
+será setado a cada infecção infecção com o valor arredondado do atributo estadoComVeriacao.
+- Foi feita a função afetaVizinhaca na classe do Automato, que tem o objetivo de infectar as plantas vizinhas de acordo com a direcao do vento.
+-- Primeiramente tivemos que alterar a funcao inicializa do automato para setar o valor do atributo estadoComVariacao com o valor do estado(transformado em Double).
+-- fizemos as regras para infectar apenas o vizinho referente ao sentido da direcao e seus dois vizinhos ao lado. 
+ex: Direcao = Sul_Para_Norte: infectados será a celula(planta) meioSuperior e suas duas vizinhas aos lados cantoEsquerdoSuperior e cantoDireitoSuperior.
+-- Setamos o atributo estadoComVariacao para o (estadoComVariacao+variacao) e o atrbuto estado é setado com valor arredondado do estadoComVariacao.
