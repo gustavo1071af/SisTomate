@@ -76,3 +76,5 @@ SISTOM-9<sucupira>: Colocar novos campos na tela de escolha de variaveis da simu
 com um Grid Bag Layout(setei o painel para ficar no centro do painel principal) para facilitar no alinhamento dos campos e fiz um painel rodapé(setei para ficar no sul) que vai levar apenas o botão
 de "Iniciar Simulação" para ficar semelhante das outras telas.
 - Adaptei os parametros para o painel de simulação para apresentar as variáveis escolhidadas.
+
+SISTOM-10<sucupira>: Adaptar automato para cada celula infectar os seus vizinhos de acordo com a direção do vento, e não ter o ccomportamento de infectado.
