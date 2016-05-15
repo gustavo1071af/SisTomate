@@ -86,3 +86,12 @@ será setado a cada infecção infecção com o valor arredondado do atributo es
 -- fizemos as regras para infectar apenas o vizinho referente ao sentido da direcao e seus dois vizinhos ao lado. 
 ex: Direcao = Sul_Para_Norte: infectados será a celula(planta) meioSuperior e suas duas vizinhas aos lados cantoEsquerdoSuperior e cantoDireitoSuperior.
 -- Setamos o atributo estadoComVariacao para o (estadoComVariacao+variacao) e o atrbuto estado é setado com valor arredondado do estadoComVariacao.
+
+SISTOM-11<sucupira>: Construção da função que calcula os riscos(3, 5 e 10) que serão usados para calcular a variacao que infectara os vizinhos.
+- Foi feito a estrutura da função e a query que buscará as medias de temperatura, umidade e de chuva referente a cada dia de interação e usando uma media histórica 
+de dados meteorologicos de 5 ou 10 anos.
+- A média da chuva está definindo se choveu ou não naquele dia do ano, ou seja, se a media for >= 0.5, o sistema prevê que chuverá, caso contrário não 
+choverá.
+- Os riscos e o contador de dias favoraveis a requeima estão definidos como uma variavel geral(atributo) do automato, fizemos isso para ter acesso
+a qualquer uma delas em todo processo de simulação.
+
