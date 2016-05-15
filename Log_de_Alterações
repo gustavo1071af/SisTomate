@@ -95,3 +95,5 @@ choverá.
 - Os riscos e o contador de dias favoraveis a requeima estão definidos como uma variavel geral(atributo) do automato, fizemos isso para ter acesso
 a qualquer uma delas em todo processo de simulação.
 
+SISTOM-12<sucupira>: Definir as regras de calculo de riscos.
+
