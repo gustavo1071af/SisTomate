@@ -17,8 +17,11 @@ public class DadosMeteorologicos {
     private int id;
     private Date data;
     private double temperaturaMedia;
-    private int umidade;
+    private double umidade;
     private Boolean chuva;
+    private double temperaturaMinima;
+    private double temperaturaMaxima;
+    private double precipitacao;
     private Localidade localidade;
    
 
@@ -67,15 +70,15 @@ public class DadosMeteorologicos {
     /**
      * @return the humidade
      */
-    public int getUmidade() {
+    public double getUmidade() {
         return umidade;
     }
 
     /**
-     * @param humidade the humidade to set
+     * @param hmidade the umidade to set
      */
-    public void setUmidade(int humidade) {
-        this.umidade = humidade;
+    public void setUmidade(double umidade) {
+        this.umidade = umidade;
     }
 
     /**
@@ -104,6 +107,54 @@ public class DadosMeteorologicos {
      */
     public void setLocalidade(Localidade localidade) {
         this.localidade = localidade;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getTemperaturaMinima() {
+        return temperaturaMinima;
+    }
+
+    /**
+     *
+     * @param temperaturaMinima
+     */
+    public void setTemperaturaMinima(double temperaturaMinima) {
+        this.temperaturaMinima = temperaturaMinima;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getTemperaturaMaxima() {
+        return temperaturaMaxima;
+    }
+
+    /**
+     *
+     * @param temperaturaMaxima
+     */
+    public void setTemperaturaMaxima(double temperaturaMaxima) {
+        this.temperaturaMaxima = temperaturaMaxima;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getPrecipitacao() {
+        return precipitacao;
+    }
+
+    /**
+     *
+     * @param precipitacao
+     */
+    public void setPrecipitacao(double precipitacao) {
+        this.precipitacao = precipitacao;
     }
     
     

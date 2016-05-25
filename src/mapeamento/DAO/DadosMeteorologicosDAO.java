@@ -45,8 +45,14 @@ public class DadosMeteorologicosDAO {
                 DadosMeteorologicos dadosMeteorologicos = new DadosMeteorologicos();
                 dadosMeteorologicos.setData(rs.getDate("data"));
                 dadosMeteorologicos.setTemperaturaMedia(rs.getDouble("temp_media"));
-                dadosMeteorologicos.setUmidade(rs.getInt("umidade"));
+                dadosMeteorologicos.setUmidade(rs.getDouble("umidade"));
                 dadosMeteorologicos.setChuva(rs.getBoolean("flag_chuva"));
+                dadosMeteorologicos.setChuva(rs.getBoolean("flag_chuva"));
+                //SISTOM-12
+                
+                dadosMeteorologicos.setTemperaturaMinima(rs.getDouble("temp_min"));
+                dadosMeteorologicos.setTemperaturaMaxima(rs.getDouble("temp_max"));
+                dadosMeteorologicos.setPrecipitacao(rs.getDouble("precipitacao"));
                 dadosMeteorologicos.setLocalidade(localidade);
                 dadosMeteorologicos.setId(rs.getInt("id"));
 
@@ -88,6 +94,7 @@ public class DadosMeteorologicosDAO {
         Triplet<Double, Double, Double> result = null;
         try {
             Statement stmt = con.createStatement();
+            System.out.println(sql);
             ResultSet rs = stmt.executeQuery(sql);
 
             if (rs.next()) {
@@ -95,7 +102,7 @@ public class DadosMeteorologicosDAO {
                 double media_umid = rs.getDouble("media_umid");
                 double media_chuva = rs.getDouble("media_chuva");
                
-                Triplet<Double, Double, Double> triplet = new Triplet<Double, Double, Double>(media_temp, media_umid, media_chuva);
+                Triplet<Double, Double, Double> triplet = new Triplet<>(media_temp, media_umid, media_chuva);
 
                 result= triplet;
             }
@@ -109,14 +116,19 @@ public class DadosMeteorologicosDAO {
     public static Boolean saveDadosMeteorologicos(DadosMeteorologicos dadosMeteorologicos) {
         Boolean result = null;
         Localidade localidade = dadosMeteorologicos.getLocalidade();
-        String sql = "INSERT INTO dados_meteorologicos (data, temp_media, umidade, flag_chuva, localidade) VALUES ("
+        String sql = "INSERT INTO dados_meteorologicos (data, temp_media, umidade, flag_chuva, temp_mini, temp_max, precipitacao, localidade) "
+                + "VALUES ("
                 + "'" + dadosMeteorologicos.getData() + "', "
                 + "'" + dadosMeteorologicos.getTemperaturaMedia() + "', "
                 + "'" + dadosMeteorologicos.getUmidade() + "', "
                 + "" + dadosMeteorologicos.getChuva() + ", "
+                //SISTOM-12
+                + "'" + dadosMeteorologicos.getTemperaturaMinima() + "', "
+                + "'" + dadosMeteorologicos.getTemperaturaMaxima() + "', "
+                + "'" + dadosMeteorologicos.getPrecipitacao() + "', "
                 + "'" + localidade.getId() + "');";
         
-        //System.out.println(sql);
+        System.out.println(sql);
 
         Connection con = new Conn().getConnection();
         try {

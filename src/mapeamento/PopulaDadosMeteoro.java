@@ -36,7 +36,7 @@ public class PopulaDadosMeteoro {
       */
      
      //Deve-se configurar o path de acordo com a localização do arquivo
-     Workbook workbook = Workbook.getWorkbook(new File("C:/dadosMeteoro.xls"));
+     Workbook workbook = Workbook.getWorkbook(new File("C:/AlferesFormatadoHyre1954.xls"));
      
       /**
       * * Escolhe a aba
@@ -54,31 +54,42 @@ public class PopulaDadosMeteoro {
              Cell dataCell = sheet.getCell(0, i);
              Cell tempMediaCell = sheet.getCell(1, i);
              Cell umidadeCell = sheet.getCell(2, i);
-             Cell chuvaCell = sheet.getCell(3, i);
-             
+             Cell tempMiniCell = sheet.getCell(3, i);
+             Cell tempMaxCell = sheet.getCell(4, i);
+             Cell precCell = sheet.getCell(5, i);
+
+
              String dataStr = dataCell.getContents();
              String tempMediaStr = tempMediaCell.getContents();
              String umidadeStr = umidadeCell.getContents();
-             String chuvaStr = chuvaCell.getContents();
+             String tempMiniStr = tempMiniCell.getContents();
+             String temMaxStr = tempMaxCell.getContents();
+             String precStr = precCell.getContents();
              
-             //convertendo a data MM/dd/yyyy para yyyy-MM-dd padrão do mysql tipo DATE
+             //convertendo a data dd/MM/yyyy para yyyy-MM-dd padrão do mysql tipo DATE
              
              java.sql.Date data = formataData(dataStr);
-            // System.out.println(data);
+            
              double temperaturaMedia = Double.parseDouble(tempMediaStr);
-             // System.out.println(temperaturaMedia);
-             int umidade = Integer.parseInt(umidadeStr);
-            // System.out.println(umidade);
-               int chuvaInt = Integer.parseInt(chuvaStr);
+             
+             double umidade = Double.parseDouble(umidadeStr);
+            
+            double temperaturaMinima = Double.parseDouble(tempMiniStr);
+            double temperaturaMaxima = Double.parseDouble(temMaxStr);
+            double precipitacao = Double.parseDouble(precStr);
+               
                Boolean chuva;
-               if (chuvaInt == 0) {
-                 chuva = false;
-             }
-               else{
-                 chuva = true;
-               }
-               //System.out.println(chuva);
-              // System.out.println("-------------");
+               chuva = umidade > 90;
+               
+               //Log:
+               System.out.println(data);
+               System.out.println(temperaturaMedia);
+               System.out.println(umidade);
+               System.out.println(chuva);
+               System.out.println(temperaturaMinima);
+               System.out.println(temperaturaMaxima);
+               System.out.println(precipitacao);
+               System.out.println("-------------");
                
               // constroi bean
             
@@ -86,6 +97,9 @@ public class PopulaDadosMeteoro {
              novoDado.setTemperaturaMedia(temperaturaMedia);
              novoDado.setUmidade(umidade);
              novoDado.setChuva(chuva);
+             novoDado.setTemperaturaMinima(temperaturaMinima);
+             novoDado.setTemperaturaMaxima(temperaturaMaxima);
+             novoDado.setPrecipitacao(precipitacao);
              novoDado.setLocalidade(localidade);
              
              //salvaBean
@@ -120,7 +134,7 @@ public class PopulaDadosMeteoro {
  			return null;
          java.sql.Date date = null;
          try {
-             DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+             DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
              date = new java.sql.Date( ((java.util.Date)formatter.parse(data)).getTime() );
          } catch (ParseException e) {            
              throw e;

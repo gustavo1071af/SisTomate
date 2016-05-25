@@ -96,4 +96,8 @@ choverá.
 a qualquer uma delas em todo processo de simulação.
 
 SISTOM-12<sucupira>: Definir as regras de calculo de riscos.
+- Foi definido o modelo que será usado para o calculo de riscos, Hyre(1954) está mais próximo do nosso sistema e dos dados que temos para a previsção.
+- Portanto, esta definição de método precisará de alterações no modelo para guardar novos atributos de dados meteorológicos(temperatura mínim e precipitação)
+agora são necessários.
+- Os dados foram fornecidos pelo Instituto Nacional de Meteorologia: http://www.inmet.gov.br/portal/index.php?r=bdmep/bdmep
 
