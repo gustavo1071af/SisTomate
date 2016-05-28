@@ -2,16 +2,17 @@ package mapeamento;
 
 import ENUNS.DirecoesDoVento;
 import ENUNS.SimOuNao;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import mapeamento.DAO.DadosMeteorologicosDAO;
 import mapeamento.DAO.LocalidadeDAO;
 import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Localidade;
 import mapeamento.beans.Talhao;
 import mapeamento.beans.Tomates;
-import org.javatuples.Triplet;
 
 /**
  *  SISTOM-4
@@ -24,16 +25,22 @@ public class Automato {
     private final int X;
     private final int Y;
     private MeuJPanel[][] matriz;
-    private int risco3;
     private int risco5;
+    private int risco7;
     private int risco10;
+    private int surto;
     private int count;
+    private int diasAposPrimeiroSurto;
     private DirecoesDoVento direcao;
     private int mediaHistorica;
     private int qtdIterecao;
     private Date dataInicio;
     private Localidade localidade;
     private final static int ESTADO_MAXIMO = 6;
+    private final static int QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL = 5;
+    private final static int QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL = 10;
+    private final static Double MEDIA_CINCO_DIAS_PARA_FAVORAVEL = 25.5;
+    private final static Double SOMA_DE_PRECIPITACAO_PARA_FAVORAVEL = 30.0;
     private final static int ESTADO_MINIMO = 0;
     private Date dataBaseadaNaMediaHistorica;
 
@@ -211,25 +218,102 @@ public class Automato {
    }
    
     /**
-     *SISTOM-11
-     * @param data
+     * SISTOM-12
+     * @param mediasTempDosDias
      * @return
      */
-    public Triplet<Double, Double, Double> calculaRiscos(Date data){
+    public Double calcularMediaDosCincoDias (final List<Double> mediasTempDosDias){
+
+        int size = mediasTempDosDias.size();
+        Double somatorio = 0.0;
+        for (Double mediaTemp : mediasTempDosDias) {
+            somatorio += mediaTemp;
+        }
+
+        Double mediaDosCincoDias = somatorio / size;
+        return mediaDosCincoDias;
+
+    }
+    
+    /**
+     * SISTOM-12
+     * @param mediasPrecDosDias
+     * @return
+     */
+    public Double calcularSomaDePrecipitacaoDosDezDias(final List<Double> mediasPrecDosDias) {
+        Double somaDosDezDias = 0.0;
+        for (Double mediaPrecDoDia : mediasPrecDosDias) {
+            somaDosDezDias += mediaPrecDoDia;
+        }
+
+        return somaDosDezDias;
+
+    }
+   
+   
+    /**
+     *SISTOM-11
+     * @param data
+     */
+    public void calculaRiscos(Date data){
        GregorianCalendar calendar = new GregorianCalendar();
-       calendar.setTime(data);
-       int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
-       //Meses no java é um arrai de 0-11, portanto somamos +1 para ficar de acordo com a realidade
-       int mes = calendar.get(GregorianCalendar.MONTH)+1;
        
-        Date coletaFim = this.localidade.getColetaFim();
+        //CALCULAR A MEDIA DAS TEMPERATURAS DOS 5 DIAS ANTERIORES A DATA
+       calendar.setTime(data);
+       final List<Double> mediasTempDosDias = new ArrayList<>();
+       calendar.add(Calendar.DAY_OF_MONTH, - QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL);
+        for (int i = 0; i < QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL; i++) {
+            int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
+            //Meses no java é um arrai de 0-11, portanto somamos +1 para ficar de acordo com a realidade
+            int mes = calendar.get(GregorianCalendar.MONTH)+1;
+       
+            Date coletaFim = this.localidade.getColetaFim();
+
+            final Double mediaTempDoDiaDoAno = DadosMeteorologicosDAO.getMediaTempEntreDatasPorDiaDoMesELocalidadeBaseadoEmHyre(dataBaseadaNaMediaHistorica, coletaFim, dia, mes, localidade);
+            
+            if (mediaTempDoDiaDoAno != null) {
+                mediasTempDosDias.add(mediaTempDoDiaDoAno);
+              
+            }//if
+
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        
+        //resultados 1
+        int qtdDeDiasComTempFavoraveis = mediasTempDosDias.size();
+        Double mediaDasTempDosCincoDias = calcularMediaDosCincoDias(mediasTempDosDias);
+        
+        
+        //AGORA CALCULAR A SOMA DA PRECIPITAÇÃO DOS 10 DIAS ANTERIORES A DATA
+        calendar.setTime(data);
+        
+       
+         calendar.add(Calendar.DAY_OF_MONTH, - QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL);
+        final List<Double> mediasPrecDosDias = new ArrayList<>();
+         for (int i = 0; i < QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL; i++) {
+            int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
+            //Meses no java é um arrai de 0-11, portanto somamos +1 para ficar de acordo com a realidade
+            int mes = calendar.get(GregorianCalendar.MONTH)+1;
+       
+            Date coletaFim = this.localidade.getColetaFim();
+
+            final Double mediaPrecDoDiaDoAno = DadosMeteorologicosDAO.getMediaPrecipitacaoEntreDatasPorDiaDoMesELocalidadeBaseadoEmHyre(dataBaseadaNaMediaHistorica, coletaFim, dia, mes, localidade);
+            
+            if (mediaPrecDoDiaDoAno != null) {
+
+                mediasPrecDosDias.add(mediaPrecDoDiaDoAno);
                 
-       Triplet<Double, Double, Double> mediasDoDiaDoAno = DadosMeteorologicosDAO.getMediasEntreDatasPorDiaDoMesELocalidade(dataBaseadaNaMediaHistorica, coletaFim, dia, mes, localidade);
-       Double mediaTemp = mediasDoDiaDoAno.getValue0();
-       Double mediaUmid = mediasDoDiaDoAno.getValue1();
+            }//if
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+          
+        }
+         
+          //resultados 2
+        Double somaPrecDosDezDias = calcularSomaDePrecipitacaoDosDezDias(mediasPrecDosDias);
+        
       // Double mediaChuva = mediasDoDiaDoAno.getValue2();
-        //VERIFICAR COMO SERÁ DEFINIDO O DIA FAVORAVEL A REQUEIMA
-       if (mediaTemp > 24 && mediaUmid >= 90) {
+        //Modelo Hyre 1954
+       if ( qtdDeDiasComTempFavoraveis >= QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL && mediaDasTempDosCincoDias <= MEDIA_CINCO_DIAS_PARA_FAVORAVEL && somaPrecDosDezDias >= SOMA_DE_PRECIPITACAO_PARA_FAVORAVEL) {
            this.count++;
            //continuar aqui. colocar as regras do risco pela quantidade de dias favoráveis
 
@@ -237,28 +321,29 @@ public class Automato {
            this.count = 0;
        }
        this.risco10 = this.count >= 10 ? 1 : 0;
+       this.risco7 = this.count >= 7 ? 1 : 0;
        this.risco5 = this.count >= 5 ? 1 : 0;
-       this.risco3 = this.count >= 3 ? 1 : 0;
        
-       return mediasDoDiaDoAno;
+      // return mediasDoDiaDoAno;
 
    }
 	
     /**
      *
-     * @param mediasDoDiaDoAno
      * @return
      */
-    public MeuJPanel[][] iteracao(Triplet<Double, Double, Double> mediasDoDiaDoAno) {
+    public MeuJPanel[][] iteracao() {
         MeuJPanel[][] aux = new MeuJPanel[X][Y];
         int i, j, max_X, max_Y;
         max_X = this.X - 1;
         max_Y = this.Y - 1;
-
-        Double media_temp = mediasDoDiaDoAno.getValue0();
-        Double media_umid = mediasDoDiaDoAno.getValue1();
-        Double media_chuva = mediasDoDiaDoAno.getValue2();
-        Boolean chove = Math.round(media_chuva) == 1;
+        Double variacao;
+        String verificador = Integer.toString(surto + 1);
+        surto = count/10.0 == Double.parseDouble(verificador) ? surto+1 : surto;
+        if (surto >= 1) {
+            diasAposPrimeiroSurto++;        
+        }
+        
         //criar variavel de variacao
         for (i = 0; i < max_X; i++) {
             for (j = 0; j < max_Y; j++) {
@@ -267,44 +352,144 @@ public class Automato {
                 int estado = imagemProcessada.getEstado();
                 // COLOCAR REGRAS AQUI
                 aux[i][j] = matriz[i][j];
-                ImagemProcessada imagemProcessadaForAux = tom.getImagemProcessada();
+                
+                variacao = 0.0;
                 switch (estado) {
                     case 0: {
-                        //afetaVizinhaca
-                        break;
+                        if ( (surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1) ) {
+                            if (risco10 > 0) {
+                                variacao = 0.3;
+                                break;
+                            }//if 
+                            else if (risco7 > 0) {
+                                variacao = 0.2;
+                                break;
+                            }//elseif
+                            else if (risco5 > 0 && surto >= 3) {
+                                variacao = 0.2;
+                                break;
+                            }//elseif
+                        }//if
+                        
+                        
+                        break;      
+                         
+                       
                     }
                     case 1: {
-                        //afetaVizinhaca
-                        break;
+                        if ( (surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1) ) {
+                            if (risco10 > 0) {
+                                variacao = 0.6; 
+                                break;
+                            }//if 
+                            else if(risco7 > 0){
+                                variacao = 0.4;
+                                break;
+                            }//elseif
+                            else if(risco5 > 0 && surto >= 3){
+                                variacao = 0.3;
+                                break;
+                            }//elseif
+                        }//if
+                        
+                        break; 
                     }
                     case 2: {
-                        //afetaVizinhaca
+                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                            if (risco10 > 0) {
+                                variacao = 0.8;
+                                break;
+                            }//if 
+                            else if (risco7 > 0) {
+                                variacao = 0.5;
+                                break;
+                            }//elseif
+                            else if (risco5 > 0 && surto >= 3) {
+                                variacao = 0.4;
+                                break;
+                            }//elseif
+                        }
                         break;
                     }
                     case 3: {
-                        //afetaVizinhaca
-                        break;
+                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                            if (risco10 > 0) {
+                                variacao = 1.4;
+                                break;
+                            }//if 
+                            else if (risco7 > 0) {
+                                variacao = 1.0;
+                                break;
+                            }//elseif
+                            else if (risco5 > 0 && surto >= 3) {
+                                variacao = 0.6;
+                                break;
+                            }//elseif
+                        }//if
+                             break;
                     }
                     case 4: {
-                        //afetaVizinhaca
+                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                            if (risco10 > 0) {
+                                variacao = 1.6;
+                                break;
+                            }//if 
+                            else if (risco7 > 0) {
+                                variacao = 1.1;
+                                break;
+                            }//elseif
+                            else if (risco5 > 0 && surto >= 3) {
+                                variacao = 0.6;
+                                break;
+                            }//elseif
+                        }//if
                         break;
                     }
                     case 5: {
-                        //afetaVizinhaca
+                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                            if (risco10 > 0) {
+                                variacao = 1.8;
+                                break;
+                            }//if 
+                            else if (risco7 > 0) {
+                                variacao = 1.2;
+                                break;
+                            }//elseif
+                            else if (risco5 > 0 && surto >= 3) {
+                                variacao = 0.8;
+                                break;
+                            }//elseif
+                        }//if
                         break;
                     }
                     case 6: {
-                        //afetaVizinhaca
+                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                            if (risco10 > 0) {
+                                variacao = 2.0;
+                                break;
+                            }//if 
+                            else if (risco7 > 0) {
+                                variacao = 1.4;
+                                break;
+                            }//elseif
+                            else if (risco5 > 0 && surto >= 3) {
+                                variacao = 0.8;
+                                break;
+                            }//elseif
+                        }
+                        
                         break;
                     }
                     default: {
                         break;
                     }
 
-                }
+                }//switch
+                
+                afetaVizinhaca(aux, i, j, direcao, variacao);
 
-            }
-        }
+            }//for j
+        }//for i
         return aux;
     }
 
@@ -328,6 +513,7 @@ public class Automato {
         this.mediaHistorica = mediaHistorica;
         this.qtdIterecao = qtdInter;
         this.dataInicio = dataInicio;
+        this.surto = 0;
 
         //temporario(talhao deve ter a localidade, mudar modelo depois)
         Localidade localidade = LocalidadeDAO.get(1);
@@ -344,9 +530,12 @@ public class Automato {
         
         //Seta os valores iniciais 
         this.count = 0;
-        this.risco3 = 0;
         this.risco5 = 0;
+        this.risco7 = 0;
         this.risco10 = 0;
+        //SISTOM-12
+        this.surto = 0;
+        this.diasAposPrimeiroSurto = 0;
 
         for (i = 0; i < this.qtdIterecao; i++) {
             /*  Date data = new Date();
@@ -360,11 +549,11 @@ public class Automato {
             else {
                 data = this.dataInicio;
             }//else
-            Triplet<Double, Double, Double> mediasDoDiaDoAno = calculaRiscos(data);
+            calculaRiscos(data);
 
             System.out.println("Iteração: " + (i + 1));
             imprime();
-            matriz = iteracao(mediasDoDiaDoAno);
+            matriz = iteracao();
             //repinda()
         }
 

@@ -100,4 +100,5 @@ SISTOM-12<sucupira>: Definir as regras de calculo de riscos.
 - Portanto, esta definição de método precisará de alterações no modelo para guardar novos atributos de dados meteorológicos(temperatura mínim e precipitação)
 agora são necessários.
 - Os dados foram fornecidos pelo Instituto Nacional de Meteorologia: http://www.inmet.gov.br/portal/index.php?r=bdmep/bdmep
+- Os Parametros são: risco 5, risco 7 e risco 10(aumento o nível do surto)
 
