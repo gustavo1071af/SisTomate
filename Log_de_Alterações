@@ -60,7 +60,12 @@ Está certo isso? > Em testes feitos os resuldos seguem:
 -- gk = 13 / resultado: estado 2 / de acordo com a metodologia dos artigos o resultado deveria ser: 3
 
 SISTOM-6<sucupira>: Fazer a animação(em java) dos paineis na tela da simulação.
-
+- Foi utilizado uma thread da classe interna MyThread(dentro da classe painelDeSimulacao) para fazer as interações do Automato de modo dinâmico.
+- O Primeiro botão(buttonIniciar) tem as ações iniciar(quando thread está suspensa), pausar(quando a thread está em operação) e continuar(quando a thread está pausada).
+- O segundo botão(buttonProximo) tem a ação de ir para a proxima interação, entretanto o botão só é ativado quando thread pausada
+- Falta fazer:
+-- Ao reiniciar a simulação, o talhao deverá ser o original.
+-- Testar a simulação
 
 SISTOM-7<sucupira>: Fazer o validador no formulário da simulação(Preencher_Variaveis.java).
 
@@ -72,7 +77,7 @@ Obs: no base temos apenas um localidade(por enquato a de teste), entretanto, mod
 -Tambem foi criado uma classe(PopulaDadosMeteoro) que lê o arquivo excel e salva automaticamente os Dados meteorologicos no banco de dados, caso for necessário futuramente.
 
 SISTOM-9<sucupira>: Colocar novos campos na tela de escolha de variaveis da simulação de acordo com o que foi decidido na reunião 04/05/2016 com a gizelle;
-- FOI adicionado os novos campos, inclusive, mudei o estrutura da tela colocando um Borderlayout no painel principal, o form coloquei dentro de um outro painel
+- FOI adicionado os novos campos, inclusive, mudei a estrutura da tela colocando um Borderlayout no painel principal, o form coloquei dentro de um outro painel
 com um Grid Bag Layout(setei o painel para ficar no centro do painel principal) para facilitar no alinhamento dos campos e fiz um painel rodapé(setei para ficar no sul) que vai levar apenas o botão
 de "Iniciar Simulação" para ficar semelhante das outras telas.
 - Adaptei os parametros para o painel de simulação para apresentar as variáveis escolhidadas.
