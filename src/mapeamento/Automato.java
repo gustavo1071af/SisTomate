@@ -1,5 +1,7 @@
 package mapeamento;
 
+import ENUNS.DirecoesDoVento;
+import ENUNS.SimOuNao;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,8 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import mapeamento.DAO.DadosMeteorologicosDAO;
 import mapeamento.DAO.LocalidadeDAO;
-import mapeamento.ENUNS.DirecoesDoVento;
-import mapeamento.ENUNS.SimOuNao;
 import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Localidade;
 import mapeamento.beans.Talhao;
@@ -19,12 +19,12 @@ import mapeamento.beans.Tomates;
  * @author Gustavo
  * @creationDate 10/04/2016
  */
-public class Automato{
+public class Automato {
 
     private final Talhao talhao;
     private final int X;
     private final int Y;
-    private final MeuJPanel[][] matriz;
+    private MeuJPanel[][] matriz;
     private int risco5;
     private int risco7;
     private int risco10;
@@ -48,59 +48,24 @@ public class Automato{
     /**
      *
      * @param talhao
-     * @param umid
-     * @param temp
-     * @param direcao
-     * @param chuva
-     * @param dataInicio
-     * @param mediaHistorica
-     * @param qtdInter
-     * @param matriz
      */
-    public Automato(Talhao talhao, int umid, int temp, DirecoesDoVento direcao, SimOuNao chuva, Date dataInicio, int mediaHistorica, int qtdInter, final MeuJPanel[][] matriz ) {
+    public Automato(Talhao talhao) {
         this.talhao = talhao;
         this.X = talhao.getQtd_TomatesPorLinhas();
         //considerando que cada rua tem 2 linhas.
         this.Y = talhao.getQtdRuas() * 2;
-        this.matriz = matriz;
-         this.direcao = direcao;
-        this.mediaHistorica = mediaHistorica;
-        this.qtdIterecao = qtdInter;
-        this.dataInicio = dataInicio;
-        Localidade localidade = LocalidadeDAO.get(1);
-        this.localidade = localidade;
-        
-        //SISTOM-11
-        
-        Date coletaFim = this.localidade.getColetaFim();
-        
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(coletaFim);
-        //basear nas media dos n anos passados para ter uma base do futuro.
-        //A soma com 1 é para garantir que terá dados suficientes para a média, ou caso o bd não tenha algum ano completo(principalmente o ultimo)
-        calendar.add(Calendar.YEAR, -(this.mediaHistorica+1));
-        this.dataBaseadaNaMediaHistorica = calendar.getTime();
-        
-        //Seta os valores iniciais 
-        this.count = 0;
-        this.risco5 = 0;
-        this.risco7 = 0;
-        this.risco10 = 0;
-        //SISTOM-12
-        this.surto = 0;
-        this.diasAposPrimeiroSurto = 0;
-        inicializa();
+        this.matriz = new MeuJPanel[X][Y];
     }
 
-    public void inicializa()//recebe valor inicial
+    public void inicializa(MeuJPanel matriz[][])//recebe valor inicial
     {
         int i, j, max_X, max_Y;
 
         max_X = this.X - 1;
         max_Y = this.Y - 1;
 
-        for (i = 0; i < this.X; i++) {
-            for (j = 0; j < this.Y; j++) {
+        for (i = 0; i < max_X; i++) {
+            for (j = 0; j < max_Y; j++) {
                 //SISTOM-10
 
                 Tomates tom = matriz[i][j].getTom();
@@ -108,18 +73,9 @@ public class Automato{
                 //Seta o atributo estadoComVariacao com o valor do estado inicial para somar o estado comas as variacoes
                 imagemProcessada.setEstadoComVariacaoInicio();
 
-               
+                this.matriz[i][j] = matriz[i][j];
             }
         }
-
-    }
-    
-    /**
-     *
-     */
-    public void simulaPropagação() {
-
-        
 
     }
 
@@ -132,8 +88,8 @@ public class Automato{
         max_X = this.X - 1;
         max_Y = this.Y - 1;
 
-        for (i = 0; i < this.X; i++) {
-            for (j = 0; j < this.Y; j++) {
+        for (i = 0; i < max_X; i++) {
+            for (j = 0; j < max_Y; j++) {
                 Tomates tom = matriz[i][j].getTom();
                 ImagemProcessada imagemProcessada = tom.getImagemProcessada();
                 int estado = imagemProcessada.getEstado();
@@ -182,7 +138,7 @@ public class Automato{
         //para não estrapolar os limites dos estados, ou seja, se tiver no ultimo estado não faz nada
         if (estado >= ESTADO_MINIMO && estado < ESTADO_MAXIMO) {
             Double estadoComVariacao = imagemProcessada.getEstadoComVariacao();
-            //para não estrapolar os limites dos estados, ou seja, se tiver no ultimo estado não faz nada        
+            //para não estrapolar os limites dos estados, ou seja, se tiver no ultimo estado não faz nada
             Double novoEstadoComVariacao = (estadoComVariacao + variacao) <= ESTADO_MAXIMO ? (estadoComVariacao + variacao) : ESTADO_MAXIMO;  
             imagemProcessada.setEstadoComVariacao(novoEstadoComVariacao);
             imagemProcessada.setEstado((int) Math.round(imagemProcessada.getEstadoComVariacao()));
@@ -378,7 +334,6 @@ public class Automato{
      */
     public MeuJPanel[][] iteracao() {
         MeuJPanel[][] aux = new MeuJPanel[X][Y];
-        aux = matriz;
         int i, j, max_X, max_Y;
         max_X = this.X - 1;
         max_Y = this.Y - 1;
@@ -390,14 +345,15 @@ public class Automato{
         }
         
         //criar variavel de variacao
-        for (i = 0; i < this.X; i++) {
-            for (j = 0; j < this.Y; j++) {
+        for (i = 0; i < max_X; i++) {
+            for (j = 0; j < max_Y; j++) {
                 Tomates tom = matriz[i][j].getTom();
                 ImagemProcessada imagemProcessada = tom.getImagemProcessada();
                 int estado = imagemProcessada.getEstado();
-                variacao = 0.0;
-                
                 // COLOCAR REGRAS AQUI
+                aux[i][j] = matriz[i][j];
+                
+                variacao = 0.0;
                 switch (estado) {
                     case 0: {
                         if ( (surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1) ) {
@@ -536,79 +492,73 @@ public class Automato{
         }//for i
         return aux;
     }
-    
-      private void repinta() {
-        int i, j;
-      
-         for (i = 0; i < this.X; i++) {
-            for (j = 0; j < this.Y; j++) {
-                matriz[i][j].repaint();
-            }//for
-         }//for
+
+    /**
+     *
+     * @param umid
+     * @param temp
+     * @param direcao
+     * @param chuva
+     * @param dataInicio
+     * @param mediaHistorica
+     * @param qtdInter
+     */
+    public void simulaPropagação(int umid, int temp, DirecoesDoVento direcao, SimOuNao chuva, Date dataInicio, int mediaHistorica, int qtdInter) {
+
+        int i;
+        
+        //SISTOM-11
+        
+        this.direcao = direcao;
+        this.mediaHistorica = mediaHistorica;
+        this.qtdIterecao = qtdInter;
+        this.dataInicio = dataInicio;
+        this.surto = 0;
+
+        //temporario(talhao deve ter a localidade, mudar modelo depois)
+        Localidade localidade = LocalidadeDAO.get(1);
+        this.localidade = localidade;
+        
+        Date coletaFim = this.localidade.getColetaFim();
+        
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(coletaFim);
+        //basear nas media dos n anos passados para ter uma base do futuro.
+        //A soma com 1 é para garantir que terá dados suficientes para a média, ou caso o bd não tenha algum ano completo(principalmente o ultimo)
+        calendar.add(Calendar.YEAR, -(this.mediaHistorica+1));
+        this.dataBaseadaNaMediaHistorica = calendar.getTime();
+        
+        //Seta os valores iniciais 
+        this.count = 0;
+        this.risco5 = 0;
+        this.risco7 = 0;
+        this.risco10 = 0;
+        //SISTOM-12
+        this.surto = 0;
+        this.diasAposPrimeiroSurto = 0;
+
+        for (i = 0; i < this.qtdIterecao; i++) {
+            /*  Date data = new Date();
+                   data.setDate(dataInicio.getDate() +1);*/
+            Date data;
+            if (i > 0) {
+                calendar.setTime(dataInicio);
+                calendar.add(Calendar.DAY_OF_MONTH, i);
+                data = calendar.getTime();
+            }//if
+            else {
+                data = this.dataInicio;
+            }//else
+            calculaRiscos(data);
+
+            System.out.println("Iteração: " + (i + 1));
+            imprime();
+            matriz = iteracao();
+            //repinda()
+        }
+
     }
 
-   /*
-      @Override
-    public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            try {
-                int i;
-
-                //SISTOM-11
-                this.surto = 0;
-
-                Date coletaFim = this.localidade.getColetaFim();
-
-                GregorianCalendar calendar = new GregorianCalendar();
-                calendar.setTime(coletaFim);
-                //basear nas media dos n anos passados para ter uma base do futuro.
-                //A soma com 1 é para garantir que terá dados suficientes para a média, ou caso o bd não tenha algum ano completo(principalmente o ultimo)
-                calendar.add(Calendar.YEAR, -(this.mediaHistorica + 1));
-                this.dataBaseadaNaMediaHistorica = calendar.getTime();
-
-                //Seta os valores iniciais 
-                this.count = 0;
-                this.risco5 = 0;
-                this.risco7 = 0;
-                this.risco10 = 0;
-                //SISTOM-12
-                this.surto = 0;
-                this.diasAposPrimeiroSurto = 0;
-
-                for (i = 0; i < this.qtdIterecao; i++) {
-                   
-                   //Date data = new Date();
-                   //data.setDate(dataInicio.getDate() +1);
-                    Date data;
-                    if (i > 0) {
-                        calendar.setTime(dataInicio);
-                        calendar.add(Calendar.DAY_OF_MONTH, i);
-                        data = calendar.getTime();
-                    }//if
-                    else {
-                        data = this.dataInicio;
-                    }//else
-                    calculaRiscos(data);
-
-                    System.out.println("Iteração: " + (i + 1));
-                    Thread.sleep(2000);
-                    matriz = iteracao();
-                    imprime();
-                    repinta();
-                    
-                }//for
-                Thread.currentThread().interrupt();
-            } catch (InterruptedException e1) {
-                System.out.println("(" + Thread.currentThread().getId() + " - " + Thread.currentThread().getName() + ") foi interrompida enquanto estava em sleep!");
-                Thread.currentThread().interrupt(); //cancelando a thread corrente
-                //e1.printStackTrace();
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        }
-        System.out.println("(" + Thread.currentThread().getId() + " - " + Thread.currentThread().getName() + ") será finalizada!");
-    }*/
-
   
-
+	
 }

@@ -5,17 +5,12 @@
  */
 package mapeamento;
 
+import ENUNS.DirecoesDoVento;
+import ENUNS.SimOuNao;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import mapeamento.ENUNS.DirecoesDoVento;
-import mapeamento.ENUNS.SimOuNao;
-import mapeamento.beans.Talhao;
 
 /**
  *  SISTOM-4
@@ -34,11 +29,6 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     private final Date data;
     private final int mediaHistorica;
     private static final SimpleDateFormat FORMATO_BR = new SimpleDateFormat("dd/MM/yyyy");
-    private final MapaParaSimulacao mapaParaSimulacao;
-    private final Automato automatoParaExecutar;
-    private final MeuJPanel[][] matrizOriginal;
-    private int contadorInteracao;
-    MinhaThread thread = new MinhaThread();
 
     /**
      *
@@ -63,19 +53,10 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         this.data = data;
         this.mediaHistorica = mediaHistorica;
         initComponents();
-        buttonProximo.setEnabled(false);
         mostrarVariaveisIniciais();
         MapaParaSimulacao mapaParaSimulacao = new MapaParaSimulacao(talhao);
-        mapaParaSimulacao.setMinimumSize(new Dimension(400, 300));
-        this.mapaParaSimulacao = mapaParaSimulacao;
-        
-        final MeuJPanel[][] matrizpainel = mapaParaSimulacao.getMatrizpainel();
-        this.matrizOriginal = matrizpainel;
-        Talhao talhaoBean = mapaParaSimulacao.getTalhao();
-        
-        automatoParaExecutar = new Automato(talhaoBean, umid, temp, direcao, chuva, data, mediaHistorica, qtdInter, matrizpainel);
+        mapaParaSimulacao.setMinimumSize(new Dimension(400, 300));   
         painelMapa.add(mapaParaSimulacao, BorderLayout.CENTER);
-        this.contadorInteracao = 0;
     }
 
     /**
@@ -93,6 +74,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         textPaneI_separador = new javax.swing.JTextPane();
         textPaneI_interacaoMaxima = new javax.swing.JTextPane();
         buttonIniciar = new javax.swing.JButton();
+        buttonAnterior = new javax.swing.JButton();
         buttonProximo = new javax.swing.JButton();
         buttonMudar = new javax.swing.JButton();
         textPaneParametros = new javax.swing.JTextPane();
@@ -115,21 +97,16 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         jPanel1.add(textPaneI_interacaoMaxima, new java.awt.GridBagConstraints());
 
         buttonIniciar.setText("Iniciar");
-        buttonIniciar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonIniciarActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
         jPanel1.add(buttonIniciar, gridBagConstraints);
 
+        buttonAnterior.setText("Anterior");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
+        jPanel1.add(buttonAnterior, gridBagConstraints);
+
         buttonProximo.setText("Proximo");
-        buttonProximo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonProximoActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
         jPanel1.add(buttonProximo, gridBagConstraints);
@@ -165,77 +142,10 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
                 .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    //SISTOM-6
-    private void buttonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIniciarActionPerformed
-                   if (!thread.isAlive()){
-                       if (contadorInteracao == 0){
-                            System.out.println("Inicia a thread pela primeira vez");
-                            
-                            thread.start(); 
-                       }//if
-                       else{
-                          System.out.println("Restarta thread");
-                          contadorInteracao = 0;
-                          thread = new MinhaThread();
-                          thread.start();
-                       }  
-                       buttonIniciar.setText("Pausar");
-                    }//if
-                    else{
-                       if (!thread.pleaseWait) {
-                           System.out.println("Pausa thread.");
-                           buttonIniciar.setText("Continuar");
-                           // Pausa a thread
-                           synchronized (thread) {
-                               thread.pleaseWait = true;
-                           }
-                           buttonProximo.setEnabled(true);
-                       }
-                       else{
-                           System.out.println("Reinicia thread");
-                           buttonIniciar.setText("Pausar");
-                           // continua a thread
-                           synchronized (thread) {
-                               thread.pleaseWait = false;
-                               thread.notify();
-                           }
-                           buttonProximo.setEnabled(false);
-                       }
-                       
-                    }
-                       
-               
-    }//GEN-LAST:event_buttonIniciarActionPerformed
-    //SISTOM-6
-    private void buttonProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProximoActionPerformed
-        if(thread.pleaseWait && contadorInteracao < quantidadeInteracao){
-            try {
-                System.out.println("proxima interação na thread thread");
-                
-                buttonProximo.setEnabled(false);
-                //inicia para depois parar:
-                synchronized (thread) {
-                    thread.pleaseWait = false;
-                    thread.notify();
-                    
-                }
-                Thread.sleep(1000);
-                synchronized (thread) {
-                    thread.pleaseWait = true;
-                }
-                buttonProximo.setEnabled(true);
-            } //if
-            catch (InterruptedException ex) {
-                Logger.getLogger(PainelDeSimulacao.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else{
-            buttonProximo.setEnabled(false);
-        }
-    }//GEN-LAST:event_buttonProximoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAnterior;
     private javax.swing.JButton buttonIniciar;
     private javax.swing.JButton buttonMudar;
     private javax.swing.JButton buttonProximo;
@@ -248,146 +158,29 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void mostrarVariaveisIniciais() {
-        textPanel_interacaoAtual.setText("0");
-        textPaneI_interacaoMaxima.setText(Integer.toString(getQuantidadeInteracao()));
+        textPanel_interacaoAtual.setText("1");
+        textPaneI_interacaoMaxima.setText(Integer.toString(quantidadeInteracao));
         
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Umid.: ");
-        stringBuilder.append(getUmidade());
+        stringBuilder.append(umidade);
         stringBuilder.append(",");
         stringBuilder.append(" Temp.: ");
-         stringBuilder.append(getTemperaturaMedia());
+         stringBuilder.append(temperaturaMedia);
           stringBuilder.append(",");
          stringBuilder.append(" Chuv.: ");
-         stringBuilder.append(getChuva().getValor()? "Sim" : "Não");
+         stringBuilder.append(chuva.getValor()? "Sim" : "Não");
           stringBuilder.append(",");
           stringBuilder.append(" Direç.: ");
-         stringBuilder.append(getDirecao().getValor());
+         stringBuilder.append(direcao.getValor());
           stringBuilder.append(",");
           stringBuilder.append(" Data.: ");
-         stringBuilder.append(FORMATO_BR.format(getData()));
+         stringBuilder.append(FORMATO_BR.format(data));
           stringBuilder.append(",");
           stringBuilder.append(" Média Hist.: ");
-         stringBuilder.append(getMediaHistorica());
+         stringBuilder.append(mediaHistorica);
         final String string = stringBuilder.toString();
         
         textPaneParametros.setText(string);
     }
-
-    /**
-     * @return the umidade
-     */
-    public int getUmidade() {
-        return umidade;
-    }
-
-    /**
-     * @return the temperaturaMedia
-     */
-    public int getTemperaturaMedia() {
-        return temperaturaMedia;
-    }
-
-    /**
-     * @return the quantidadeInteracao
-     */
-    public int getQuantidadeInteracao() {
-        return quantidadeInteracao;
-    }
-
-    /**
-     * @return the direcao
-     */
-    public DirecoesDoVento getDirecao() {
-        return direcao;
-    }
-
-    /**
-     * @return the chuva
-     */
-    public SimOuNao getChuva() {
-        return chuva;
-    }
-
-    /**
-     * @return the data
-     */
-    public Date getData() {
-        return data;
-    }
-
-    /**
-     * @return the mediaHistorica
-     */
-    public int getMediaHistorica() {
-        return mediaHistorica;
-    }
-
-    /**
-     * @return the mapaParaSimulacao
-     */
-    public MapaParaSimulacao getMapaParaSimulacao() {
-        return mapaParaSimulacao;
-    }
-    //SISTOM-6
-    class MinhaThread extends Thread {
-
-        boolean pleaseWait = false;
-
-        @Override
-        public void run() {
-            textPanel_interacaoAtual.setText("0");
-            while (!this.isInterrupted() && contadorInteracao < quantidadeInteracao) {
-
-                GregorianCalendar calendar = new GregorianCalendar();
-                
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(PainelDeSimulacao.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                System.out.println("Interacao: " + (contadorInteracao+1));
-                textPanel_interacaoAtual.setText(Integer.toString(contadorInteracao+1));
-                Date data;
-                if (contadorInteracao > 0) {
-                    calendar.setTime(getData());
-                    calendar.add(Calendar.DAY_OF_MONTH, contadorInteracao);
-                    data = calendar.getTime();
-                }//if
-                else {
-                    data = getData();
-                }//else
-                automatoParaExecutar.calculaRiscos(data);
-
-                automatoParaExecutar.imprime();
-                
-                final MeuJPanel[][] iteracao = automatoParaExecutar.iteracao();
-
-                mapaParaSimulacao.setMatrizpainel(iteracao);
-
-                mapaParaSimulacao.repintaTodosAsCelulas();
-
-                mapaParaSimulacao.repaint();
-                //repinda()
-                contadorInteracao++;
-                //Caso parar entra aqui
-                synchronized (this) {
-                    while (pleaseWait) {
-                        try {
-                            //fica aqui até clicar no botão continuar
-                            wait();
-                        } catch (Exception e) {
-                            System.out.println("Erro ao fazer thread esperar: " + e.getStackTrace());
-                        }
-                    }
-                }
-               
-            }//while
-            
-            this.interrupt();
-            buttonIniciar.setText("Iniciar");
-            buttonProximo.setEnabled(false);
-        }//run
-
-    }//class
 }

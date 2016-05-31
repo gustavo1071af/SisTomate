@@ -6,11 +6,9 @@
 
 package mapeamento;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import javax.swing.JPanel;
-import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Tomates;
+import java.awt.LayoutManager;
+import javax.swing.JPanel;
 
 /**
  *
@@ -19,6 +17,22 @@ import mapeamento.beans.Tomates;
 public class MeuJPanel extends JPanel{
 
     Tomates tom;
+    
+    public MeuJPanel(LayoutManager layout, boolean isDoubleBuffered) {
+        super(layout, isDoubleBuffered);
+    }
+
+    public MeuJPanel(LayoutManager layout) {
+        super(layout);
+    }
+
+    public MeuJPanel(boolean isDoubleBuffered) {
+        super(isDoubleBuffered);
+    }
+
+    public MeuJPanel() {
+        super();
+    }
 
     public Tomates getTom() {
         return tom;
@@ -28,49 +42,5 @@ public class MeuJPanel extends JPanel{
         this.tom = tom;
     }
     
-    @Override
-    public void paintComponent(Graphics g) {
-        //escolher cor de acordo com o estado
-        if (tom != null) {
-            ImagemProcessada imagemProcessada = tom.getImagemProcessada();
-            int estado = imagemProcessada.getEstado();
-            switch (estado) {
-                case 1: {
-                    g.setColor(new Color(0, 128, 0));
-                    break;
-                }//Green
-                case 2: {
-                    g.setColor(new Color(144, 238, 144));
-                    break;
-                }//LightGreen
-                case 3: {
-                    g.setColor(new Color(255, 255, 0));
-                    break;
-                }//Yellow
-                case 4: {
-                    g.setColor(new Color(255, 165, 0));
-                    break;
-                }//Orange
-                case 5: {
-                    g.setColor(new Color(255, 140, 0));
-                    break;
-                }//DarkOrange
-                case 6: {
-                    g.setColor(new Color(255, 69, 0));
-                    break;
-                }//OrangeRed
-                default: {
-                    g.setColor(new Color(0, 128, 0));
-                    break;
-                }//Green
-
-            }//switch
-        }//if
-        else{//Foi necessário para a classe Mapa.java que possui o bean sem tom
-             g.setColor(new Color(0, 128, 0));
-        }//else
-        //Fazer Retângulo
-         g.fillRect(0, 0, 500, 500);
-    }
     
 }
