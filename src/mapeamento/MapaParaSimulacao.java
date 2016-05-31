@@ -5,7 +5,6 @@
  */
 package mapeamento;
     
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -25,8 +24,8 @@ import mapeamento.beans.Tomates;
 public class MapaParaSimulacao extends javax.swing.JPanel {
 
 
-    private final MeuJPanel matrizpainel[][];
-    private final String talhao;
+    private MeuJPanel matrizpainel[][];
+    private final Talhao talhao;
     private final int x;
     private final int y;
     static String formatoDataBr = "dd/MM/yyyy";
@@ -39,12 +38,12 @@ public class MapaParaSimulacao extends javax.swing.JPanel {
     public MapaParaSimulacao(String talhao_Selecionada) {
         initComponents();
         System.out.println(talhao_Selecionada);
-        this.talhao = talhao_Selecionada;
-        List<Tomates> tomatesDoTalhao = TomatesDAO.getTomatesComImagensProcesadasPorTalhao(talhao);
+        
+        List<Tomates> tomatesDoTalhao = TomatesDAO.getTomatesComImagensProcesadasPorTalhao(talhao_Selecionada);
 
         //SISTOM-1
-        Talhao beanTalhao = TalhaoDAO.get(talhao);
-
+        Talhao beanTalhao = TalhaoDAO.get(talhao_Selecionada);
+        this.talhao = beanTalhao;
         int qtd_Ruas = beanTalhao.getQtdRuas();
         int qtd_TomatesPorLinha = beanTalhao.getQtd_TomatesPorLinhas();
 
@@ -62,7 +61,7 @@ public class MapaParaSimulacao extends javax.swing.JPanel {
 
                 matrizpainel[x][y] = new MeuJPanel();
                 //SISTOM-1
-                matrizpainel[x][y].setBackground(new Color(0, 128, 0));//Green
+               // matrizpainel[x][y].setBackground(new Color(0, 128, 0));//Green
                 matrizpainel[x][y].setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));//preto
                 populaPainelComTomate(matrizpainel[x][y], tomatesDoTalhao, x, y);
 
@@ -115,7 +114,6 @@ public class MapaParaSimulacao extends javax.swing.JPanel {
                 label.setText("*");
                 painelAux.add(label);
                 painelAux.setTom(tomate);
-                //painelAux.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
                
                 meuJPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
@@ -152,8 +150,9 @@ public class MapaParaSimulacao extends javax.swing.JPanel {
 
                 });//final evento
                 
+                //AGORA ISTO ESTÁ SENDO FEITO NO PRÓPRIO BEAN MEUJPAINEL
                 //escolher cor de acordo com o estado
-                ImagemProcessada imagemProcessada = tomate.getImagemProcessada();
+               /* ImagemProcessada imagemProcessada = tomate.getImagemProcessada();
                 int estado = imagemProcessada.getEstado();
                 switch (estado) {
                     case 1: {
@@ -186,6 +185,7 @@ public class MapaParaSimulacao extends javax.swing.JPanel {
                     }//Green
                     
                 }//switch
+                */
               return;
             }//if        
             
@@ -267,6 +267,33 @@ public class MapaParaSimulacao extends javax.swing.JPanel {
         return tomateFake;
     }
 
+    /**
+     * @return the matrizpainel
+     */
+    public MeuJPanel[][] getMatrizpainel() {
+        return matrizpainel;
+    }
+
+    /**
+     * @return the talhao
+     */
+    public Talhao getTalhao() {
+        return talhao;
+    }
+
+    void repintaTodosAsCelulas() {
+        int i, j;
+      
+         for (i = 0; i < x; i++) {
+            for (j = 0; j < y; j++) {
+                matrizpainel[i][j].repaint();
+            }//for
+         }//for
+    }
+
+    void setMatrizpainel(MeuJPanel[][] iteracao) {
+        this.matrizpainel = iteracao;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

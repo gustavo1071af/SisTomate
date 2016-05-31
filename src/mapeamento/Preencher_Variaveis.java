@@ -6,8 +6,6 @@
 
 package mapeamento;
 
-import ENUNS.DirecoesDoVento;
-import ENUNS.SimOuNao;
 import java.awt.BorderLayout;
 import java.util.Date;
 import java.util.Enumeration;
@@ -15,6 +13,8 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import mapeamento.ENUNS.DirecoesDoVento;
+import mapeamento.ENUNS.SimOuNao;
 
 /**
  *
