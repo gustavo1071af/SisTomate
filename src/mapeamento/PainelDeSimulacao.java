@@ -363,9 +363,10 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
                 
                 final MeuJPanel[][] iteracao = automatoParaExecutar.iteracao();
 
-                mapaParaSimulacao.setMatrizpainel(iteracao);
-
-                mapaParaSimulacao.repintaTodosAsCelulas();
+                //mapaParaSimulacao.setMatrizpainel(iteracao);
+                
+                //o repaint do mapa ja resolve
+                //mapaParaSimulacao.repintaTodosAsCelulas();
 
                 mapaParaSimulacao.repaint();
                 //repinda()

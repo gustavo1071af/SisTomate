@@ -181,6 +181,7 @@ public class DadosMeteorologicosDAO {
                 + "FROM dados_meteorologicos d where d.localidade = '" + idLocalidade + "' "
                 + "AND (data BETWEEN '"+dataInicioSql+"' AND '"+dataFimSql+"') "
                 + "AND EXTRACT(DAY FROM data) = '"+dia+"' And EXTRACT(MONTH FROM data) = '"+mes+"' "
+                + "AND precipitacao > 0 "
                 + "ORDER BY data ";
 
         Connection con = new Conn().getConnection();

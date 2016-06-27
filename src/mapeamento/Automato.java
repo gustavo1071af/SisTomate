@@ -306,7 +306,7 @@ public class Automato{
        calendar.setTime(data);
        final List<Double> mediasTempDosDias = new ArrayList<>();
        calendar.add(Calendar.DAY_OF_MONTH, - QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL);
-        for (int i = 0; i < QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL; i++) {
+        for (int i = 0; i < QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL; i++) {
             int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
             //Meses no java é um arrai de 0-11, portanto somamos +1 para ficar de acordo com a realidade
             int mes = calendar.get(GregorianCalendar.MONTH)+1;
@@ -378,8 +378,17 @@ public class Automato{
      */
     public MeuJPanel[][] iteracao() {
         MeuJPanel[][] aux = new MeuJPanel[X][Y];
-        aux = matriz;
+        aux=this.matriz;
         int i, j, max_X, max_Y;
+        //codigo abaixo consegue clona a original
+        /*for (i = 0; i < this.X; i++) {
+            for (j = 0; j < this.Y; j++) {
+                aux[i][j] = new MeuJPanel();
+                Tomates novoTomate = matriz[i][j].getTom().clone();
+                aux[i][j].setTom(novoTomate);
+            }//for
+        }//for
+        */
         max_X = this.X - 1;
         max_Y = this.Y - 1;
         Double variacao;
@@ -400,17 +409,18 @@ public class Automato{
                 // COLOCAR REGRAS AQUI
                 switch (estado) {
                     case 0: {
-                        if ( (surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1) ) {
+                       // if ( (surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1) ) {
+                       if ( surto > 2 ) {
                             if (risco10 > 0) {
-                                variacao = 0.3;
+                                variacao = 0.0;
                                 break;
                             }//if 
                             else if (risco7 > 0) {
-                                variacao = 0.2;
+                                variacao = 0.0;
                                 break;
                             }//elseif
                             else if (risco5 > 0 && surto >= 3) {
-                                variacao = 0.2;
+                                variacao = 0.0;
                                 break;
                             }//elseif
                         }//if
@@ -421,17 +431,18 @@ public class Automato{
                        
                     }
                     case 1: {
-                        if ( (surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1) ) {
+                        //if ( (surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1) ) {
+                        if ( surto > 1 ){
                             if (risco10 > 0) {
-                                variacao = 0.6; 
+                                variacao = 0.1; 
                                 break;
                             }//if 
                             else if(risco7 > 0){
-                                variacao = 0.4;
+                                variacao = 0.1;
                                 break;
                             }//elseif
                             else if(risco5 > 0 && surto >= 3){
-                                variacao = 0.3;
+                                variacao = 0.1;
                                 break;
                             }//elseif
                         }//if
@@ -439,7 +450,8 @@ public class Automato{
                         break; 
                     }
                     case 2: {
-                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        //if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                         if ( surto > 1 ) {
                             if (risco10 > 0) {
                                 variacao = 0.8;
                                 break;
@@ -456,7 +468,8 @@ public class Automato{
                         break;
                     }
                     case 3: {
-                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                       // if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        if ( surto >= 1 ) {
                             if (risco10 > 0) {
                                 variacao = 1.4;
                                 break;
@@ -473,7 +486,8 @@ public class Automato{
                              break;
                     }
                     case 4: {
-                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        //if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        if ( surto >= 1 ) {
                             if (risco10 > 0) {
                                 variacao = 1.6;
                                 break;
@@ -490,7 +504,8 @@ public class Automato{
                         break;
                     }
                     case 5: {
-                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        //if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        if ( surto >= 1 ) {
                             if (risco10 > 0) {
                                 variacao = 1.8;
                                 break;
@@ -507,7 +522,8 @@ public class Automato{
                         break;
                     }
                     case 6: {
-                        if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        //if ((surto == 1 && diasAposPrimeiroSurto >= 7) || (surto > 1)) {
+                        if ( surto >= 1 ) {
                             if (risco10 > 0) {
                                 variacao = 2.0;
                                 break;

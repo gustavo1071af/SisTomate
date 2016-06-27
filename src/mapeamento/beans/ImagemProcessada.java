@@ -7,12 +7,14 @@
 package mapeamento.beans;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *SISTOM-3
  * @author Gus
  */
-public class ImagemProcessada {
+public class ImagemProcessada implements Cloneable{
 
     private String nomearquivo;
     private int vermelhos;
@@ -177,6 +179,16 @@ public class ImagemProcessada {
         this.estadoComVariacao = estadoComVariacao;
     }
 
+    @Override
+    public ImagemProcessada clone(){
+        ImagemProcessada novaImagemProcessada = new ImagemProcessada();
+        try {
+            novaImagemProcessada = (ImagemProcessada)super.clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(ImagemProcessada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return novaImagemProcessada;
+    }
     
     
 }

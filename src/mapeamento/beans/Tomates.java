@@ -8,12 +8,14 @@ package mapeamento.beans;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Gus
  */
-public class Tomates {
+public class Tomates implements Cloneable{
 
    
 
@@ -140,6 +142,39 @@ public class Tomates {
         return true;
     }
     
+    @Override
+     public Tomates clone(){
+        Tomates novoTomate = new Tomates();
+        try {
+            novoTomate = (Tomates) super.clone();
+            novoTomate.setImagemProcessada(this.imagemProcessada.clone());
+            novoTomate.setTalhao(this.talhao != null ? this.talhao .clone() : null);
+             return novoTomate;
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(Tomates.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /*novoTomate.setData(getData());
+        novoTomate.setLat(getLat());
+        novoTomate.setLinha(getLinha());
+        novoTomate.setLongi(getLongi());
+        novoTomate.setNomeArquivo(getNomeArquivo());
+        novoTomate.setNumTom(getNumTom());
+        novoTomate.setRua(getRua());
+        //verificar se precisa fazer um clone do talhao
+        novoTomate.setTalhao(getTalhao());
+        
+        ImagemProcessada novaImagemProcessada = new ImagemProcessada();
+        ImagemProcessada imagemProcessada = getImagemProcessada();
+        novaImagemProcessada.setEstado(imagemProcessada.getEstado());
+        novaImagemProcessada.setEstadoComVariacao(imagemProcessada.getEstadoComVariacao());
+        novaImagemProcessada.setNomeArquivo(imagemProcessada.getNomeArquivo());
+        novaImagemProcessada.setPretos(imagemProcessada.getPretos());
+        novaImagemProcessada.setTomate(imagemProcessada.getTomate());
+        novaImagemProcessada.setVerdes(imagemProcessada.getVerdes());
+        novaImagemProcessada.setVermelhos(imagemProcessada.getVermelhos());
+        novoTomate.setImagemProcessada(imagemProcessada);*/
+       return novoTomate;
+    }
    
     
 }

@@ -6,12 +6,14 @@
 package mapeamento.beans;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Gustavo
  */
-public class Talhao {
+public class Talhao implements Cloneable{
     private String areaCultivada;//id do talhao
     private Date dataPlantio;
     private Date dataColheira;
@@ -56,6 +58,17 @@ public class Talhao {
 
     public void setQtd_TomatesPorLinhas(int qtd_TomatesPorLinhas) {
         this.qtd_TomatesPorLinhas = qtd_TomatesPorLinhas;
+    }
+    
+    @Override
+    public Talhao clone(){
+        Talhao novoTalhao = new Talhao();
+        try {
+            novoTalhao =(Talhao)super.clone();
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(Talhao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return novoTalhao;
     }
     
 }

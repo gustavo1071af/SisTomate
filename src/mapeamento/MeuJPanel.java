@@ -18,7 +18,7 @@ import mapeamento.beans.Tomates;
  */
 public class MeuJPanel extends JPanel{
 
-    Tomates tom;
+    private Tomates tom;
 
     public Tomates getTom() {
         return tom;
