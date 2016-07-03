@@ -123,3 +123,8 @@ O clone não é uma referencia, diferente do beanAux = beanOriginal;
             }//for
         }//for 
 
+SISTOM-14<sucupira>: Alterar o campo Chuva(antigo) por Precipitação, e fazer com que os dados do formulário da simulação seja usados na simulação
+quando for a data escolhida.
+
+SISTOM-15<sucupira>: Criar o Botão que escolhe o combate a ser usado no talhão quando a simulação for parada.
+
