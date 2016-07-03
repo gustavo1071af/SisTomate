@@ -107,3 +107,19 @@ agora são necessários.
 - Os dados foram fornecidos pelo Instituto Nacional de Meteorologia: http://www.inmet.gov.br/portal/index.php?r=bdmep/bdmep
 - Os Parametros são: risco 5, risco 7 e risco 10(aumento o nível do surto)
 
+SISTOM-13<sucupira>: Consertar Bug que acontece na simulação em que 1 iteração acontece uma explosão de infecções(ex: norte_p_sul).
+- Isso acontecia porque a matriz auxiliar do automato era uma referência da matriz do painel, sendo assim ela alterava os valores da matriz original
+e gerava um erro em cascata, assim explicava a explosão de infecção.
+- Foi feito umas modificações nos beans para poder cloná-los, extendemos os beans da classe Clonable e sobrescrevemos . Então quando quisermos alterar uma cópia de um bean sem alterar a original
+é só fazer : 
+beanAux = beanOriginal.clone();
+O clone não é uma referencia, diferente do beanAux = beanOriginal;
+- Para resolver o bug, fizemos:
+        for (i = 0; i < this.X; i++) {
+            for (j = 0; j < this.Y; j++) {
+                aux[i][j] = new MeuJPanel();
+                Tomates novoTomate = matriz[i][j].getTom().clone();
+                aux[i][j].setTom(novoTomate);
+            }//for
+        }//for 
+

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import mapeamento.ENUNS.DirecoesDoVento;
 import mapeamento.ENUNS.SimOuNao;
 import mapeamento.beans.Talhao;
+import mapeamento.beans.Tomates;
 
 /**
  *  SISTOM-4
@@ -39,6 +40,8 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     private final MeuJPanel[][] matrizOriginal;
     private int contadorInteracao;
     MinhaThread thread = new MinhaThread();
+    private final int X;
+    private final int Y;
 
     /**
      *
@@ -69,9 +72,23 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         mapaParaSimulacao.setMinimumSize(new Dimension(400, 300));
         this.mapaParaSimulacao = mapaParaSimulacao;
         
+        
         final MeuJPanel[][] matrizpainel = mapaParaSimulacao.getMatrizpainel();
-        this.matrizOriginal = matrizpainel;
+       
         Talhao talhaoBean = mapaParaSimulacao.getTalhao();
+        
+        this.X = talhaoBean.getQtd_TomatesPorLinhas();
+        //considerando que cada rua tem 2 linhas.
+        this.Y = talhaoBean.getQtdRuas() * 2;
+        this.matrizOriginal = new MeuJPanel[X][Y];
+        
+         for (int i = 0; i < X; i++) {
+            for (int j = 0; j < Y; j++) {
+                this.matrizOriginal[i][j] = new MeuJPanel();
+                Tomates novoTomate = matrizpainel[i][j].getTom().clone();
+                this.matrizOriginal[i][j].setTom(novoTomate);
+            }//for
+        }//for 
         
         automatoParaExecutar = new Automato(talhaoBean, umid, temp, direcao, chuva, data, mediaHistorica, qtdInter, matrizpainel);
         painelMapa.add(mapaParaSimulacao, BorderLayout.CENTER);
@@ -337,6 +354,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         @Override
         public void run() {
             textPanel_interacaoAtual.setText("0");
+            int i, j;
             while (!this.isInterrupted() && contadorInteracao < quantidadeInteracao) {
 
                 GregorianCalendar calendar = new GregorianCalendar();
@@ -361,15 +379,22 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
 
                 automatoParaExecutar.imprime();
                 
-                final MeuJPanel[][] iteracao = automatoParaExecutar.iteracao();
-
-                //mapaParaSimulacao.setMatrizpainel(iteracao);
+                MeuJPanel[][] matrizpainel = mapaParaSimulacao.getMatrizpainel();
+                
+                final MeuJPanel[][] iteracao = automatoParaExecutar.iteracao(matrizpainel);
+                
+                //Faz com que as alterações dos estados sejam vistas no painel de simulação
+                for (i = 0; i < X; i++) {
+                    for (j = 0; j < Y; j++) {
+                        matrizpainel[i][j].setTom(iteracao[i][j].getTom());
+                    }//for
+                }//for
                 
                 //o repaint do mapa ja resolve
                 //mapaParaSimulacao.repintaTodosAsCelulas();
 
                 mapaParaSimulacao.repaint();
-                //repinda()
+                
                 contadorInteracao++;
                 //Caso parar entra aqui
                 synchronized (this) {

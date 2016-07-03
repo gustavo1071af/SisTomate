@@ -24,7 +24,7 @@ public class Automato{
     private final Talhao talhao;
     private final int X;
     private final int Y;
-    private final MeuJPanel[][] matriz;
+    private MeuJPanel[][] matriz;
     private int risco5;
     private int risco7;
     private int risco10;
@@ -374,21 +374,24 @@ public class Automato{
 	
     /**
      *
+     * @param matrizPainel
      * @return
      */
-    public MeuJPanel[][] iteracao() {
+    public MeuJPanel[][] iteracao(final MeuJPanel[][] matrizPainel) {
         MeuJPanel[][] aux = new MeuJPanel[X][Y];
-        aux=this.matriz;
+         this.matriz = matrizPainel;
+        //aux=this.matriz;
+       
         int i, j, max_X, max_Y;
-        //codigo abaixo consegue clona a original
-        /*for (i = 0; i < this.X; i++) {
+        //codigo abaixo consegue clonar a original
+        //SISTOM-13
+        for (i = 0; i < this.X; i++) {
             for (j = 0; j < this.Y; j++) {
                 aux[i][j] = new MeuJPanel();
                 Tomates novoTomate = matriz[i][j].getTom().clone();
                 aux[i][j].setTom(novoTomate);
             }//for
-        }//for
-        */
+        }//for 
         max_X = this.X - 1;
         max_Y = this.Y - 1;
         Double variacao;
@@ -550,6 +553,12 @@ public class Automato{
 
             }//for j
         }//for i
+        //Isso foi mudado para a classe Painel de Simulação na Thread
+        /*for (i = 0; i < this.X; i++) {
+            for (j = 0; j < this.Y; j++) {
+                this.matriz[i][j].setTom(aux[i][j].getTom());
+            }//for
+        }//for */
         return aux;
     }
     
