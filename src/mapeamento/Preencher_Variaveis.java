@@ -14,7 +14,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import mapeamento.ENUNS.DirecoesDoVento;
-import mapeamento.ENUNS.SimOuNao;
 
 /**
  *
@@ -41,10 +40,6 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         DirecoesDoVento[] direcoes = DirecoesDoVento.values();
         ComboBoxModel cbModelDirecoes = new DefaultComboBoxModel(direcoes);
         this.comboBox_direcaoDoAr.setModel(cbModelDirecoes);
-        
-        SimOuNao[] opcoes = SimOuNao.values();
-        ComboBoxModel cbModelSimOuNao = new DefaultComboBoxModel(opcoes);
-        this.comboBox_chuva.setModel(cbModelSimOuNao);
         
         String[] formats = new String[1];
         formats[0] = "dd//MM/yyyy";
@@ -81,8 +76,9 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        comboBox_chuva = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
+        textField_prec = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         titulo = new javax.swing.JLabel();
         rodape = new javax.swing.JPanel();
         iniciarSimulacao = new javax.swing.JButton();
@@ -94,8 +90,8 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 119, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 5);
         form.add(jLabel5, gridBagConstraints);
 
         groupMediaHistorica.add(radio_mediaHistorica2);
@@ -163,8 +159,8 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 74, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 5);
         form.add(jLabel1, gridBagConstraints);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
@@ -227,8 +223,8 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 185, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 5);
         form.add(jLabel4, gridBagConstraints);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -236,8 +232,8 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 172, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 5);
         form.add(jLabel8, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -245,8 +241,8 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 101, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 5);
         form.add(jLabel3, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -254,25 +250,40 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 84, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 5);
         form.add(jLabel2, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(13, 2, 0, 0);
-        form.add(comboBox_chuva, gridBagConstraints);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel11.setText("Interações:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 146, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 5);
         form.add(jLabel11, gridBagConstraints);
+
+        textField_prec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textField_precActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 53;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 2, 0, 0);
+        form.add(textField_prec, gridBagConstraints);
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel12.setText("mm");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 60;
+        gridBagConstraints.insets = new java.awt.Insets(14, 5, 0, 0);
+        form.add(jLabel12, gridBagConstraints);
 
         titulo.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -324,7 +335,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
                 .addComponent(titulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(form, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
                 .addComponent(rodape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -346,21 +357,25 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         //SISTOM-4
         
         int umid = Integer.parseInt(textField_Humid.getText());
-        int temp = Integer.parseInt(textField_Temp.getText());
+        Double temp = Double.parseDouble(textField_Temp.getText());
+        Double prec = Double.parseDouble(textField_prec.getText());
         int qtdInter = Integer.parseInt(textField_inter.getText());
         
         //SISTOM-9
         DirecoesDoVento direcao = (DirecoesDoVento)comboBox_direcaoDoAr.getSelectedItem();
-        SimOuNao chuva = (SimOuNao)comboBox_chuva.getSelectedItem();
         Date data = xDatePicker_data.getDate();
         int mediaHistorica = pegaTexto(groupMediaHistorica);
-        PainelDeSimulacao janela = new PainelDeSimulacao(frame,talhao, umid, temp, direcao, chuva, data, mediaHistorica, qtdInter);             
+        PainelDeSimulacao janela = new PainelDeSimulacao(frame,talhao, umid, temp, direcao, prec, data, mediaHistorica, qtdInter);             
         frame.mudaTela(janela);
     }//GEN-LAST:event_iniciarSimulacaoActionPerformed
 
     private void radio_mediaHistorica1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radio_mediaHistorica1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_radio_mediaHistorica1ActionPerformed
+
+    private void textField_precActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField_precActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textField_precActionPerformed
  
     public int pegaTexto(ButtonGroup grupo) {
         Enumeration<AbstractButton> elementos = grupo.getElements();
@@ -374,7 +389,6 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comboBox_chuva;
     private javax.swing.JComboBox<String> comboBox_direcaoDoAr;
     private javax.swing.JPanel form;
     private javax.swing.ButtonGroup groupMediaHistorica;
@@ -382,6 +396,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
@@ -396,6 +411,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
     private javax.swing.JTextField textField_Humid;
     private javax.swing.JTextField textField_Temp;
     private javax.swing.JTextField textField_inter;
+    private javax.swing.JTextField textField_prec;
     private javax.swing.JLabel titulo;
     private org.jdesktop.swingx.JXDatePicker xDatePicker_data;
     // End of variables declaration//GEN-END:variables

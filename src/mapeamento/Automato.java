@@ -8,7 +8,6 @@ import java.util.List;
 import mapeamento.DAO.DadosMeteorologicosDAO;
 import mapeamento.DAO.LocalidadeDAO;
 import mapeamento.ENUNS.DirecoesDoVento;
-import mapeamento.ENUNS.SimOuNao;
 import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Localidade;
 import mapeamento.beans.Talhao;
@@ -31,18 +30,20 @@ public class Automato{
     private int surto;
     private int count;
     private int diasAposPrimeiroSurto;
-    private DirecoesDoVento direcao;
-    private int mediaHistorica;
-    private int qtdIterecao;
-    private Date dataInicio;
-    private Localidade localidade;
+    private final DirecoesDoVento direcao;
+    private final int mediaHistorica;
+    private final int qtdIterecao;
+    private final Date dataInicio;
+    private final Localidade localidade;
     private final static int ESTADO_MAXIMO = 6;
     private final static int QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL = 5;
     private final static int QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL = 10;
     private final static Double MEDIA_CINCO_DIAS_PARA_FAVORAVEL = 25.5;
     private final static Double SOMA_DE_PRECIPITACAO_PARA_FAVORAVEL = 30.0;
     private final static int ESTADO_MINIMO = 0;
-    private Date dataBaseadaNaMediaHistorica;
+    private final Date dataBaseadaNaMediaHistorica;
+    private final Double temp;
+    private final Double prec;
 
 
     /**
@@ -57,7 +58,7 @@ public class Automato{
      * @param qtdInter
      * @param matriz
      */
-    public Automato(Talhao talhao, int umid, int temp, DirecoesDoVento direcao, SimOuNao chuva, Date dataInicio, int mediaHistorica, int qtdInter, final MeuJPanel[][] matriz ) {
+    public Automato(Talhao talhao, int umid, Double temp, DirecoesDoVento direcao, Double prec, Date dataInicio, int mediaHistorica, int qtdInter, final MeuJPanel[][] matriz ) {
         this.talhao = talhao;
         this.X = talhao.getQtd_TomatesPorLinhas();
         //considerando que cada rua tem 2 linhas.
@@ -69,6 +70,8 @@ public class Automato{
         this.dataInicio = dataInicio;
         Localidade localidade = LocalidadeDAO.get(1);
         this.localidade = localidade;
+        this.temp = temp;
+        this.prec = prec;
         
         //SISTOM-11
         
@@ -299,57 +302,76 @@ public class Automato{
      *SISTOM-11
      * @param data
      */
-    public void calculaRiscos(Date data){
-       GregorianCalendar calendar = new GregorianCalendar();
-       
+    public void calculaRiscos(Date data) {
+        GregorianCalendar calendar = new GregorianCalendar();
+
+        GregorianCalendar calendarDataInicio = new GregorianCalendar();
+        calendarDataInicio.setTime(this.dataInicio);
+
+        int diaDataInicio = calendar.get(GregorianCalendar.DAY_OF_MONTH);
+
+        int mesDataInicio = calendar.get(GregorianCalendar.MONTH) + 1;
+
         //CALCULAR A MEDIA DAS TEMPERATURAS DOS 5 DIAS ANTERIORES A DATA
-       calendar.setTime(data);
-       final List<Double> mediasTempDosDias = new ArrayList<>();
-       calendar.add(Calendar.DAY_OF_MONTH, - QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL);
+        calendar.setTime(data);
+        final List<Double> mediasTempDosDias = new ArrayList<>();
+        calendar.add(Calendar.DAY_OF_MONTH, -QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL);
         for (int i = 0; i < QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL; i++) {
             int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
             //Meses no java é um arrai de 0-11, portanto somamos +1 para ficar de acordo com a realidade
-            int mes = calendar.get(GregorianCalendar.MONTH)+1;
-       
-            Date coletaFim = this.localidade.getColetaFim();
+            int mes = calendar.get(GregorianCalendar.MONTH) + 1;
+            //Caso for a data escolhida no fomulário(data de inicio da simulação)
+            //SISTOM-14
+            if (dia == diaDataInicio && mes == mesDataInicio) {
+                mediasTempDosDias.add(this.temp);
 
-            final Double mediaTempDoDiaDoAno = DadosMeteorologicosDAO.getMediaTempEntreDatasPorDiaDoMesELocalidadeBaseadoEmHyre(dataBaseadaNaMediaHistorica, coletaFim, dia, mes, localidade);
-            
-            if (mediaTempDoDiaDoAno != null) {
-                mediasTempDosDias.add(mediaTempDoDiaDoAno);
-              
             }//if
+            else {
+                Date coletaFim = this.localidade.getColetaFim();
+
+                final Double mediaTempDoDiaDoAno = DadosMeteorologicosDAO.getMediaTempEntreDatasPorDiaDoMesELocalidadeBaseadoEmHyre(dataBaseadaNaMediaHistorica, coletaFim, dia, mes, localidade);
+
+                if (mediaTempDoDiaDoAno != null) {
+                    mediasTempDosDias.add(mediaTempDoDiaDoAno);
+
+                }//if
+            }
 
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-        
+
         //resultados 1
         int qtdDeDiasComTempFavoraveis = mediasTempDosDias.size();
         Double mediaDasTempDosCincoDias = calcularMediaDosCincoDias(mediasTempDosDias);
-        
-        
+
         //AGORA CALCULAR A SOMA DA PRECIPITAÇÃO DOS 10 DIAS ANTERIORES A DATA
         calendar.setTime(data);
-        
-       
-         calendar.add(Calendar.DAY_OF_MONTH, - QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL);
+
+        calendar.add(Calendar.DAY_OF_MONTH, -QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL);
         final List<Double> mediasPrecDosDias = new ArrayList<>();
-         for (int i = 0; i < QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL; i++) {
+        for (int i = 0; i < QTD_DIAS_PRECIPITACAO_PARA_FAVORAVEL; i++) {
             int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
             //Meses no java é um arrai de 0-11, portanto somamos +1 para ficar de acordo com a realidade
-            int mes = calendar.get(GregorianCalendar.MONTH)+1;
-       
-            Date coletaFim = this.localidade.getColetaFim();
+            int mes = calendar.get(GregorianCalendar.MONTH) + 1;
+            //Caso for a data escolhida no fomulário(data de inicio da simulação)
+            //SISTOM-14
+            if (dia == diaDataInicio && mes == mesDataInicio) {
+                mediasPrecDosDias.add(this.prec);
+            } else {
+                Date coletaFim = this.localidade.getColetaFim();
 
-            final Double mediaPrecDoDiaDoAno = DadosMeteorologicosDAO.getMediaPrecipitacaoEntreDatasPorDiaDoMesELocalidadeBaseadoEmHyre(dataBaseadaNaMediaHistorica, coletaFim, dia, mes, localidade);
-            
-            if (mediaPrecDoDiaDoAno != null) {
+                final Double mediaPrecDoDiaDoAno = DadosMeteorologicosDAO.getMediaPrecipitacaoEntreDatasPorDiaDoMesELocalidadeBaseadoEmHyre(dataBaseadaNaMediaHistorica, coletaFim, dia, mes, localidade);
 
-                mediasPrecDosDias.add(mediaPrecDoDiaDoAno);
-                
-            }//if
+                if (mediaPrecDoDiaDoAno != null) {
+
+                    mediasPrecDosDias.add(mediaPrecDoDiaDoAno);
+
+                }//if
+
+            }
+
             calendar.add(Calendar.DAY_OF_MONTH, 1);
-          
+
         }
          
           //resultados 2

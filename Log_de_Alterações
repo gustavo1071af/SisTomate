@@ -80,7 +80,9 @@ SISTOM-9<sucupira>: Colocar novos campos na tela de escolha de variaveis da simu
 - FOI adicionado os novos campos, inclusive, mudei a estrutura da tela colocando um Borderlayout no painel principal, o form coloquei dentro de um outro painel
 com um Grid Bag Layout(setei o painel para ficar no centro do painel principal) para facilitar no alinhamento dos campos e fiz um painel rodapé(setei para ficar no sul) que vai levar apenas o botão
 de "Iniciar Simulação" para ficar semelhante das outras telas.
-- Adaptei os parametros para o painel de simulação para apresentar as variáveis escolhidadas.
+- Adaptamos os parametros para o painel de simulação para apresentar as variáveis escolhidadas.
+- - Alinhamos os campos do formulario definindo o layout "Grid Bag Layout" e fizemos ajustes de alinhamento clicando com o botão direito do mouse 
+no painel do formulário e selecionando "Customize Layout".
 
 SISTOM-10<sucupira>: Adaptar automato para cada celula infectar os seus vizinhos de acordo com a direção do vento, e não ter o ccomportamento de infectado.
 - Foi adicionado um atributo na classe de ImagemProcessada "estadoComVariacao". este atributo guardará a soma do estado com a variação na infecção.
@@ -125,6 +127,9 @@ O clone não é uma referencia, diferente do beanAux = beanOriginal;
 
 SISTOM-14<sucupira>: Alterar o campo Chuva(antigo) por Precipitação, e fazer com que os dados do formulário da simulação seja usados na simulação
 quando for a data escolhida.
+- Foi adicionado o campo novo e removido o antigo(chuva). na classe do automato, ao calcular os riscos, usamos a data preenchida no 
+formulario para usar os parametros passados (temperatura, precipitação) quando for da mesma data nos calculos das médias.
+- Aproveitamos para alinhar os campos clicando com o botão direito do mouse no painel do formulário e selecionando "Customize Layout". 
 
 SISTOM-15<sucupira>: Criar o Botão que escolhe o combate a ser usado no talhão quando a simulação for parada.
 

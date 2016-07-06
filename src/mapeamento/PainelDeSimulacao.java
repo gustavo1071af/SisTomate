@@ -14,7 +14,6 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mapeamento.ENUNS.DirecoesDoVento;
-import mapeamento.ENUNS.SimOuNao;
 import mapeamento.beans.Talhao;
 import mapeamento.beans.Tomates;
 
@@ -27,11 +26,11 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
 
     private final String talhao;
     private final int umidade;
-    private final int temperaturaMedia;
+    private final Double temperaturaMedia;
     private final int quantidadeInteracao;
     //SISTOM-9
     private final DirecoesDoVento direcao;
-    private final SimOuNao chuva;
+    private final Double prec;
     private final Date data;
     private final int mediaHistorica;
     private static final SimpleDateFormat FORMATO_BR = new SimpleDateFormat("dd/MM/yyyy");
@@ -55,14 +54,14 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
      * @param mediaHistorica
      * @param qtdInter
      */
-    public PainelDeSimulacao(Abertura frame, String talhao, int umid, int temp, DirecoesDoVento direcao, SimOuNao chuva, Date data, int mediaHistorica, int qtdInter)
+    public PainelDeSimulacao(Abertura frame, String talhao, int umid, Double temp, DirecoesDoVento direcao, Double prec, Date data, int mediaHistorica, int qtdInter)
     {
         this.talhao = talhao;
         this.umidade = umid;
         this.temperaturaMedia = temp;
         this.quantidadeInteracao = qtdInter;    
         this.direcao = direcao;
-        this.chuva = chuva;
+        this.prec = prec;
         this.data = data;
         this.mediaHistorica = mediaHistorica;
         initComponents();
@@ -90,7 +89,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
             }//for
         }//for 
         
-        automatoParaExecutar = new Automato(talhaoBean, umid, temp, direcao, chuva, data, mediaHistorica, qtdInter, matrizpainel);
+        automatoParaExecutar = new Automato(talhaoBean, umid, temp, direcao, prec, data, mediaHistorica, qtdInter, matrizpainel);
         painelMapa.add(mapaParaSimulacao, BorderLayout.CENTER);
         this.contadorInteracao = 0;
     }
@@ -276,7 +275,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
          stringBuilder.append(getTemperaturaMedia());
           stringBuilder.append(",");
          stringBuilder.append(" Chuv.: ");
-         stringBuilder.append(getChuva().getValor()? "Sim" : "Não");
+         stringBuilder.append(getPrec());
           stringBuilder.append(",");
           stringBuilder.append(" Direç.: ");
          stringBuilder.append(getDirecao().getValor());
@@ -301,7 +300,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     /**
      * @return the temperaturaMedia
      */
-    public int getTemperaturaMedia() {
+    public Double getTemperaturaMedia() {
         return temperaturaMedia;
     }
 
@@ -320,10 +319,10 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     }
 
     /**
-     * @return the chuva
+     * @return the prec
      */
-    public SimOuNao getChuva() {
-        return chuva;
+    public Double getPrec() {
+        return prec;
     }
 
     /**
