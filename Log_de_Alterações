@@ -145,3 +145,8 @@ o não existir um combate em progresso.
 da infecção que soma a variação das regras(SISTOM-10).
 Obs: Diferente da infecção, o combate é aplicado na própria célula(tomateiro) e não nas suas visinhas. 
 
+
+SISTOM-16<sucupira>:Fazer ação de restart da simulação.
+
+SISTOM-17<sucupira>:Alterar formulário de simulação para incluir o campo de Intensidade do Vento, para que seu valor vai incentivar um espalhamento
+mais abundante se a velocidade estiver "forte".
