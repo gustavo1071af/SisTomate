@@ -7,12 +7,14 @@ package mapeamento;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mapeamento.ENUNS.Combate;
 import mapeamento.ENUNS.DirecoesDoVento;
 import mapeamento.beans.Talhao;
 import mapeamento.beans.Tomates;
@@ -41,6 +43,10 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     MinhaThread thread = new MinhaThread();
     private final int X;
     private final int Y;
+    
+    private final Frame rootFrame;
+    private Combate combate;
+    private int duracaoDoCombateEmProgresso;
 
     /**
      *
@@ -49,7 +55,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
      * @param umid
      * @param temp
      * @param direcao
-     * @param chuva
+     * @param prec
      * @param data
      * @param mediaHistorica
      * @param qtdInter
@@ -70,6 +76,9 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         MapaParaSimulacao mapaParaSimulacao = new MapaParaSimulacao(talhao);
         mapaParaSimulacao.setMinimumSize(new Dimension(400, 300));
         this.mapaParaSimulacao = mapaParaSimulacao;
+        //desabilita botao Combate
+        this.buttonCombate.setEnabled(false);
+        this.rootFrame=frame;
         
         
         final MeuJPanel[][] matrizpainel = mapaParaSimulacao.getMatrizpainel();
@@ -110,7 +119,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         textPaneI_interacaoMaxima = new javax.swing.JTextPane();
         buttonIniciar = new javax.swing.JButton();
         buttonProximo = new javax.swing.JButton();
-        buttonMudar = new javax.swing.JButton();
+        buttonCombate = new javax.swing.JButton();
         textPaneParametros = new javax.swing.JTextPane();
         painelMapa = new javax.swing.JPanel();
 
@@ -150,10 +159,20 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
         jPanel1.add(buttonProximo, gridBagConstraints);
 
-        buttonMudar.setText("Mudar Parâmetros");
+        buttonCombate.setText("Combate");
+        buttonCombate.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                buttonCombateStateChanged(evt);
+            }
+        });
+        buttonCombate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCombateActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
-        jPanel1.add(buttonMudar, gridBagConstraints);
+        jPanel1.add(buttonCombate, gridBagConstraints);
 
         textPaneParametros.setEditable(false);
         textPaneParametros.setText("...");
@@ -170,7 +189,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
             .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -178,7 +197,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
+                .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     //SISTOM-6
@@ -201,11 +220,13 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
                        if (!thread.pleaseWait) {
                            System.out.println("Pausa thread.");
                            buttonIniciar.setText("Continuar");
+                            this.buttonCombate.setVisible(true);
                            // Pausa a thread
                            synchronized (thread) {
                                thread.pleaseWait = true;
                            }
-                           buttonProximo.setEnabled(true);
+                           
+                           this.buttonProximo.setEnabled(true);
                        }
                        else{
                            System.out.println("Reinicia thread");
@@ -219,7 +240,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
                        }
                        
                     }
-                       
+                    this.buttonCombate.setEnabled(thread.pleaseWait && !automatoParaExecutar.combateEmProgresso());   
                
     }//GEN-LAST:event_buttonIniciarActionPerformed
     //SISTOM-6
@@ -250,10 +271,23 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_buttonProximoActionPerformed
 
+    private void buttonCombateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCombateActionPerformed
+
+        EscolhaCombateDialog t1 = new EscolhaCombateDialog(this.rootFrame, true);
+        t1.setTitle("Selecione o Combate");
+        t1.setVisible(true);
+        Combate resultado = t1.getResultado();
+        this.automatoParaExecutar.setCombate(resultado);
+       
+    }//GEN-LAST:event_buttonCombateActionPerformed
+
+    private void buttonCombateStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_buttonCombateStateChanged
+    }//GEN-LAST:event_buttonCombateStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonCombate;
     private javax.swing.JButton buttonIniciar;
-    private javax.swing.JButton buttonMudar;
     private javax.swing.JButton buttonProximo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel painelMapa;
@@ -395,6 +429,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
                 mapaParaSimulacao.repaint();
                 
                 contadorInteracao++;
+                
                 //Caso parar entra aqui
                 synchronized (this) {
                     while (pleaseWait) {

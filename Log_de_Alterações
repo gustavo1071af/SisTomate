@@ -132,4 +132,16 @@ formulario para usar os parametros passados (temperatura, precipitação) quando
 - Aproveitamos para alinhar os campos clicando com o botão direito do mouse no painel do formulário e selecionando "Customize Layout". 
 
 SISTOM-15<sucupira>: Criar o Botão que escolhe o combate a ser usado no talhão quando a simulação for parada.
+- Fizemos a classe enum do Combate utilizado a metodologia strategy para setar as propriedades de cada elemento da enum.
+- Fizemos uma nova classe jDialog(EscolhaCombateDialog) que aparecerá quando clicar na ação de escolher o combate na simulação. Foi necessário,
+criar esta classe porque na classe JOptionPane não tem como customizar o painel, sendo assim, impossibilitava a apresentação das propriedades
+do combate selecionado.
+-- Uma modificação importante de salientar, é que usamos o frame princiapal para construir o dialog, assim usamos ele para o posicionamento do dialog
+ficar exatamento no meio da aplicação.
+this.setLocationRelativeTo(parent);
+- Na classe Painel de simulação foi feita uma regra para o botão de escolha do combate só aparecer quando a simulação estiver parada e
+o não existir um combate em progresso.
+- No classe automato foi criada uma nova função(aplicaCombate()) que usa o combate para variar seu estado subtraindo o resultado do Combate selecionado, diferente
+da infecção que soma a variação das regras(SISTOM-10).
+Obs: Diferente da infecção, o combate é aplicado na própria célula(tomateiro) e não nas suas visinhas. 
 

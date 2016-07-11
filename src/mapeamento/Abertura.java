@@ -87,7 +87,8 @@ public class Abertura extends javax.swing.JFrame {
        // Tools.enable(false);
         setTitle("SisTomate");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        this.setSize(1024, 800);
+        this.setMinimumSize(this.getSize());
         this.setVisible(true);
         System.out.println();
     }

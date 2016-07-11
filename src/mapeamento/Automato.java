@@ -7,11 +7,13 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import mapeamento.DAO.DadosMeteorologicosDAO;
 import mapeamento.DAO.LocalidadeDAO;
+import mapeamento.ENUNS.Combate;
 import mapeamento.ENUNS.DirecoesDoVento;
 import mapeamento.beans.ImagemProcessada;
 import mapeamento.beans.Localidade;
 import mapeamento.beans.Talhao;
 import mapeamento.beans.Tomates;
+import mapeamento.beans.strategy.AbstractStrategyCombate;
 
 /**
  *  SISTOM-4
@@ -44,6 +46,8 @@ public class Automato{
     private final Date dataBaseadaNaMediaHistorica;
     private final Double temp;
     private final Double prec;
+    private Combate combate;
+    private int  combateProgresso;
 
 
     /**
@@ -72,6 +76,8 @@ public class Automato{
         this.localidade = localidade;
         this.temp = temp;
         this.prec = prec;
+        this.combate = null;
+        this.combateProgresso = 0;
         
         //SISTOM-11
         
@@ -416,7 +422,7 @@ public class Automato{
         }//for 
         max_X = this.X - 1;
         max_Y = this.Y - 1;
-        Double variacao;
+        Double variacao, variacaoCombate;
         String verificador = Integer.toString(surto + 1);
         surto = count/10.0 == Double.parseDouble(verificador) ? surto+1 : surto;
         if (surto >= 1) {
@@ -430,6 +436,7 @@ public class Automato{
                 ImagemProcessada imagemProcessada = tom.getImagemProcessada();
                 int estado = imagemProcessada.getEstado();
                 variacao = 0.0;
+                variacaoCombate = 0.0;
                 
                 // COLOCAR REGRAS AQUI
                 switch (estado) {
@@ -572,9 +579,19 @@ public class Automato{
                 }//switch
                 
                 afetaVizinhaca(aux, i, j, direcao, variacao);
-
+                
+                //SISTOM-15
+                if (combateEmProgresso()) {
+                    aplicaCombate(aux, i, j);
+                }//if
             }//for j
         }//for i
+        //SISTOM-15
+        //A cada iteracao, diminui o tempo do combate
+         if (combateEmProgresso()) {
+            this.combateProgresso--;
+         }//if
+        
         //Isso foi mudado para a classe Painel de Simulação na Thread
         /*for (i = 0; i < this.X; i++) {
             for (j = 0; j < this.Y; j++) {
@@ -582,6 +599,29 @@ public class Automato{
             }//for
         }//for */
         return aux;
+    }
+    
+    /**
+     * //SISTOM-15
+     * @param aux
+     * @param i
+     * @param j
+     */
+    public void aplicaCombate(MeuJPanel [][] aux, int i, int j){
+        Double variacaoCombate = 0.0;
+        if (this.combate != null) {
+            AbstractStrategyCombate strategy = this.combate.getStrategy();
+            Double resultado = strategy.getResultado();
+            variacaoCombate = resultado;
+        }
+        Tomates tom = aux[i][j].getTom();
+        ImagemProcessada imagemProcessada = tom.getImagemProcessada();
+        Double estadoComVariacao = imagemProcessada.getEstadoComVariacao();
+        Double calc = estadoComVariacao - variacaoCombate;
+
+        Double novoEstadoComVariacao = calc >= ESTADO_MINIMO ? calc : ESTADO_MINIMO;
+        imagemProcessada.setEstadoComVariacao(novoEstadoComVariacao);
+        imagemProcessada.setEstado((int) Math.round(imagemProcessada.getEstadoComVariacao()));
     }
     
       private void repinta() {
@@ -655,6 +695,38 @@ public class Automato{
         }
         System.out.println("(" + Thread.currentThread().getId() + " - " + Thread.currentThread().getName() + ") será finalizada!");
     }*/
+
+    /**
+     * @return the combate
+     */
+    public Combate getCombate() {
+        return combate;
+    }
+
+    /**
+     * @param combate the combate to set
+     */
+    public void setCombate(Combate combate) {
+        this.combate = combate;
+        atualizaCombateProgresso();
+       
+    }
+    
+    public void atualizaCombateProgresso(){
+        if (this.combate != null) {
+            AbstractStrategyCombate strategy = combate.getStrategy();
+            int duracao = strategy.getDuracao();
+            this.combateProgresso = duracao;
+        }
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Boolean combateEmProgresso(){
+        return (this.combateProgresso > 0);
+    }
 
   
 
