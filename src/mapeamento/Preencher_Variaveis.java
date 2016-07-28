@@ -35,7 +35,6 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         this.add(titulo, BorderLayout.NORTH);
         this.add(form, BorderLayout.CENTER);
         this.add(rodape, BorderLayout.SOUTH);
-        
         //SISTOM-9
         DirecoesDoVento[] direcoes = DirecoesDoVento.values();
         ComboBoxModel cbModelDirecoes = new DefaultComboBoxModel(direcoes);
@@ -79,6 +78,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         textField_prec = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        radio_mediaHistorica3 = new javax.swing.JRadioButton();
         titulo = new javax.swing.JLabel();
         rodape = new javax.swing.JPanel();
         iniciarSimulacao = new javax.swing.JButton();
@@ -99,8 +99,8 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
-        gridBagConstraints.ipadx = 80;
-        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 48, 0, 0);
         form.add(radio_mediaHistorica2, gridBagConstraints);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
@@ -108,10 +108,9 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
-        gridBagConstraints.ipadx = 80;
         gridBagConstraints.ipady = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 142, 0, 0);
         form.add(jLabel13, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -183,7 +182,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(14, 2, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 0);
         form.add(radio_mediaHistorica1, gridBagConstraints);
 
         textField_Humid.addActionListener(new java.awt.event.ActionListener() {
@@ -285,6 +284,15 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(14, 5, 0, 0);
         form.add(jLabel12, gridBagConstraints);
 
+        groupMediaHistorica.add(radio_mediaHistorica3);
+        radio_mediaHistorica3.setText("15");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(14, 100, 0, 0);
+        form.add(radio_mediaHistorica3, gridBagConstraints);
+
         titulo.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titulo.setText("Preencher Fatores Determinantes para a Simulação");
@@ -318,12 +326,12 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(93, Short.MAX_VALUE)
                         .addComponent(form, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(77, 77, 77))
             .addComponent(rodape, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -335,7 +343,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
                 .addComponent(titulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(form, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(rodape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -407,6 +415,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JRadioButton radio_mediaHistorica1;
     private javax.swing.JRadioButton radio_mediaHistorica2;
+    private javax.swing.JRadioButton radio_mediaHistorica3;
     private javax.swing.JPanel rodape;
     private javax.swing.JTextField textField_Humid;
     private javax.swing.JTextField textField_Temp;

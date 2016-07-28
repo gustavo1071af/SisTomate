@@ -86,7 +86,7 @@ public class Automato{
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(coletaFim);
         //basear nas media dos n anos passados para ter uma base do futuro.
-        //A soma com 1 é para garantir que terá dados suficientes para a média, ou caso o bd não tenha algum ano completo(principalmente o ultimo)
+        //A soma com 1 é para garantir que terá dados suficientes para a média, ou caso o bd não tenha algum ano completo(principalmente o ultimo(2015))
         calendar.add(Calendar.YEAR, -(this.mediaHistorica+1));
         this.dataBaseadaNaMediaHistorica = calendar.getTime();
         

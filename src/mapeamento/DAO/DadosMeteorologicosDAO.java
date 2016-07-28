@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import mapeamento.beans.DadosMeteorologicos;
 import mapeamento.beans.Localidade;
+import org.javatuples.Quintet;
 import org.javatuples.Triplet;
 
 /**
@@ -154,6 +155,55 @@ public class DadosMeteorologicosDAO {
             con.close();
         } catch (SQLException e) {
             System.out.println("Erro na Função getMediasEntreDatasPorDiaDoMesELocalidade() em DadosMeteorologicosDAO: " + e.getMessage());
+        }
+        return result;
+    }
+    
+    /**
+     * SISTOM-18
+     * @param dataInicio
+     * @param dataFim
+     * @param dia
+     * @param mes
+     * @param localidade
+     * @return
+     */
+    public static Quintet getTodasAsMediasEntreDatasPorDiaDoMesELocalidade(Date dataInicio, Date dataFim, int dia, int mes, Localidade localidade) 
+    {
+        int idLocalidade = localidade.getId();
+        
+        Quintet result = null;
+        //Preparar as datas para consulta do formato que estava para yyyy-MM-dd(padrao do mysql)
+        long dataInicioTime = dataInicio.getTime();
+        java.sql.Date dataInicioSql = new java.sql.Date(dataInicioTime);
+        
+        long dataFimTime = dataFim.getTime();
+        java.sql.Date dataFimSql = new java.sql.Date(dataFimTime);
+        
+        String sql = "SELECT AVG(temp_media) AS media_temp, AVG(umidade) AS media_umid, AVG(temp_mini) AS media_tempMini, "
+                + "AVG(temp_max) AS media_tempMax, AVG(precipitacao) AS media_prec  "
+                + "FROM dados_meteorologicos d where d.localidade = '" + idLocalidade + "' "
+                + "AND (data BETWEEN '"+dataInicioSql+"' AND '"+dataFimSql+"') "
+                + "AND EXTRACT(DAY FROM data) = '"+dia+"' And EXTRACT(MONTH FROM data) = '"+mes+"' "
+                + "ORDER BY data ";
+
+        Connection con = new Conn().getConnection();
+        try {
+            Statement stmt = con.createStatement();
+            //System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                double media_temp = rs.getDouble("media_temp");
+                double media_umid = rs.getDouble("media_umid");
+                double media_tempMini = rs.getDouble("media_tempMini");
+                double media_tempMax = rs.getDouble("media_tempMax");
+                double media_prec = rs.getDouble("media_prec");
+                result = new Quintet(media_temp, media_umid, media_tempMini, media_tempMax, media_prec);
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("Erro na Função getTodasAsMediasEntreDatasPorDiaDoMesELocalidade() em DadosMeteorologicosDAO: " + e.getMessage());
         }
         return result;
     }
