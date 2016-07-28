@@ -150,3 +150,5 @@ SISTOM-16<sucupira>:Fazer ação de restart da simulação.
 
 SISTOM-17<sucupira>:Alterar formulário de simulação para incluir o campo de Intensidade do Vento, para que seu valor vai incentivar um espalhamento
 mais abundante se a velocidade estiver "forte".
+
+SISTOM-18<sucupira>:Consertar dados meteorologicos faltosos entre 30/06/2001 - 31/04/2002 usando a média da data dos outros anos.
