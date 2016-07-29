@@ -153,4 +153,7 @@ mais abundante se a velocidade estiver "forte".
 
 SISTOM-18<sucupira>:Consertar dados meteorologicos faltosos entre 01/07/2001 - 30/04/2002 usando a média da data dos outros anos. Sendo assim, podemos colocar a media historica de 
 15 anos no formulario.
-- COMENTAR
+- Foi criado uma classe para consertar os dados meteorologiscos, sendo assim, fizemos os insertes dos dados faltosos e alteramos a vers
+ao da base para 7.
+- Foi alterado a data de inicio e fim da coleta da localidade 1(Alferes).
+- Adicionamos a opção que faltava de 15 anos para a média histórica no formulário da simulação.
