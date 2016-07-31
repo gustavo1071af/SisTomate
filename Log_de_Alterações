@@ -147,6 +147,7 @@ Obs: Diferente da infecção, o combate é aplicado na própria célula(tomateir
 
 
 SISTOM-16<sucupira>:Fazer ação de restart da simulação.
+- Foi adicionado o botão Reiniciar no Painel de simulação. O botão só será visível quando a simulação estiver pausada.
 
 SISTOM-17<sucupira>:Alterar formulário de simulação para incluir o campo de Intensidade do Vento, para que seu valor vai incentivar um espalhamento
 mais abundante se a velocidade estiver "forte".

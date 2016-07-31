@@ -7,7 +7,6 @@ package mapeamento;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,9 +43,9 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     private final int X;
     private final int Y;
     
-    private final Frame rootFrame;
+    private final Abertura rootFrame;
     private Combate combate;
-    private int duracaoDoCombateEmProgresso;
+    //private int duracaoDoCombateEmProgresso;
 
     /**
      *
@@ -79,6 +78,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         //desabilita botao Combate
         this.buttonCombate.setEnabled(false);
         this.rootFrame=frame;
+        this.buttonReiniciar.setEnabled(false);
         
         
         final MeuJPanel[][] matrizpainel = mapaParaSimulacao.getMatrizpainel();
@@ -121,6 +121,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         buttonProximo = new javax.swing.JButton();
         buttonCombate = new javax.swing.JButton();
         textPaneParametros = new javax.swing.JTextPane();
+        buttonReiniciar = new javax.swing.JButton();
         painelMapa = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(400, 300));
@@ -177,10 +178,23 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         textPaneParametros.setEditable(false);
         textPaneParametros.setText("...");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 1);
         jPanel1.add(textPaneParametros, gridBagConstraints);
         textPaneParametros.getAccessibleContext().setAccessibleParent(jPanel1);
+
+        buttonReiniciar.setText("Reiniciar");
+        buttonReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonReiniciarActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(buttonReiniciar, gridBagConstraints);
 
         painelMapa.setPreferredSize(new java.awt.Dimension(633, 364));
         painelMapa.setLayout(new java.awt.BorderLayout());
@@ -240,7 +254,8 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
                        }
                        
                     }
-                    this.buttonCombate.setEnabled(thread.pleaseWait && !automatoParaExecutar.combateEmProgresso());   
+                    this.buttonCombate.setEnabled(thread.pleaseWait && !automatoParaExecutar.combateEmProgresso()); 
+                    this.buttonReiniciar.setEnabled(thread.pleaseWait);
                
     }//GEN-LAST:event_buttonIniciarActionPerformed
     //SISTOM-6
@@ -284,11 +299,20 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     private void buttonCombateStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_buttonCombateStateChanged
     }//GEN-LAST:event_buttonCombateStateChanged
 
+    private void buttonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReiniciarActionPerformed
+        // SISTOM-17
+        PainelDeSimulacao janela = new PainelDeSimulacao(rootFrame, talhao, umidade, temperaturaMedia, direcao, prec, data, mediaHistorica, quantidadeInteracao);
+        this.thread.interrupt();
+        this.rootFrame.mudaTela(janela);
+
+    }//GEN-LAST:event_buttonReiniciarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCombate;
     private javax.swing.JButton buttonIniciar;
     private javax.swing.JButton buttonProximo;
+    private javax.swing.JButton buttonReiniciar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel painelMapa;
     private javax.swing.JTextPane textPaneI_interacaoMaxima;
