@@ -7,6 +7,8 @@ Authors:
 
 package mapeamento;
 
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
@@ -16,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import mapeamento.DAO.ImagemProcessadaDAO;
 import mapeamento.DAO.TalhaoDAO;
 import mapeamento.DAO.TomatesDAO;
@@ -72,10 +75,39 @@ public class Abertura extends javax.swing.JFrame {
             }
         });
         label1 = new javax.swing.JLabel();
-        label1.setText("                                            Selecione o Talhão:");
-        jMenuBar1.add(label1);
-        jMenuBar1.add(combo);
+        JMenuBar outroMenu = new JMenuBar();
+        outroMenu.setBorder(null);
+       
+        //outroMenu.setSize(50, 30);
+        Dimension dimension = new Dimension(400, 27);
+        outroMenu.setMaximumSize(dimension);
+        outroMenu.setMinimumSize(dimension);
+         label1.setText("Selecione o Talhão:");
+        //Color color = new Color(240, 240, 240);
+        //jPanel.setBackground(color);
+       outroMenu.setLayout(new java.awt.GridBagLayout());
+       //outroMenu.setMargin(new java.awt.Insets(0, -200, 0, 0));
+       GridBagConstraints gridBagConstraints;
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0,-100, 0, 0);
+        outroMenu.add(label1, gridBagConstraints);
         
+        //gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+         gridBagConstraints.ipadx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 0);
+        outroMenu.add(combo, gridBagConstraints);
+        //outroMenu.add(label1);
+        //outroMenu.add(combo);
+        jMenuBar1.add(outroMenu);
+        
+        //jMenuBar1.add(label1);
+        //jMenuBar1.add(combo);
         //inserir logo
         ImageIcon img = new ImageIcon(getClass().getResource("/mapeamento/Sistomate2.jpg"));
          ImageIcon thumbnail = null;
