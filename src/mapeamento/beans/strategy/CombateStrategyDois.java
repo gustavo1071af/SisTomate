@@ -17,7 +17,7 @@ public class CombateStrategyDois extends AbstractStrategyCombate{
         setNome("teste2");
         setDuracao(5);
         setPreco(150.00);
-        setResultado(1.0);
+        setResultado(0.4);
         
     }
 

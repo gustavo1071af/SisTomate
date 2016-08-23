@@ -158,3 +158,7 @@ SISTOM-18<sucupira>:Consertar dados meteorologicos faltosos entre 01/07/2001 - 3
 ao da base para 7.
 - Foi alterado a data de inicio e fim da coleta da localidade 1(Alferes).
 - Adicionamos a opção que faltava de 15 anos para a média histórica no formulário da simulação.
+
+SISTOM-19<sucupira>:Fazer painel de acompanhamento de variáveis no painel de simulação.
+- Adicionamos paineis no gridlayout que possui os botoes de controle da simulação, um painel mostraria informações a respeito do modelo de previsão e outro mostraria dados dos
+combates utilizados.

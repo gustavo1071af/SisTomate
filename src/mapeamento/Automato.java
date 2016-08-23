@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import javax.swing.JTextField;
 import mapeamento.DAO.DadosMeteorologicosDAO;
 import mapeamento.DAO.LocalidadeDAO;
 import mapeamento.ENUNS.Combate;
@@ -31,6 +32,7 @@ public class Automato{
     private int risco10;
     private int surto;
     private int count;
+    private int diasFavoraveis;
     private int diasAposPrimeiroSurto;
     private final DirecoesDoVento direcao;
     private final int mediaHistorica;
@@ -48,6 +50,7 @@ public class Automato{
     private final Double prec;
     private Combate combate;
     private int  combateProgresso;
+    private final PainelDeSimulacao parent;
 
 
     /**
@@ -62,7 +65,7 @@ public class Automato{
      * @param qtdInter
      * @param matriz
      */
-    public Automato(Talhao talhao, int umid, Double temp, DirecoesDoVento direcao, Double prec, Date dataInicio, int mediaHistorica, int qtdInter, final MeuJPanel[][] matriz ) {
+    public Automato(Talhao talhao, int umid, Double temp, DirecoesDoVento direcao, Double prec, Date dataInicio, int mediaHistorica, int qtdInter, final MeuJPanel[][] matriz, final PainelDeSimulacao parent ) {
         this.talhao = talhao;
         this.X = talhao.getQtd_TomatesPorLinhas();
         //considerando que cada rua tem 2 linhas.
@@ -78,6 +81,7 @@ public class Automato{
         this.prec = prec;
         this.combate = null;
         this.combateProgresso = 0;
+        this.parent = parent;
         
         //SISTOM-11
         
@@ -97,6 +101,7 @@ public class Automato{
         this.risco10 = 0;
         //SISTOM-12
         this.surto = 0;
+        diasFavoraveis = 0;
         this.diasAposPrimeiroSurto = 0;
         inicializa();
     }
@@ -387,15 +392,21 @@ public class Automato{
         //Modelo Hyre 1954
        if ( qtdDeDiasComTempFavoraveis >= QTD_DIAS_MEDIA_TEMP_PARA_FAVORAVEL && mediaDasTempDosCincoDias <= MEDIA_CINCO_DIAS_PARA_FAVORAVEL && somaPrecDosDezDias >= SOMA_DE_PRECIPITACAO_PARA_FAVORAVEL) {
            this.count++;
-           //continuar aqui. colocar as regras do risco pela quantidade de dias favoráveis
-
+           this.diasFavoraveis++;
        } else {
            this.count = 0;
        }
-       this.risco10 = this.count >= 10 ? 1 : 0;
-       this.risco7 = this.count >= 7 ? 1 : 0;
-       this.risco5 = this.count >= 5 ? 1 : 0;
        
+       //SISTOM-19
+       
+        JTextField textDiasFavoraveisSeguidos = parent.getTextDiasFavoraveisSeguidos();
+        textDiasFavoraveisSeguidos.setText(Integer.toString(this.count));
+        JTextField textDiasFavoraveis = parent.getTextDiasFavoraveis();
+        textDiasFavoraveis.setText(Integer.toString(this.diasFavoraveis));
+        this.risco10 = this.count >= 10 ? 1 : 0;
+        this.risco7 = this.count >= 7 ? 1 : 0;
+        this.risco5 = this.count >= 5 ? 1 : 0;
+
       // return mediasDoDiaDoAno;
 
    }
@@ -586,11 +597,23 @@ public class Automato{
                 }//if
             }//for j
         }//for i
+        JTextField textDiasRestantes = this.parent.getTextDiasRestantes();
+        JTextField textCombateCorrente = this.parent.getTextCombateCorrente();
         //SISTOM-15
         //A cada iteracao, diminui o tempo do combate
          if (combateEmProgresso()) {
             this.combateProgresso--;
+            //SISTOM-19
+            
+            textDiasRestantes.setText(Integer.toString(this.combateProgresso));
          }//if
+         else{
+             //SISTOM-19
+             
+             //this.combate = null;
+             textDiasRestantes.setText("-");
+             textCombateCorrente.setText("-");
+         }//else
         
         //Isso foi mudado para a classe Painel de Simulação na Thread
         /*for (i = 0; i < this.X; i++) {
@@ -725,7 +748,7 @@ public class Automato{
      * @return
      */
     public Boolean combateEmProgresso(){
-        return (this.combateProgresso > 0);
+        return (this.combate!=null && this.combateProgresso > 0);
     }
 
   

@@ -17,6 +17,7 @@ import mapeamento.ENUNS.Combate;
 import mapeamento.ENUNS.DirecoesDoVento;
 import mapeamento.beans.Talhao;
 import mapeamento.beans.Tomates;
+import mapeamento.beans.strategy.AbstractStrategyCombate;
 
 /**
  *  SISTOM-4
@@ -98,7 +99,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
             }//for
         }//for 
         
-        automatoParaExecutar = new Automato(talhaoBean, umid, temp, direcao, prec, data, mediaHistorica, qtdInter, matrizpainel);
+        automatoParaExecutar = new Automato(talhaoBean, umid, temp, direcao, prec, data, mediaHistorica, qtdInter, matrizpainel, this);
         painelMapa.add(mapaParaSimulacao, BorderLayout.CENTER);
         this.contadorInteracao = 0;
     }
@@ -122,13 +123,24 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         buttonCombate = new javax.swing.JButton();
         textPaneParametros = new javax.swing.JTextPane();
         buttonReiniciar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        tituloPrevisao = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        textDiasFavoraveis = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        textDiasFavoraveisSeguidos = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        tituloCombate = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        textCombateCorrente = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        textDiasRestantes = new javax.swing.JTextField();
         painelMapa = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(400, 300));
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        textPanel_interacaoAtual.setEditable(false);
         textPanel_interacaoAtual.setText("-");
         jPanel1.add(textPanel_interacaoAtual, new java.awt.GridBagConstraints());
 
@@ -196,6 +208,120 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         jPanel1.add(buttonReiniciar, gridBagConstraints);
 
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        tituloPrevisao.setText("Previsão:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 15, 15);
+        jPanel2.add(tituloPrevisao, gridBagConstraints);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel1.setText("Dias Fav.:");
+        jLabel1.setToolTipText("Quantidade de Didas favoráveis a Requeima.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(jLabel1, gridBagConstraints);
+
+        textDiasFavoraveis.setEditable(false);
+        textDiasFavoraveis.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        textDiasFavoraveis.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        textDiasFavoraveis.setText("-");
+        textDiasFavoraveis.setMinimumSize(new java.awt.Dimension(6, 25));
+        textDiasFavoraveis.setPreferredSize(new java.awt.Dimension(25, 19));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 10);
+        jPanel2.add(textDiasFavoraveis, gridBagConstraints);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel2.setText("Dias Fav. Seguidos:");
+        jLabel2.setToolTipText("Quantidade de dias seguidos favo´raveis a requeima.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(jLabel2, gridBagConstraints);
+
+        textDiasFavoraveisSeguidos.setEditable(false);
+        textDiasFavoraveisSeguidos.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        textDiasFavoraveisSeguidos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        textDiasFavoraveisSeguidos.setText("-");
+        textDiasFavoraveisSeguidos.setPreferredSize(new java.awt.Dimension(25, 19));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jPanel2.add(textDiasFavoraveisSeguidos, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(jPanel2, gridBagConstraints);
+
+        jPanel4.setLayout(new java.awt.GridBagLayout());
+
+        tituloCombate.setText("Combate:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 15, 15);
+        jPanel4.add(tituloCombate, gridBagConstraints);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel3.setText("Nome:");
+        jLabel3.setToolTipText("Quantidade de Didas favoráveis a Requeima.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel4.add(jLabel3, gridBagConstraints);
+
+        textCombateCorrente.setEditable(false);
+        textCombateCorrente.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        textCombateCorrente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        textCombateCorrente.setText("-");
+        textCombateCorrente.setMinimumSize(new java.awt.Dimension(6, 25));
+        textCombateCorrente.setPreferredSize(new java.awt.Dimension(100, 19));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 10);
+        jPanel4.add(textCombateCorrente, gridBagConstraints);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel4.setText("Dias Restantes:");
+        jLabel4.setToolTipText("Quantidade de Didas favoráveis a Requeima.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        jPanel4.add(jLabel4, gridBagConstraints);
+
+        textDiasRestantes.setEditable(false);
+        textDiasRestantes.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        textDiasRestantes.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        textDiasRestantes.setText("-");
+        textDiasRestantes.setMinimumSize(new java.awt.Dimension(6, 25));
+        textDiasRestantes.setPreferredSize(new java.awt.Dimension(25, 19));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 10);
+        jPanel4.add(textDiasRestantes, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        jPanel1.add(jPanel4, gridBagConstraints);
+
         painelMapa.setPreferredSize(new java.awt.Dimension(633, 364));
         painelMapa.setLayout(new java.awt.BorderLayout());
 
@@ -203,7 +329,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 597, Short.MAX_VALUE)
             .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -211,7 +337,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE))
+                .addComponent(painelMapa, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     //SISTOM-6
@@ -292,8 +418,18 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
         t1.setTitle("Selecione o Combate");
         t1.setVisible(true);
         Combate resultado = t1.getResultado();
-        this.automatoParaExecutar.setCombate(resultado);
-       
+        if (resultado != null) {
+            AbstractStrategyCombate strategy = resultado.getStrategy();
+            String nome = strategy.getNome();
+            int duracao = strategy.getDuracao();
+
+            //SISTOM-19
+            this.getTextCombateCorrente().setText(nome);
+            this.getTextDiasRestantes().setText(Integer.toString(duracao));
+
+            this.automatoParaExecutar.setCombate(resultado);
+        }
+
     }//GEN-LAST:event_buttonCombateActionPerformed
 
     private void buttonCombateStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_buttonCombateStateChanged
@@ -313,12 +449,24 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     private javax.swing.JButton buttonIniciar;
     private javax.swing.JButton buttonProximo;
     private javax.swing.JButton buttonReiniciar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel painelMapa;
+    private javax.swing.JTextField textCombateCorrente;
+    private javax.swing.JTextField textDiasFavoraveis;
+    private javax.swing.JTextField textDiasFavoraveisSeguidos;
+    private javax.swing.JTextField textDiasRestantes;
     private javax.swing.JTextPane textPaneI_interacaoMaxima;
     private javax.swing.JTextPane textPaneI_separador;
     private javax.swing.JTextPane textPaneParametros;
     private javax.swing.JTextPane textPanel_interacaoAtual;
+    private javax.swing.JLabel tituloCombate;
+    private javax.swing.JLabel tituloPrevisao;
     // End of variables declaration//GEN-END:variables
 
     private void mostrarVariaveisIniciais() {
@@ -402,6 +550,62 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
      */
     public MapaParaSimulacao getMapaParaSimulacao() {
         return mapaParaSimulacao;
+    }
+
+    /**
+     * @return the textDiasFavoraveis
+     */
+    public javax.swing.JTextField getTextDiasFavoraveis() {
+        return textDiasFavoraveis;
+    }
+
+    /**
+     * @param textDiasFavoraveis the textDiasFavoraveis to set
+     */
+    public void setTextDiasFavoraveis(javax.swing.JTextField textDiasFavoraveis) {
+        this.textDiasFavoraveis = textDiasFavoraveis;
+    }
+
+    /**
+     * @return the textDiasFavoraveisSeguidos
+     */
+    public javax.swing.JTextField getTextDiasFavoraveisSeguidos() {
+        return textDiasFavoraveisSeguidos;
+    }
+
+    /**
+     * @param textDiasFavoraveisSeguidos the textDiasFavoraveisSeguidos to set
+     */
+    public void setTextDiasFavoraveisSeguidos(javax.swing.JTextField textDiasFavoraveisSeguidos) {
+        this.textDiasFavoraveisSeguidos = textDiasFavoraveisSeguidos;
+    }
+
+    /**
+     * @return the textCombateCorrente
+     */
+    public javax.swing.JTextField getTextCombateCorrente() {
+        return textCombateCorrente;
+    }
+
+    /**
+     * @param textCombateCorrente the textCombateCorrente to set
+     */
+    public void setTextCombateCorrente(javax.swing.JTextField textCombateCorrente) {
+        this.textCombateCorrente = textCombateCorrente;
+    }
+
+    /**
+     * @return the textDiasRestantes
+     */
+    public javax.swing.JTextField getTextDiasRestantes() {
+        return textDiasRestantes;
+    }
+
+    /**
+     * @param textDiasRestantes the textDiasRestantes to set
+     */
+    public void setTextDiasRestantes(javax.swing.JTextField textDiasRestantes) {
+        this.textDiasRestantes = textDiasRestantes;
     }
     //SISTOM-6
     class MinhaThread extends Thread {

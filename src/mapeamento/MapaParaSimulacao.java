@@ -262,7 +262,7 @@ public class MapaParaSimulacao extends javax.swing.JPanel {
         calculaRuaELinhaPorColuna(coluna, tomateFake);
         ImagemProcessada imagemProcessadaFake = new ImagemProcessada();
         //1 é o estado padrão para tomateiros que não estão resgistrados na base (considera-se que está saudável)
-        imagemProcessadaFake.setEstado(1);
+        imagemProcessadaFake.setEstado(0);
         tomateFake.setImagemProcessada(imagemProcessadaFake);
         return tomateFake;
     }

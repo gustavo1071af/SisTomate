@@ -17,7 +17,7 @@ public class CombateStrategyUm extends AbstractStrategyCombate{
         setNome("teste1");
         setDuracao(8);
         setPreco(200.00);
-        setResultado(1.5);
+        setResultado(0.8);
         
     }
 
