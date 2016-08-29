@@ -254,7 +254,7 @@ public class Preencher_Variaveis extends javax.swing.JPanel {
         form.add(jLabel2, gridBagConstraints);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        jLabel11.setText("Interações:");
+        jLabel11.setText("Iterações:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;

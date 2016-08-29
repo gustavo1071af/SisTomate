@@ -46,6 +46,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
     
     private final Abertura rootFrame;
     private Combate combate;
+    static final int TEMPO_ENTRE_ITERACOES = 2000;
     //private int duracaoDoCombateEmProgresso;
 
     /**
@@ -621,7 +622,7 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
                 GregorianCalendar calendar = new GregorianCalendar();
                 
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(TEMPO_ENTRE_ITERACOES);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(PainelDeSimulacao.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -674,7 +675,9 @@ public class PainelDeSimulacao extends javax.swing.JPanel {
             
             this.interrupt();
             buttonIniciar.setText("Iniciar");
+            buttonIniciar.setEnabled(false);
             buttonProximo.setEnabled(false);
+            buttonReiniciar.setEnabled(true);
         }//run
 
     }//class
