@@ -14,7 +14,7 @@ public class CombateStrategyDois extends AbstractStrategyCombate{
     
     public CombateStrategyDois() {
         super();
-        setNome("teste2");
+        setNome("PARA-AT");
         setDuracao(5);
         setPreco(150.00);
         setResultado(0.4);

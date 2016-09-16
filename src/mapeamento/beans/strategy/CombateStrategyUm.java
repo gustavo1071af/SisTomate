@@ -14,7 +14,7 @@ public class CombateStrategyUm extends AbstractStrategyCombate{
     
     public CombateStrategyUm() {
         super();
-        setNome("teste1");
+        setNome("RIDOMIL GOLD MZ PÉTITE");  
         setDuracao(8);
         setPreco(200.00);
         setResultado(0.8);
