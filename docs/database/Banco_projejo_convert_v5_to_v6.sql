@@ -14,8 +14,8 @@ START TRANSACTION;
 
 ALTER TABLE `dados_meteorologicos` 
 CHANGE COLUMN `umidade` `umidade` DOUBLE NOT NULL ,
-ADD COLUMN `temp_min` DOUBLE NOT NULL AFTER `flag_chuva`,
-ADD COLUMN `temp_max` DOUBLE NOT NULL AFTER `temp_mini`,
+ADD COLUMN `temp_mini` DOUBLE NOT NULL AFTER `flag_chuva`,
+ADD COLUMN `temp_max` DOUBLE NOT NULL AFTER `temp_min`,
 ADD COLUMN `precipitacao` DOUBLE NOT NULL AFTER `temp_max`;
 
 /*INSERTs*/
