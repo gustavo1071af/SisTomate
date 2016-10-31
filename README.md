@@ -8,8 +8,9 @@ This paper presents an approach focused on improving the quality of the tomato c
 obs. Estes scripts não definem qual é o db a ser usado(e devem continuar assim), então fique bem atento a qual db você irá executar.
 3)Caso houver erros de compilação devido a quebra de bibliotecas, as bibliotecas estão em dlist > lib. Logo,
  delete as bibliotecas que estão quebradas e adicione-as novamente.
-4)configure o arquivo Conn.java (dentro da pasta DAO) para os parametros do mysql  caso necessário.
-4)Ligue o mysql e execute o programa.
+4)configure o arquivo Conn.java (dentro da pasta DAO) para os parametros do mysql caso necessário.
+5)configure o arquivo persistence.xml(dentro do META-INF) para os parâmetros do mysql caso necessário.
+6)Ligue o mysql e execute o programa.
 
 - Alterando o modelo:
 Processo de alteração do banco de dados do sistema.
