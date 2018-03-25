@@ -47,9 +47,9 @@ public class Abertura extends javax.swing.JFrame {
         List talhoesIds = new ArrayList<>();
         combo = new javax.swing.JComboBox();
 
-        List<Talhao> talhoesList = TalhaoDAO.getAll();
+        List<Talhao> talhoes = TalhaoDAO.getAll();
 
-        for (Talhao talhao : talhoesList) {
+        for (Talhao talhao : talhoes) {
             talhoesIds.add(talhao.getAreaCultivada());
         }
         combo.setModel(new javax.swing.DefaultComboBoxModel(talhoesIds.toArray()));
